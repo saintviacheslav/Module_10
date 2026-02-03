@@ -32,9 +32,6 @@ function Header() {
   return (
     <>
       <header>
-        {/* {menuOpen && (
-          <div className={style.backdrop} onClick={() => setMenuOpen(false)} />
-        )} */}
 
         <div className={style.logo}>
           <LogoImg
