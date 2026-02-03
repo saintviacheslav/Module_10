@@ -1,0 +1,15 @@
+.templateInput {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  width: 327px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  max-height: 48px;
+}
+
+.templateInput:focus{
+  outline: none;
+  border-color: var(--comp-focus);
+}

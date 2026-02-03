@@ -1,0 +1,16 @@
+.templateButton {
+  padding: 12px 48px;
+  font: 400 14px Poppins;
+  line-height: 20px;
+  border: 0;
+  color: var(--text-primary);
+  background: var(--fill-positive);
+  cursor: pointer;
+  width: max-content;
+  /* max-width: 215px; */
+}
+
+.templateButton:hover{
+  background-color: var(--btn-hover);
+  transition: 0.3s;
+}

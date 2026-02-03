@@ -1,0 +1,16 @@
+footer {
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: fixed;
+  bottom: 0; */
+  width: 100%;
+  margin-top: 24px;
+}
+
+.copyright {
+  color: var(--text-positive);
+  font: 400 18px Inter;
+  padding: 20px 0;
+}

@@ -1,0 +1,28 @@
+.adding_comment {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 14px Poppins;
+}
+
+.textarea {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  max-width: 652px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  max-height: 58px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--comp-focus);
+}

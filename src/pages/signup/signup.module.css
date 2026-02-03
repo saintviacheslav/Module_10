@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.content_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  max-width: 375px;
+}
+
+.preview {
+  max-width: 221px;
+}
+
+.title {
+  font: 600 18px Poppins;
+  text-align: center;
+}
+
+.signin_description {
+  font: 400 14px Poppins;
+  text-align: center;
+}
+
+.input_area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+}
+
+.input_block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hint {
+  display: flex;
+  gap: 8px;
+  font: 400 14px Poppins;
+  align-items: center;
+}
+
+.hint_img {
+  width: 16px;
+  height: 16px;
+}
+
+.privacyText {
+  font: 400 12px Inter;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.privacyGray {
+  color: var(--text-primary)
+}
+
+.navigation {
+  font: 400 14px Poppins;
+}
+
+.switch_auth_pages {
+  border-bottom: 1px solid var(--text-primary);
+}
