@@ -1,0 +1,11 @@
+.popupNotification {
+  padding: 24px;
+  max-width: 350px;
+}
+
+.popupText {
+  max-width: 260px;
+  font: 400 18px Poppins;
+  color: var(--text-primary);
+  
+}

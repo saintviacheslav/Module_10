@@ -19,6 +19,7 @@ function App() {
         <Route element={<Layout centered={false} />}>
           <Route path="/" element={<Main />} />
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/statistics" element={<Profile isProfile={false} />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

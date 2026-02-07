@@ -10,7 +10,7 @@ interface ButtonState {
   isHovered: boolean;
 }
 
-class ButtonClass extends Component<ButtonProps, ButtonState> {
+class Button extends Component<ButtonProps, ButtonState> {
   constructor(props: ButtonProps) {
     super(props);
 
@@ -41,7 +41,7 @@ class ButtonClass extends Component<ButtonProps, ButtonState> {
   componentDidUpdate(
     prevProps: ButtonProps,
     prevState: ButtonState,
-    snapshot: any,
+    snapshot: any, //загуглить 
   ) {
   }
 
@@ -69,4 +69,4 @@ class ButtonClass extends Component<ButtonProps, ButtonState> {
   }
 }
 
-export default ButtonClass;
+export default Button;

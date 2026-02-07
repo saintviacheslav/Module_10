@@ -1,0 +1,30 @@
+.themeBlock {
+  width: 48px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  border-radius: 1000px;
+  background-color: #0E1223;
+  padding: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.themeBlock.dark {
+  background-color: var(--bg-surface);
+}
+
+.themeCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.28s ease;
+  box-shadow: rgba(0, 0, 0, 0.16);
+}
+
+.themeCircleActive {
+  transform: translateX(20px);
+  background-color: var(--fill-positive) ;
+}

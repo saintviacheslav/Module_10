@@ -9,6 +9,8 @@ import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();

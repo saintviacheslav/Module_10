@@ -14,3 +14,7 @@
   background-color: var(--btn-hover);
   transition: 0.3s;
 }
+
+.templateButton:active {
+  background-color: var(--btn-pressed);
+}

@@ -13,3 +13,42 @@
   outline: none;
   border-color: var(--comp-focus);
 }
+
+.wrapper {
+  position: relative;
+}
+
+.default {
+  border-color: var(--border-soft);
+}
+
+.success {
+  border-color: #4caf50;
+}
+
+.error {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.iconSuccess {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4caf50;
+}
+
+.iconError {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f44336;
+}
+
+.errorText {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #f44336;
+}

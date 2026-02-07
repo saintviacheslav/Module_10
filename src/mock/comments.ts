@@ -11,4 +11,10 @@ export const comments = [
     authorId: 2,
     text: "Thanks!",
   },
+  {
+    id: 3,
+    postId: 1,
+    authorId: 1,
+    text: "Thanks!",
+  },
 ];

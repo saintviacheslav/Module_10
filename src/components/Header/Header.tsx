@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./header.module.css";
-import ThemeToggler from "../ThemeToggler/ThemeToggler";
+// import ThemeToggler from "../ThemeToggler/ThemeToggler";
 import SideMenu from "../SideMenu/SideMenu";
 import { useAuth } from "../../context/AuthProvider";
 import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg";
@@ -9,12 +9,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 //по контексту отображать разное хэдер меню или его полностью скрывать
 //а также на какой странице находимся разная высота у хэдера
 function Header() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const location = useLocation();
-  const isAuthPage =
-    location.pathname === "/signin" || location.pathname === "/signup";
+  const isAuthPage = location.pathname === "/signin" || location.pathname === "/signup";
 
   function handleLogoClick() {
     navigate("/");

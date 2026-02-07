@@ -9,7 +9,11 @@
   width: 327px;
 }
 
-.templateButton:hover{
+.templateButton:hover {
   background-color: var(--btn-hover);
   transition: 0.3s;
+}
+
+.templateButton:active {
+  background-color: var(--btn-pressed);
 }

@@ -39,6 +39,7 @@ html, body {
   --shadow-none: none;
   --btn-hover: #08B94E;
   --comp-focus: #7A44FF;
+  --btn-pressed: #6236CC;
 }
 
 [data-theme="light"] {
