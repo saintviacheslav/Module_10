@@ -52,6 +52,28 @@
   /* max-height: 58px; */
 }
 
+.textareaError {
+  background: var(--bg-component-light);
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+  width: 575px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  /* max-height: 58px; */
+}
+
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  height: 24px;
+}
+
 .textarea:focus {
   outline: none;
   border-color: var(--comp-focus);

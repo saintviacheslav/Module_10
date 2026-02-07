@@ -40,6 +40,7 @@ html, body {
   --btn-hover: #08B94E;
   --comp-focus: #7A44FF;
   --btn-pressed: #6236CC;
+  --inp-incorrect: #FF554A;
 }
 
 [data-theme="light"] {

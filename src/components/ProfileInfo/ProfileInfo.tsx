@@ -13,6 +13,7 @@ import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
+  const [isMore, setMore] = useState<boolean>(false);
   const [isFocus, setFocus] = useState<boolean>(false);
   const { theme } = useTheme();
   const [username, setUsername] = useState<string>("");
@@ -38,8 +39,6 @@ export default function ProfileInfo() {
       setEmailError("Email is not valid");
       return;
     }
-
-    
   }
 
   function handleAreaFocus() {
@@ -122,17 +121,32 @@ export default function ProfileInfo() {
             <textarea
               onFocus={handleAreaFocus}
               onBlur={handleAreaBlur}
-              className={style.textarea}
+              className={`${description.length === 200 ? style.textareaError : style.textarea}`}
               placeholder="Write description here..."
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (newValue.length <= 200) {
+                  setDescription(newValue);
+                }
+              }}
+              rows={4}
             ></textarea>
             {isFocus && (
               <div className={style.validateInfo}>
-                <InfoImg></InfoImg>
+                {description.length === 200 ? (
+                  <InfoImg style={{ color: "var(--inp-incorrect)" }}></InfoImg>
+                ) : (
+                  <InfoImg style={{ color: "var(--text-secondary)" }}></InfoImg>
+                )}
                 {/* <img alt="info"></img> */}
-                <p className={style.secondaryText}>Max 200 chars</p>
+                {description.length === 200 ? (
+                  <p className={style.textareaErrorText}>
+                    Reached the 200 text limit
+                  </p>
+                ) : (
+                  <p className={style.secondaryText}>Max 200 chars</p>
+                )}
               </div>
             )}
           </div>
