@@ -1,0 +1,148 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 30, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 8;
+}
+
+.modalPost {
+  padding: 24px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+}
+
+.modalMain {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalTitle {
+  font: 400 36px Poppins;
+  color: var(--text-primary);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 14px Poppins;
+}
+
+.textarea {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  /* width: 575px; */
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  /* max-height: 58px; */
+}
+
+.textareaError {
+  background: var(--bg-component-light);
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+  width: 575px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  /* max-height: 58px; */
+}
+
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  height: 24px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--comp-focus);
+}
+
+.validateInfo {
+  display: flex;
+  gap: 8px;
+}
+
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  height: 24px;
+}
+
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+  /* height: 32px; */
+}
+
+.dropZone {
+  padding: 16px 32px;
+  border: 1px dashed var(--border-soft);
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  align-items: center;
+}
+
+.dropInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropText {
+  font: 400 14px Poppins;
+  color: var(--text-primary);
+}
+
+.dropCheck {
+  font: 400 14px Poppins;
+  color: var(--text-secondary);
+}
+
+.dropFooter {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

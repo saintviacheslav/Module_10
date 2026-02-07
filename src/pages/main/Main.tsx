@@ -9,7 +9,8 @@ import { ReactComponent as ArrowDown } from "../../assets/images/arrowdown.svg";
 import { ReactComponent as ArrowUp } from "../../assets/images/arrowup.svg";
 import { ReactComponent as TrashImg } from "../../assets/images/trash.svg";
 import { useAuth } from "../../context/AuthProvider";
-import Post from "../../components/Post/Post"
+import Post from "../../components/Post/Post";
+import ModalPost from "../../components/ModalPost/ModalPost";
 import { posts } from "../../mock/posts";
 function Main() {
   const users = [
@@ -21,17 +22,17 @@ function Main() {
       description: "lalalla",
     },
   ];
-  const [isShown, setShown] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(true);
   const { isAuthenticated, user } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  function changeLoggedStatus() {
-    setLoggedIn(!isLoggedIn);
-    console.log(isLoggedIn);
-  }
-  function changeShownStatus() {
-    setShown(!isShown);
-  }
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={style.container}>
       <section className={style.content}>
@@ -41,14 +42,12 @@ function Main() {
               <img src="postcreateavatar.png" alt="avatar"></img>
               <p>What's new?</p>
             </div>
-            <Button name="Tell everyone"></Button>
+            <Button onClick={handleOpenModal} name="Tell everyone"></Button>
           </section>
         ) : null}
         <section className={style.feed}>
           {posts.map((post) => {
-            return (
-              <Post key={post.id} post={post}></Post>
-            );
+            return <Post key={post.id} post={post}></Post>;
           })}
         </section>
       </section>
@@ -118,6 +117,9 @@ function Main() {
           </div>
         </aside>
       ) : null}
+      {isModalOpen && (
+        <ModalPost isOpen={isModalOpen} onClose={handleCloseModal} />
+      )}
     </div>
   );
 }

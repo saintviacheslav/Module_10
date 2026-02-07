@@ -29,11 +29,6 @@ export default function ProfileInfo() {
 
     const trimmedEmail = email.trim();
 
-    if (!trimmedEmail) {
-      setEmailError("Email is required");
-      return;
-    }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       setEmailError("Email is not valid");
