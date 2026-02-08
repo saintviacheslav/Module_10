@@ -1,26 +1,53 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import style from "./signup.module.css";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import Button from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
 import { users } from "../../mock/users";
+import { useForm } from "../../utils/useForm";
+import { validateEmail, validatePassword } from "../../utils/validators";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
+import { Icon } from "../../components/Icon/Icon";
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const { values, errors, setFieldValue, setFieldError } = useForm({
+    email: "",
+    password: "",
+  });
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    const emailError = validateEmail(values.email);
+    const passwordError = validatePassword(values.password);
+
+    if (emailError || passwordError) {
+      setFieldError("email", emailError);
+      setFieldError("password", passwordError);
+      return;
+    }
+
+    const emailExists = users.some((user) => user.email === values.email);
+
+    if (emailExists) {
+      setFieldError("email", "Email already exists");
+      return;
+    }
+
     users.push({
-      id: 3,
-      email: email,
-      password: password,
+      id: Date.now(),
+      email: values.email,
+      password: values.password,
       name: "",
       surname: "",
       username: "@default",
       avatar: "women.png",
     });
+    login(values.email, values.password);
+    navigate("/");
   }
 
   return (
@@ -33,45 +60,50 @@ export default function SignUp() {
               Enter your email and password to sign up for this app
             </p>
           </div>
+
           <div className={style.input_area}>
             <div className={style.input_block}>
               <div className={style.hint}>
-                <img
-                  className={style.hint_img}
-                  src="envelope.png"
-                  alt="mail"
-                ></img>
+                <Icon name="envelope" />
                 <p>Email</p>
               </div>
+
               <Input
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                type="text"
+                value={values.email}
+                onChange={(e) => setFieldValue("email", e.target.value)}
+                status={errors.email ? "error" : "default"}
+                errorText={errors.email}
                 placeholder="Enter email..."
               />
             </div>
+
             <div className={style.input_block}>
               <div className={style.hint}>
-                <img className={style.hint_img} src="eye.png" alt="eye"></img>
+                <Icon name="eye" />
                 <p>Password</p>
               </div>
+
               <Input
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
                 type="password"
+                value={values.password}
+                onChange={(e) => setFieldValue("password", e.target.value)}
+                status={errors.password ? "error" : "default"}
+                errorText={errors.password}
                 placeholder="Enter password..."
               />
             </div>
 
-            <Button name="Sign Up"></Button>
+            <Button name="Sign Up" />
+
             <p className={style.privacyText}>
               By clicking continue, you agree to our{" "}
-              <span className={style.privacyGray}>Terms of Service</span> and
-              <span className={style.privacyGray}> Privacy Policy</span>
+              <span className={style.privacyGray}>Terms of Service</span> and{" "}
+              <span className={style.privacyGray}>Privacy Policy</span>
             </p>
+
             <p className={style.navigation}>
               Already have an account?{" "}
-              <span className={style.switch_auth_pages}>Sign Up</span>
+              <span style={{cursor: "pointer"}} onClick={() => navigate("/signin")} className={style.switch_auth_pages}>Sign In</span>
             </p>
           </div>
         </form>

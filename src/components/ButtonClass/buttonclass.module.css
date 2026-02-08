@@ -17,3 +17,11 @@
 .templateButton:active {
   background-color: var(--btn-pressed);
 }
+
+@media (max-width:500px) {
+  .templateButton {
+    padding: 8px 24px;
+    width: 100%;
+  }
+
+}

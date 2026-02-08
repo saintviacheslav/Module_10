@@ -35,6 +35,13 @@
 }
 
 .hint {
+  max-width: 327px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hintContent {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -160,5 +167,11 @@
 
   .editPreferencesBlock {
     margin-top: 24px;
+  }
+}
+
+@media (max-width:400px){
+  .hint {
+    max-width: 310px;
   }
 }

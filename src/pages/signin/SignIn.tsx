@@ -1,31 +1,47 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import style from "./signin.module.css";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import Button from "../../components/Button/Button";
 import ButtonClass from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "../../../src/utils/useForm";
+import { validateEmail, validatePassword } from "../../utils/validators";
+import { Icon } from "../../components/Icon/Icon";
 
 export default function SignIn() {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const {
+    values,
+    errors,
+    setFieldValue,
+    setFieldError,
+  } = useForm({
+    email: "",
+    password: "",
+  });
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const success = login(email, password);
+    const emailError = validateEmail(values.email);
+    const passwordError = validatePassword(values.password);
 
-    if (success) {
-      navigate("/");
-    } else {
-      alert("repeat");
+    if (emailError || passwordError) {
+      setFieldError("email", emailError);
+      setFieldError("password", passwordError);
+      return;
     }
+
+    const success = login(values.email, values.password);
+
+    if (!success) {
+      setFieldError("password", "Invalid email or password");
+      return;
+    }
+
+    navigate("/");
   }
 
   return (
@@ -38,41 +54,43 @@ export default function SignIn() {
               Enter your email and password to sign in into this app
             </p>
           </div>
+
           <div className={style.input_area}>
             <div className={style.input_block}>
               <div className={style.hint}>
-                <img
-                  className={style.hint_img}
-                  src="envelope.png"
-                  alt="mail"
-                ></img>
+                <Icon name="envelope" />
                 <p>Email</p>
               </div>
+
               <Input
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                type="text"
+                value={values.email}
+                onChange={(e) => setFieldValue("email", e.target.value)}
+                status={errors.email ? "error" : "default"}
+                errorText={errors.email}
                 placeholder="Enter email..."
               />
             </div>
+
             <div className={style.input_block}>
               <div className={style.hint}>
-                <img className={style.hint_img} src="eye.png" alt="eye"></img>
+                <Icon name="eye" />
                 <p>Password</p>
               </div>
+
               <Input
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
                 type="password"
+                value={values.password}
+                onChange={(e) => setFieldValue("password", e.target.value)}
+                status={errors.password ? "error" : "default"}
+                errorText={errors.password}
                 placeholder="Enter password..."
               />
             </div>
 
-            {/* <Button name="Sign In"></Button> */}
-            <ButtonClass name="Sign In"></ButtonClass>
+            <ButtonClass name="Sign In" />
             <p className={style.navigation}>
               Forgot to create an account?{" "}
-              <span className={style.switch_auth_pages}>Sign Up</span>
+              <span style={{cursor: "pointer"}} onClick={() => navigate("/signup")} className={style.switch_auth_pages}>Sign Up</span>
             </p>
           </div>
         </form>

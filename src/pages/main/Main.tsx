@@ -1,28 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "./main.module.css";
 import Button from "../../components/Button/Button";
-import Comment from "../../components/Comment/Comment";
-import Input from "../../components/Input/Input";
-import { ReactComponent as Heart } from "../../assets/images/heart.svg";
-import { ReactComponent as MessageImg } from "../../assets/images/message.svg";
-import { ReactComponent as ArrowDown } from "../../assets/images/arrowdown.svg";
-import { ReactComponent as ArrowUp } from "../../assets/images/arrowup.svg";
-import { ReactComponent as TrashImg } from "../../assets/images/trash.svg";
 import { useAuth } from "../../context/AuthProvider";
 import Post from "../../components/Post/Post";
 import ModalPost from "../../components/ModalPost/ModalPost";
 import { posts } from "../../mock/posts";
 function Main() {
-  const users = [
-    {
-      id: 1,
-      name: "john",
-      surname: "sin",
-      username: "@ltth",
-      description: "lalalla",
-    },
-  ];
-  const { isAuthenticated, user } = useAuth();
+
+  const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleOpenModal = () => {

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "./comment.module.css";
 import Button from "../Button/Button";
-import { ReactComponent as PencilImg } from "../../assets/images/pencil.svg";
-import { ReactComponent as InfoImg } from "../../assets/images/info.svg";
+import { Icon } from "../Icon/Icon";
 
 export default function Comment() {
   const [isFocus, setFocus] = useState<boolean>(false);
@@ -19,7 +18,7 @@ export default function Comment() {
     <>
       <div className={style.adding_comment}>
         <div className={style.hint}>
-          <PencilImg style={{ color: "var(--text-primary)" }}></PencilImg>
+          <Icon name="pencil"></Icon>
           <p>Description</p>
         </div>
         <textarea
@@ -39,11 +38,10 @@ export default function Comment() {
         {isFocus && (
           <div className={style.validateInfo}>
             {description.length === 200 ? (
-              <InfoImg style={{ color: "var(--inp-incorrect)" }}></InfoImg>
+              <Icon name="info" style={{ color: "var(--inp-incorrect)" }}></Icon>
             ) : (
-              <InfoImg style={{ color: "var(--text-secondary)" }}></InfoImg>
+              <Icon name="info" style={{ color: "var(--text-secondary)" }}></Icon>
             )}
-            {/* <img alt="info"></img> */}
             {description.length === 200 ? (
               <p className={style.textareaErrorText}>
                 Reached the 200 text limit

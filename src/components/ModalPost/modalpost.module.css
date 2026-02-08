@@ -146,3 +146,156 @@
   flex-direction: column;
   gap: 12px;
 }
+
+@media (max-width: 1024px) {
+  .modalPost {
+    width: 90%;
+    max-width: 700px;
+    padding: 20px;
+  }
+
+  .modalTitle {
+    font-size: 32px;
+  }
+
+  .textarea,
+  .textareaError {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .modalPost {
+    width: 92%;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .modalTitle {
+    font-size: 28px;
+  }
+
+  .modalMain {
+    gap: 10px;
+  }
+
+  .dropZone {
+    padding: 12px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .dropInfo {
+    gap: 8px;
+  }
+
+  .dropText,
+  .dropCheck {
+    font-size: 13px;
+  }
+
+  .hint {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .validateInfo {
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .secondaryText,
+  .textareaErrorText {
+    font-size: 14px;
+  }
+
+  .primaryText {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modalPost {
+    width: 96%;
+    padding: 16px 12px;
+  }
+
+  .modalHeader {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .modalTitle {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .closeBtn {
+    margin-left: auto;
+  }
+
+  .textarea,
+  .textareaError {
+    font-size: 14px;
+    padding: 12px;
+    min-height: 80px;
+  }
+
+  .dropZone {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .dropFooter {
+    margin-top: 8px;
+  }
+
+  .inputBlock {
+    gap: 10px;
+  }
+
+  .hint p,
+  .dropText,
+  .dropCheck {
+    font-size: 13px;
+  }
+
+  .secondaryText,
+  .textareaErrorText {
+    font-size: 13px;
+    height: auto;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalPost {
+    padding: 12px 10px;
+    gap: 16px;
+  }
+
+  .modalTitle {
+    font-size: 22px;
+  }
+
+  .textarea,
+  .textareaError {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .validateInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .dropZone {
+    padding: 10px;
+  }
+
+}

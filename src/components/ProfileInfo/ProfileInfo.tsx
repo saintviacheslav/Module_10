@@ -1,47 +1,89 @@
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import style from "./profileinfo.module.css";
-import { ReactComponent as MailImg } from "../../assets/images/envelope.svg";
-import { ReactComponent as PencilImg } from "../../assets/images/pencil.svg";
-import { ReactComponent as AvatarImg } from "../../assets/images/user.svg";
-import { ReactComponent as InfoImg } from "../../assets/images/info.svg";
 import { useTheme } from "../../context/ThemeProvider";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 
+import { useForm } from "../../utils/useForm";
+import { validateEmail, validateUsername } from "../../utils/validators";
+import { useToast } from "../../context/ToastProvider";
+import { Icon } from "../Icon/Icon";
+
+type ProfileFormValues = {
+  username: string;
+  email: string;
+  description: string;
+};
+
 export default function ProfileInfo() {
   const navigate = useNavigate();
-  const [isMore, setMore] = useState<boolean>(false);
-  const [isFocus, setFocus] = useState<boolean>(false);
   const { theme } = useTheme();
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
   const { user, logout } = useAuth();
+
+  const { values, errors, setFieldValue, setFieldError } =
+    useForm<ProfileFormValues>({
+      username: "",
+      email: "",
+      description: "",
+    });
+
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [descriptionFocused, setDescriptionFocused] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { addToast } = useToast();
+
+  const isDescriptionMax = values.description.length === 200;
+
+  function handleAvatarClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+    if (!validTypes.includes(file.type)) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    setAvatarPreview(objectUrl);
+    e.target.value = "";
+  }
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    setEmailError("");
+    setFieldError("email", "");
+    setFieldError("username", "");
 
-    const trimmedEmail = email.trim();
+    let hasError = false;
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      setEmailError("Email is not valid");
-      return;
+    if (values.email.trim() !== "") {
+      const emailError = validateEmail(values.email);
+      if (emailError) {
+        setFieldError("email", emailError);
+        hasError = true;
+      }
     }
-  }
 
-  function handleAreaFocus() {
-    setFocus(true);
-  }
+    const usernameError = validateUsername(values.username);
+    if (usernameError) {
+      setFieldError("username", usernameError);
+      hasError = true;
+    }
 
-  function handleAreaBlur() {
-    setFocus(false);
+    if (hasError) return;
+
+    addToast("Profile info has been updated successfully", 6000);
   }
 
   function handleLogout() {
@@ -53,89 +95,111 @@ export default function ProfileInfo() {
     <div className={style.editContent}>
       <form className={style.editProfileForm} onSubmit={handleSubmit}>
         <h1 className={style.title}>Edit profile</h1>
+
         <div className={style.userMainInfo}>
           <img
+            onClick={handleAvatarClick}
             className={style.avatarPicture}
-            src={user?.avatar}
+            src={avatarPreview || user?.avatar}
             alt="avatar"
-          ></img>
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/jpeg,image/png,image/svg+xml"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
           <div className={style.userMainText}>
             <p className={style.primaryText}>
               {user?.name} {user?.surname}
             </p>
-            <p className={style.secondaryText}>Change profile photo</p>
+            <p
+              style={{ cursor: "pointer" }}
+              onClick={handleAvatarClick}
+              className={style.secondaryText}
+            >
+              Change profile photo
+            </p>
           </div>
         </div>
+
         <div className={style.profileInfoBlock}>
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <AvatarImg style={{ color: "var(--text-primary)" }} />
-              {/* <img
-                  className={style.hint_img}
-                  src="envelope.png"
-                  alt="mail"
-                ></img> */}
-              <p>Username</p>
+              <div className={style.hintContent}>
+                <Icon name="user" />
+                <p>Username</p>
+              </div>
+              {errors.username && <Icon name="cross-small" />}
             </div>
             <Input
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
+              onChange={(e) => {
+                setFieldValue("username", e.target.value);
+                if (errors.username) setFieldError("username", "");
+              }}
+              value={values.username}
               type="text"
-              placeholder={user?.username}
+              placeholder={user?.username ?? "@username"}
+              status={errors.username ? "error" : "default"}
+              errorText={errors.username}
             />
           </div>
+
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <MailImg style={{ color: "var(--text-primary)" }}></MailImg>
-              {/* <img
-                  className={style.hint_img}
-                  src="envelope.png"
-                  alt="mail"
-                ></img> */}
-              <p>Email</p>
+              <div className={style.hintContent}>
+                <Icon name="envelope" />
+                <p>Email</p>
+              </div>
+              {errors.email && <Icon name="cross-small" />}
             </div>
             <Input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) => {
+                setFieldValue("email", e.target.value);
+                if (errors.email) setFieldError("email", "");
+              }}
+              value={values.email}
               type="text"
-              placeholder={user?.email}
-              status={emailError ? "error" : "default"}
-              errorText={emailError}
+              placeholder={user?.email ?? "example@mail.com"}
+              status={errors.email ? "error" : "default"}
+              errorText={errors.email}
             />
           </div>
+
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <PencilImg style={{ color: "var(--text-primary)" }}></PencilImg>
-              {/* <img
-                  className={style.hint_img}
-                  src="envelope.png"
-                  alt="mail"
-                ></img> */}
-              <p>Description</p>
+              <div className={style.hintContent}>
+                <Icon name="pencil" />
+                <p>Description</p>
+              </div>
             </div>
+
             <textarea
-              onFocus={handleAreaFocus}
-              onBlur={handleAreaBlur}
-              className={`${description.length === 200 ? style.textareaError : style.textarea}`}
+              className={
+                isDescriptionMax ? style.textareaError : style.textarea
+              }
               placeholder="Write description here..."
-              value={description}
+              value={values.description}
               onChange={(e) => {
                 const newValue = e.target.value;
                 if (newValue.length <= 200) {
-                  setDescription(newValue);
+                  setFieldValue("description", newValue);
                 }
               }}
               rows={4}
-            ></textarea>
-            {isFocus && (
+              onFocus={() => setDescriptionFocused(true)}
+              onBlur={() => setDescriptionFocused(false)}
+            />
+
+            {descriptionFocused && (
               <div className={style.validateInfo}>
-                {description.length === 200 ? (
-                  <InfoImg style={{ color: "var(--inp-incorrect)" }}></InfoImg>
+                {isDescriptionMax ? (
+                  <Icon name="info" className="error" style={{ color: "var(--inp-incorrect)" }} />
                 ) : (
-                  <InfoImg style={{ color: "var(--text-secondary)" }}></InfoImg>
+                  <Icon name="info" style={{ color: "var(--text-secondary)" }} />
                 )}
-                {/* <img alt="info"></img> */}
-                {description.length === 200 ? (
+                {isDescriptionMax ? (
                   <p className={style.textareaErrorText}>
                     Reached the 200 text limit
                   </p>
@@ -145,23 +209,25 @@ export default function ProfileInfo() {
               </div>
             )}
           </div>
-          <Button name="Save Profile Changes"></Button>
+
+          <Button name="Save Profile Changes" />
         </div>
       </form>
+
       <div className={style.editPreferencesBlock}>
         <div className={style.editPreferencesItem}>
           <h1 className={style.title}>Preferences</h1>
           <div className={style.themeSwitcher}>
             <ThemeSwitcher />
-            {/* <ThemeToggler /> */}
             <p className={style.primaryText}>
               {theme === "light" ? "Light theme" : "Dark theme"}
             </p>
           </div>
         </div>
+
         <div className={style.editPreferencesItem}>
           <h1 className={style.title}>Actions</h1>
-          <Button name="Logout" onClick={handleLogout}></Button>
+          <Button name="Logout" onClick={handleLogout} />
         </div>
       </div>
     </div>

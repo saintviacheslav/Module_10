@@ -195,3 +195,17 @@ tbody tr:last-child td {
     width: 25%;
   }
 }
+
+@media (max-width:400px) {
+  .card {
+    width: 300px;
+  }
+
+  .colName {
+    width: 40%;
+  }
+
+  .colValue {
+    width: 30%;
+  }
+}

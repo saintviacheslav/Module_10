@@ -7,6 +7,7 @@ import { ReactComponent as CrossImg } from "../../assets/images/cross.svg";
 import { useEffect, useRef, useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
+import { Icon } from "../Icon/Icon";
 
 type ModalPostProps = {
   isOpen: boolean;
@@ -31,7 +32,11 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   }
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -101,14 +106,14 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
         <div className={style.modalHeader}>
           <h1 className={style.modalTitle}>Create a new post</h1>
           <button onClick={onClose} className={style.closeBtn}>
-            <CrossImg style={{ color: "var(--text-primary)" }} />
+            <Icon name="cross" size={24} style={{color: "var(--text-primary)"}}/>
           </button>
         </div>
 
         <div className={style.modalMain}>
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <MailImg style={{ color: "var(--text-primary)" }} />
+              <Icon name="envelope" />
               <p>Post Title</p>
             </div>
             <Input
@@ -120,7 +125,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
           </div>
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <PencilImg style={{ color: "var(--text-primary)" }}></PencilImg>
+              <Icon name="pencil"></Icon>
               <p>Description</p>
             </div>
             <textarea
@@ -140,11 +145,10 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
             {isFocus && (
               <div className={style.validateInfo}>
                 {description.length === 200 ? (
-                  <InfoImg style={{ color: "var(--inp-incorrect)" }}></InfoImg>
+                  <Icon name="info" style={{ color: "var(--inp-incorrect)" }}></Icon>
                 ) : (
-                  <InfoImg style={{ color: "var(--text-secondary)" }}></InfoImg>
+                  <Icon name="info" style={{ color: "var(--text-secondary)" }}></Icon>
                 )}
-                {/* <img alt="info"></img> */}
                 {description.length === 200 ? (
                   <p className={style.textareaErrorText}>
                     Reached the 200 text limit
@@ -188,7 +192,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               </div>
             ) : (
               <>
-                <FileImg style={{ color: "var(--text-primary)" }} />
+                <Icon name="file-download" size={36} style={{ color: "var(--text-primary)" }} />
                 <div className={style.dropInfo}>
                   <p className={style.dropText}>
                     Select a file or drag and drop here

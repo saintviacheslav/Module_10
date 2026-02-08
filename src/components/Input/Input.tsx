@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./input.module.css";
+import { Icon } from "../Icon/Icon";
 
 type InputStatus = "default" | "success" | "error";
 
@@ -28,16 +29,16 @@ export default function Input({
         onChange={onChange}
       />
 
-      {status === "success" && (
-        <span className={style.iconSuccess}>✓</span>
-      )}
+      {status === "success" && <span className={style.iconSuccess}>✓</span>}
 
       {status === "error" && (
-        <>
-          <span className={style.iconError}>!</span>
+        <div className={style.validateInfo}>
+          <Icon name="info" style={{ color: "var(--inp-incorrect)" }}></Icon>
           <p className={style.errorText}>{errorText}</p>
-        </>
+        </div>
       )}
+      <>
+      </>
     </div>
   );
 }

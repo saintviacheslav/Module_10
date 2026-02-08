@@ -162,9 +162,9 @@ img:hover {
   cursor: pointer;
 }
 
-@media (max-width:1330px){
-  .secondary_text, .primary_text{
-    font-size: 10px;
+@media (max-width:1330px) {
+  .suggested_area {
+    display: none;
   }
 }
 
@@ -180,11 +180,25 @@ img:hover {
     max-width: 700px;
   }
 
-  .suggested_area{
+  .suggested_area {
     display: none;
   }
 
-  .post_creation{
-    margin:0;
+  .post_creation {
+    margin: 0;
+    border-bottom: 0;
+  }
+}
+
+@media (max-width:500px) {
+  .container {
+    padding: 0;
+  }
+
+}
+
+@media (min-width:3000px){
+  .container {
+    gap: 0;
   }
 }

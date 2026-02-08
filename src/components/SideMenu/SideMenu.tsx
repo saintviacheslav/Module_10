@@ -3,6 +3,7 @@ import style from "./sidemenu.module.css";
 import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "../Icon/Icon";
 
 type SideMenuProps = {
   isOpen: boolean;
@@ -32,7 +33,8 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
 
       <aside className={style.menu}>
         <div className={style.menuHeader}>
-          <LogoImg
+          <Icon name="logo"
+            size={48}
             className={style.menuLogo}
             onClick={() => {
               navigate("/");

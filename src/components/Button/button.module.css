@@ -10,11 +10,18 @@
   /* max-width: 215px; */
 }
 
-.templateButton:hover{
+.templateButton:hover {
   background-color: var(--btn-hover);
   transition: 0.3s;
 }
 
 .templateButton:active {
   background-color: var(--btn-pressed);
+}
+
+@media (max-width:500px) {
+  .templateButton {
+    padding: 8px 24px;
+  }
+
 }

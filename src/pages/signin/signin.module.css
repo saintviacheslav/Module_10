@@ -67,3 +67,10 @@
 .switch_auth_pages {
   border-bottom: 1px solid var(--text-primary);
 }
+
+@media (max-width:400px) {
+  .content {
+    width: 310px;
+    min-width: 0;
+  }
+}

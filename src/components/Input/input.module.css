@@ -9,7 +9,7 @@
   max-height: 48px;
 }
 
-.templateInput:focus{
+.templateInput:focus {
   outline: none;
   border-color: var(--comp-focus);
 }
@@ -39,16 +39,28 @@
   color: #4caf50;
 }
 
-.iconError {
+/* .iconError {
   position: absolute;
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #f44336;
-}
+} */
 
 .errorText {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #f44336;
+  font: 400 14px Poppins;
+  color: var(--inp-incorrect);
+}
+
+.validateInfo {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width:400px) {
+  .templateInput {
+    width: 100%;
+  }
+
 }
