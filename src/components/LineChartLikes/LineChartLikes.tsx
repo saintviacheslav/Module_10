@@ -14,6 +14,25 @@ interface Props {
 }
 
 export function LineChartLikes({ data }: Props) {
+  const customDot = (props: any) => {
+    const { cx, cy, index } = props;
+
+    if (index === data.length - 1) {
+      return (
+        <Dot
+          cx={cx}
+          cy={cy}
+          r={4}
+          fill="var(--text-secondary)"
+          stroke="var(--bg-surface)"
+          strokeWidth={2}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <ResponsiveContainer>
@@ -65,14 +84,7 @@ export function LineChartLikes({ data }: Props) {
             dataKey="likes"
             stroke="var(--btn-pressed)"
             strokeWidth={2}
-            dot={
-              <Dot
-                r={4}
-                fill="var(--text-secondary)"
-                stroke="var(--bg-surface)"
-                strokeWidth={2}
-              />
-            }
+            dot={customDot}
             activeDot={{
               r: 8,
               stroke: "var(--text-primary)",

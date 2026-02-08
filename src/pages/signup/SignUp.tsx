@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import style from "./signup.module.css";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Button from "../../components/Button/Button";
+import Button from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
 import { users } from "../../mock/users";
 
@@ -10,17 +10,17 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit(e:FormEvent){
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     users.push({
-    id: 3,
-    email: email,
-    password: password,
-    name: "",
-    surname: "",
-    username: "@default",
-    avatar: "women.png",
-  })
+      id: 3,
+      email: email,
+      password: password,
+      name: "",
+      surname: "",
+      username: "@default",
+      avatar: "women.png",
+    });
   }
 
   return (
@@ -64,10 +64,11 @@ export default function SignUp() {
             </div>
 
             <Button name="Sign Up"></Button>
-              <p className={style.privacyText}>
-                By clicking continue, you agree to our <span className={style.privacyGray}>Terms of Service</span> and 
-                 <span className={style.privacyGray}> Privacy Policy</span>
-              </p>
+            <p className={style.privacyText}>
+              By clicking continue, you agree to our{" "}
+              <span className={style.privacyGray}>Terms of Service</span> and
+              <span className={style.privacyGray}> Privacy Policy</span>
+            </p>
             <p className={style.navigation}>
               Already have an account?{" "}
               <span className={style.switch_auth_pages}>Sign Up</span>

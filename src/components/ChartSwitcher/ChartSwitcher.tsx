@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "./chartswitcher.module.css"; // или создай отдельный модуль
+import style from "./chartswitcher.module.css";
 
 interface ChartSwitcherProps {
   isChart: boolean;

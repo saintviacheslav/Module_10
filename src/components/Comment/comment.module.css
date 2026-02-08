@@ -15,14 +15,53 @@
   background: var(--bg-component-light);
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);
-  max-width: 652px;
+  /* width: 575px; */
   font: 400 14px Poppins;
   resize: none;
   padding: 14px;
-  max-height: 58px;
+  /* max-height: 58px; */
+}
+
+.textareaError {
+  background: var(--bg-component-light);
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+  width: 575px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+  /* max-height: 58px; */
+}
+
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  height: 24px;
 }
 
 .textarea:focus {
   outline: none;
   border-color: var(--comp-focus);
+}
+
+.validateInfo {
+  display: flex;
+  gap: 8px;
+}
+
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  height: 24px;
+}
+
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+  /* height: 32px; */
 }
