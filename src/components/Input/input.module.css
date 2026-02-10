@@ -16,14 +16,11 @@
 
 .wrapper {
   position: relative;
+  width: 100%;
 }
 
 .default {
   border-color: var(--border-soft);
-}
-
-.success {
-  border-color: #4caf50;
 }
 
 .error {
@@ -31,25 +28,52 @@
   color: #f44336;
 }
 
-.iconSuccess {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #4caf50;
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
 }
 
-/* .iconError {
+.eyeButton {
   position: absolute;
-  right: 14px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #f44336;
-} */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eyeButton svg {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.eyeButton:hover svg {
+  color: var(--text-primary);
+}
+
+.templateInput {
+  padding-right: 40px;
+}
+
+.templateInput[type="password"],
+.templateInput[type="text"] {
+  padding-right: 40px;
+}
 
 .errorText {
   font: 400 14px Poppins;
   color: var(--inp-incorrect);
+}
+
+.successText {
+  font: 400 14px Poppins;
+  color: var(--fill-positive);
 }
 
 .validateInfo {
@@ -58,9 +82,20 @@
   gap: 8px;
 }
 
+.inputBlock {
+  width: 100%;
+}
+
 @media (max-width:400px) {
   .templateInput {
     width: 310px;
+  }
+
+}
+
+@media (max-width:340px) {
+  .templateInput {
+    width: 100%;
   }
 
 }

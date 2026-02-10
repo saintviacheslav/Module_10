@@ -26,7 +26,7 @@
   background: var(--bg-component-light);
   border: 1px solid var(--inp-incorrect);
   color: var(--inp-incorrect);
-  width: 575px;
+  /* width: 575px; */
   font: 400 14px Poppins;
   resize: none;
   padding: 14px;

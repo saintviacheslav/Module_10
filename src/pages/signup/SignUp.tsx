@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import style from "./signup.module.css";
 import Button from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
@@ -19,6 +19,9 @@ export default function SignUp() {
     email: "",
     password: "",
   });
+
+  const [emailValidCheck, setEmailValidCheck] = useState<boolean>(false);
+  const [passwordValidCheck, setPasswordValidCheck] = useState<boolean>(false);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -50,49 +53,76 @@ export default function SignUp() {
       username: "@default",
       avatar: "women.png",
     });
+
     login(values.email, values.password);
-    addToast("Successfull registration", { type: "success" });
+    addToast("Successful registration", { type: "success" });
     navigate("/");
   }
 
   return (
     <div className={style.container}>
-      <main className={style.content_container}>
+      <main className={style.contentContainer}>
         <form onSubmit={handleSubmit} className={style.content}>
           <div className={style.preview}>
             <h1 className={style.title}>Create an account</h1>
-            <p className={style.signin_description}>
+            <p className={style.signinDescription}>
               Enter your email and password to sign up for this app
             </p>
           </div>
 
-          <div className={style.input_area}>
-            <div className={style.input_block}>
+          <div className={style.inputArea}>
+            <div className={style.inputBlock}>
               <div className={style.hint}>
-                <Icon name="envelope" />
-                <p>Email</p>
+                <div className={style.hintContent}>
+                  <Icon name="envelope" />
+                  <p>Email</p>
+                </div>
+                {errors.email && <Icon name="cross-small" />}
+                {emailValidCheck && !errors.email && <Icon name="check" />}
               </div>
 
               <Input
                 value={values.email}
-                onChange={(e) => setFieldValue("email", e.target.value)}
+                onChange={(e) => {
+                  const newEmail = e.target.value;
+                  setFieldValue("email", newEmail);
+                  const isValid = validateEmail(newEmail) === "";
+                  setEmailValidCheck(isValid);
+                }}
                 status={errors.email ? "error" : "default"}
                 errorText={errors.email}
                 placeholder="Enter email..."
               />
             </div>
 
-            <div className={style.input_block}>
+            <div className={style.inputBlock}>
               <div className={style.hint}>
-                <Icon name="eye" />
-                <p>Password</p>
+                <div className={style.hintContent}>
+                  <Icon name="eye" />
+                  <p>Password</p>
+                </div>
+                {errors.password && <Icon name="cross-small" />}
+                {passwordValidCheck && !errors.password && (
+                  <Icon name="check" />
+                )}
               </div>
 
               <Input
                 type="password"
                 value={values.password}
-                onChange={(e) => setFieldValue("password", e.target.value)}
-                status={errors.password ? "error" : "default"}
+                onChange={(e) => {
+                  const newPassword = e.target.value;
+                  setFieldValue("password", newPassword);
+                  const isValid = validatePassword(newPassword) === "";
+                  setPasswordValidCheck(isValid);
+                }}
+                status={
+                  errors.password
+                    ? "error"
+                    : passwordValidCheck
+                      ? "success"
+                      : "default"
+                }
                 errorText={errors.password}
                 placeholder="Enter password..."
               />
@@ -108,7 +138,13 @@ export default function SignUp() {
 
             <p className={style.navigation}>
               Already have an account?{" "}
-              <span style={{cursor: "pointer"}} onClick={() => navigate("/signin")} className={style.switch_auth_pages}>Sign In</span>
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/signin")}
+                className={style.switch_auth_pages}
+              >
+                Sign In
+              </span>
             </p>
           </div>
         </form>

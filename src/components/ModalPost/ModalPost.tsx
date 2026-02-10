@@ -1,13 +1,9 @@
 import style from "./modalpost.module.css";
-import { ReactComponent as MailImg } from "../../assets/images/envelope.svg";
-import { ReactComponent as PencilImg } from "../../assets/images/pencil.svg";
-import { ReactComponent as InfoImg } from "../../assets/images/info.svg";
-import { ReactComponent as FileImg } from "../../assets/images/file-download.svg";
-import { ReactComponent as CrossImg } from "../../assets/images/cross.svg";
+import { Icon } from "../Icon/Icon";
 import { useEffect, useRef, useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
-import { Icon } from "../Icon/Icon";
+import { useToast } from "../../context/ToastProvider";
 
 type ModalPostProps = {
   isOpen: boolean;
@@ -22,6 +18,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   const [fileError, setFileError] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { addToast } = useToast();
 
   function handleAreaFocus() {
     setFocus(true);
@@ -51,17 +48,17 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
     const maxSize = 10 * 1024 * 1024;
 
-    if (!file) {
-      return;
-    }
-
     if (!allowedTypes.includes(file.type)) {
       setFileError("Invalid file type. Only JPG, PNG, or PDF allowed.");
+      addToast("Invalid file type. Only JPG, PNG, or PDF allowed.", {
+        type: "error",
+      });
       return;
     }
 
     if (file.size > maxSize) {
       setFileError("File too large. Max size: 10MB.");
+      addToast("File too large. Max size: 10MB.", { type: "error" });
       return;
     }
 
@@ -78,9 +75,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      validateAndSetFile(file);
-    }
+    if (file) validateAndSetFile(file);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -90,13 +85,39 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) {
-      validateAndSetFile(file);
-    }
+    if (file) validateAndSetFile(file);
   };
 
   const handleZoneClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleCreatePost = () => {
+    if (!postTitle.trim()) {
+      addToast("Post title cannot be empty", { type: "error" });
+      return;
+    }
+
+    if (!description.trim()) {
+      addToast("Description cannot be empty", { type: "error" });
+      return;
+    }
+
+    if (description.length === 200) {
+      addToast("Description has reached the 200 character limit", {
+        type: "warning",
+      });
+      return;
+    }
+
+    addToast("Post created successfully", { type: "success" });
+
+    setPostTitle("");
+    setDescription("");
+    setSelectedFile(null);
+    setPreviewUrl("");
+    setFileError("");
+    onClose();
   };
 
   return (
@@ -106,7 +127,11 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
         <div className={style.modalHeader}>
           <h1 className={style.modalTitle}>Create a new post</h1>
           <button onClick={onClose} className={style.closeBtn}>
-            <Icon name="cross" size={24} style={{color: "var(--text-primary)"}}/>
+            <Icon
+              name="cross"
+              size={24}
+              style={{ color: "var(--text-primary)" }}
+            />
           </button>
         </div>
 
@@ -123,15 +148,20 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               placeholder="Enter post title"
             />
           </div>
+
           <div className={style.inputBlock}>
             <div className={style.hint}>
-              <Icon name="pencil"></Icon>
+              <Icon name="pencil" />
               <p>Description</p>
             </div>
             <textarea
               onFocus={handleAreaFocus}
               onBlur={handleAreaBlur}
-              className={`${description.length === 200 ? style.textareaError : style.textarea}`}
+              className={
+                description.length === 200
+                  ? style.textareaError
+                  : style.textarea
+              }
               placeholder="Write description here..."
               value={description}
               onChange={(e) => {
@@ -141,13 +171,16 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
                 }
               }}
               rows={4}
-            ></textarea>
+            />
             {isFocus && (
               <div className={style.validateInfo}>
                 {description.length === 200 ? (
-                  <Icon name="info" style={{ color: "var(--inp-incorrect)" }}></Icon>
+                  <Icon name="info" style={{ color: "var(--inp-incorrect)" }} />
                 ) : (
-                  <Icon name="info" style={{ color: "var(--text-secondary)" }}></Icon>
+                  <Icon
+                    name="info"
+                    style={{ color: "var(--text-secondary)" }}
+                  />
                 )}
                 {description.length === 200 ? (
                   <p className={style.textareaErrorText}>
@@ -159,6 +192,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               </div>
             )}
           </div>
+
           <div
             className={style.dropZone}
             onClick={handleZoneClick}
@@ -192,7 +226,11 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               </div>
             ) : (
               <>
-                <Icon name="file-download" size={36} style={{ color: "var(--text-primary)" }} />
+                <Icon
+                  name="file-download"
+                  size={36}
+                  style={{ color: "var(--text-primary)" }}
+                />
                 <div className={style.dropInfo}>
                   <p className={style.dropText}>
                     Select a file or drag and drop here
@@ -208,7 +246,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
         </div>
 
         <div className={style.dropFooter}>
-          <Button name="Create" />
+          <Button onClick={handleCreatePost} name="Create" />
         </div>
       </div>
     </>

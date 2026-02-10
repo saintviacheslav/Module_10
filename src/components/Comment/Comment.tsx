@@ -2,10 +2,12 @@ import { useState } from "react";
 import style from "./comment.module.css";
 import Button from "../Button/Button";
 import { Icon } from "../Icon/Icon";
+import { useToast } from "../../context/ToastProvider";
 
 export default function Comment() {
   const [isFocus, setFocus] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
+  const { addToast } = useToast();
 
   function handleAreaFocus() {
     setFocus(true);
@@ -14,6 +16,24 @@ export default function Comment() {
   function handleAreaBlur() {
     setFocus(false);
   }
+
+  function handleSubmit() {
+    if (!description.trim()) {
+      addToast("Comment cannot be empty", { type: "error"});
+      return;
+    }
+
+    if (description.length === 200) {
+      addToast("Comment has reached the 200 character limit", { type: "warning" });
+      return;
+    }
+
+    addToast("Comment added successfully", { type: "success"});
+
+    setDescription("");
+    setFocus(false);
+  }
+
   return (
     <>
       <div className={style.adding_comment}>
@@ -51,7 +71,7 @@ export default function Comment() {
             )}
           </div>
         )}
-        <Button name="Add a comment"></Button>
+        <Button onClick={handleSubmit} name="Add a comment"></Button>
       </div>
     </>
   );

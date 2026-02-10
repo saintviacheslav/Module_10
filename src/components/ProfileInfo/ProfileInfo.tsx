@@ -63,35 +63,35 @@ export default function ProfileInfo() {
     };
   }, [avatarPreview]);
 
-function handleSubmit(e: FormEvent) {
-  e.preventDefault();
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
 
-  setFieldError("email", "");
-  setFieldError("username", "");
+    setFieldError("email", "");
+    setFieldError("username", "");
 
-  let hasError = false;
+    let hasError = false;
 
-  if (values.email.trim() !== "") {
-    const emailError = validateEmail(values.email);
-    if (emailError) {
-      setFieldError("email", emailError);
+    if (values.email.trim() !== "") {
+      const emailError = validateEmail(values.email);
+      if (emailError) {
+        setFieldError("email", emailError);
+        hasError = true;
+      }
+    }
+
+    const usernameError = validateUsername(values.username);
+    if (usernameError) {
+      setFieldError("username", usernameError);
       hasError = true;
     }
-  }
 
-  const usernameError = validateUsername(values.username);
-  if (usernameError) {
-    setFieldError("username", usernameError);
-    hasError = true;
-  }
+    if (hasError || isDescriptionMax) {
+      addToast("Please fix the errors above", { type: "error" });
+      return;
+    }
 
-  if (hasError || isDescriptionMax) {
-    addToast("Please fix the errors above", { type: "error" });
-    return;
+    addToast("Profile info has been updated successfully", { type: "success" });
   }
-
-  addToast("Profile info has been updated successfully", { type: "success" });
-}
 
   function handleLogout() {
     logout();

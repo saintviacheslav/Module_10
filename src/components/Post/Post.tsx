@@ -5,6 +5,7 @@ import { useState } from "react";
 import { users } from "../../mock/users";
 import { comments } from "../../mock/comments";
 import { Icon } from "../../components/Icon/Icon";
+import { useToast } from "../../context/ToastProvider";
 
 interface PostProps {
   id: number;
@@ -17,11 +18,31 @@ interface PostProps {
 
 export default function Post({ post }: { post: PostProps }) {
   const postComments = comments.filter((c) => c.postId === post.id);
-  const [isShown, setShown] = useState(false);
+  const [isShown, setShown] = useState<boolean>(false);
   const { isAuthenticated, user } = useAuth();
+  const { addToast } = useToast();
+  const [localLikes, setLocalLikes] = useState<number>(post.likes);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   function changeShownStatus() {
     setShown(!isShown);
+  }
+
+  function handleLikeClick() {
+    if (!isAuthenticated) {
+      addToast("You need to log in to like posts", { type: "warning" });
+      return;
+    }
+
+    if (isLiked) {
+      setLocalLikes((prev) => prev - 1);
+      setIsLiked(false);
+      addToast("Unliked", { type: "info" });
+    } else {
+      setLocalLikes((prev) => prev + 1);
+      setIsLiked(true);
+      addToast("Liked!", { type: "success" });
+    }
   }
 
   const author = users.find((u) => u.id === post.authorId);
@@ -47,10 +68,14 @@ export default function Post({ post }: { post: PostProps }) {
 
       <div className={style.interactiveboard}>
         <div className={style.likes}>
-          <Icon name="heart" />
-          <p>{post.likes} likes</p>
+          <Icon
+            onClick={handleLikeClick}
+            name="heart"
+            style={{ fill: isLiked ? "red" : "" }}
+          />
+          <p>{localLikes} likes</p>
         </div>
-
+        {/* {post.likes} */}
         <div className={style.comments}>
           <Icon name="comment" />
           {isAuthenticated ? (

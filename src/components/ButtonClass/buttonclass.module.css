@@ -25,9 +25,13 @@
   }
 
 }
+
 @media (max-width:400px) {
   .templateButton {
     width: 310px;
   }
 
+  .input_block {
+    width: 100%;
+  }
 }

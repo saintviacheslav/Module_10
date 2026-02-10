@@ -16,6 +16,7 @@ import { ReactComponent as ArrowDown } from "../../assets/images/arrowdown.svg";
 import { ReactComponent as ArrowUp } from "../../assets/images/arrowup.svg";
 import { ReactComponent as BurgerMenu } from "../../assets/images/burgermenu.svg";
 import { ReactComponent as FileDownload } from "../../assets/images/file-download.svg";
+import { ReactComponent as Like } from "../../assets/images/like.svg";
 
 type IconName =
   | "envelope"
@@ -35,7 +36,8 @@ type IconName =
   | "arrow-down"
   | "arrow-up"
   | "burger-menu"
-  | "file-download";
+  | "file-download"
+  | "like";
 
 interface IconProps {
   name: IconName;
@@ -94,6 +96,8 @@ export const Icon = ({
       return <BurgerMenu {...commonProps} />;
     case "file-download":
       return <FileDownload {...commonProps} />;
+    case "like":
+      return <Like {...commonProps} />;
     default:
       return null;
   }

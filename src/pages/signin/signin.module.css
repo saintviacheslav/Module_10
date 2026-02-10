@@ -5,7 +5,7 @@
   height: 100%;
 }
 
-.content_container {
+.contentContainer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,12 +29,12 @@
   text-align: center;
 }
 
-.signin_description {
+.signinDescription {
   font: 400 14px Poppins;
   text-align: center;
 }
 
-.input_area {
+.inputArea {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -42,17 +42,24 @@
   width: 100%;
 }
 
-.input_block {
+.inputBlock {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .hint {
+  max-width: 327px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hintContent {
+  display: flex;
+  align-items: center;
   gap: 8px;
   font: 400 14px Poppins;
-  align-items: center;
 }
 
 .hint_img {
@@ -72,5 +79,14 @@
   .content {
     width: 310px;
     min-width: 0;
+  }
+
+  .inputBlock {
+    width: 100%;
+  }
+
+  .inputArea{
+    align-items: center;
+    justify-content: center;
   }
 }
