@@ -173,6 +173,12 @@
   }
 }
 
+@media (max-width:600px) {
+  .editContent {
+  padding: 0 12px;
+  }
+}
+
 @media (max-width:400px){
   .hint {
     max-width: 310px;

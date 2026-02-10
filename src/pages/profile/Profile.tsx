@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import style from "./profile.module.css";
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 import Statistics from "../../components/Statistics/Statistics";

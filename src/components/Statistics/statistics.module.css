@@ -150,8 +150,13 @@ tbody tr:last-child td {
 }
 
 @media (max-width:600px) {
-  .statistics{
+  .nonVisible {
+    display: none;
+  }
+
+  .statistics {
     padding: 0 12px;
+    width: 100%;
   }
 
   .cards {

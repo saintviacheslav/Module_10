@@ -44,7 +44,7 @@ export default function Statistics() {
       </div>
 
       <div className={style.chartSwitcher}>
-        {showChart ? <p>Table view</p> : null}
+        {showChart ? <p className={style.nonVisible}>Table view</p> : null}
         <ChartSwitcher
           isChart={showChart}
           onToggle={() => setShowChart((prev) => !prev)}
