@@ -7,17 +7,19 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import style from "./toast.module.css";
-import { ReactComponent as XImg } from "../assets/images/cross.svg";
 import { Icon } from "../components/Icon/Icon";
+
+type ToastType = "success" | "error" | "warning" | "info";
 
 type Toast = {
   id: number;
   message: string;
+  type?: ToastType;
   duration?: number;
 };
 
 type ToastContextType = {
-  addToast: (message: string, duration?: number) => void;
+  addToast: (message: string, options?: { type?: ToastType; duration?: number }) => void;
 };
 
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -35,14 +37,18 @@ let toastIdCounter = 0;
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((message: string, duration = 6000) => {
-    const id = toastIdCounter++;
-    setToasts((prev) => [...prev, { id, message, duration }]);
+  const addToast = useCallback(
+    (message: string, options: { type?: ToastType; duration?: number } = {}) => {
+      const { type = "success", duration = 6000 } = options;
+      const id = toastIdCounter++;
+      setToasts((prev) => [...prev, { id, message, type, duration }]);
 
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, duration);
-  }, []);
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }, duration);
+    },
+    []
+  );
 
   const removeToast = useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -51,7 +57,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const toastContainer = (
     <div className={style.toastContainer}>
       {toasts.map((toast) => (
-        <div key={toast.id} className={style.toast}>
+        <div
+          key={toast.id}
+          className={`${style.toast} ${style[`toast${toast.type ? toast.type.charAt(0).toUpperCase() + toast.type.slice(1) : "Success"}`]}`}
+        >
           <p className={style.toastText}>{toast.message}</p>
           <button
             className={style.closeButton}

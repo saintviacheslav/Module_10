@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "../../../src/utils/useForm";
 import { validateEmail, validatePassword } from "../../utils/validators";
 import { Icon } from "../../components/Icon/Icon";
+import { useToast } from "../../context/ToastProvider";
 
 export default function SignIn() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const {
     values,
@@ -22,7 +24,7 @@ export default function SignIn() {
     password: "",
   });
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const emailError = validateEmail(values.email);
@@ -31,6 +33,7 @@ export default function SignIn() {
     if (emailError || passwordError) {
       setFieldError("email", emailError);
       setFieldError("password", passwordError);
+      addToast("Please fix the errors above", { type: "error" });
       return;
     }
 
@@ -38,9 +41,10 @@ export default function SignIn() {
 
     if (!success) {
       setFieldError("password", "Invalid email or password");
+      addToast("Please fix the errors above", { type: "error" });
       return;
     }
-
+    addToast("Successfull authorization", { type: "success" });
     navigate("/");
   }
 

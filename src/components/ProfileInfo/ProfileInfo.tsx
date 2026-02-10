@@ -43,10 +43,14 @@ export default function ProfileInfo() {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     const validTypes = ["image/jpeg", "image/png", "image/svg+xml"];
-    if (!validTypes.includes(file.type)) return;
+    if (!validTypes.includes(file.type)) {
+      return;
+    }
 
     const objectUrl = URL.createObjectURL(file);
     setAvatarPreview(objectUrl);
@@ -59,32 +63,35 @@ export default function ProfileInfo() {
     };
   }, [avatarPreview]);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+function handleSubmit(e: FormEvent) {
+  e.preventDefault();
 
-    setFieldError("email", "");
-    setFieldError("username", "");
+  setFieldError("email", "");
+  setFieldError("username", "");
 
-    let hasError = false;
+  let hasError = false;
 
-    if (values.email.trim() !== "") {
-      const emailError = validateEmail(values.email);
-      if (emailError) {
-        setFieldError("email", emailError);
-        hasError = true;
-      }
-    }
-
-    const usernameError = validateUsername(values.username);
-    if (usernameError) {
-      setFieldError("username", usernameError);
+  if (values.email.trim() !== "") {
+    const emailError = validateEmail(values.email);
+    if (emailError) {
+      setFieldError("email", emailError);
       hasError = true;
     }
-
-    if (hasError) return;
-
-    addToast("Profile info has been updated successfully", 6000);
   }
+
+  const usernameError = validateUsername(values.username);
+  if (usernameError) {
+    setFieldError("username", usernameError);
+    hasError = true;
+  }
+
+  if (hasError || isDescriptionMax) {
+    addToast("Please fix the errors above", { type: "error" });
+    return;
+  }
+
+  addToast("Profile info has been updated successfully", { type: "success" });
+}
 
   function handleLogout() {
     logout();
@@ -195,9 +202,16 @@ export default function ProfileInfo() {
             {descriptionFocused && (
               <div className={style.validateInfo}>
                 {isDescriptionMax ? (
-                  <Icon name="info" className="error" style={{ color: "var(--inp-incorrect)" }} />
+                  <Icon
+                    name="info"
+                    className="error"
+                    style={{ color: "var(--inp-incorrect)" }}
+                  />
                 ) : (
-                  <Icon name="info" style={{ color: "var(--text-secondary)" }} />
+                  <Icon
+                    name="info"
+                    style={{ color: "var(--text-secondary)" }}
+                  />
                 )}
                 {isDescriptionMax ? (
                   <p className={style.textareaErrorText}>

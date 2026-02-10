@@ -41,6 +41,7 @@ html, body {
   --comp-focus: #7A44FF;
   --btn-pressed: #6236CC;
   --inp-incorrect: #FF554A;
+  --inp-warning: #FFC14A;
 }
 
 [data-theme="light"] {

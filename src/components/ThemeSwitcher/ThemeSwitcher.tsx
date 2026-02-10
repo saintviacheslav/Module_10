@@ -1,9 +1,10 @@
 import { useTheme } from "../../context/ThemeProvider";
 import style from "../ThemeSwitcher/themeswitcher.module.css";
+import { Theme } from "../../context/ThemeProvider";
 
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === "dark";
+  const isDark = theme === Theme.DARK;
 
   return (
     <button

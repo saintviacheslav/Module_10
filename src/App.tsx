@@ -9,17 +9,17 @@ import NotFound from "./pages/notfound/NotFound";
 import Profile from "./pages/profile/Profile";
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Module_10/">
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin/" element={<SignIn />} />
+          <Route path="/signup/" element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route element={<Layout centered={false} />}>
           <Route path="/" element={<Main />} />
-          <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/statistics" element={<Profile isProfile={false} />}></Route>
+          <Route path="/profile/" key="profile" element={<Profile />}></Route>
+          <Route path="/statistics/" key="statistics" element={<Profile isProfile={false} />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

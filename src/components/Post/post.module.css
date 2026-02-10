@@ -77,8 +77,37 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width:450px) {
+  .posttext {
+    font-size: 14px;
+  }
+
+  .interactiveboard p {
+    font-size: 12px;
+  }
+
+  .post {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .postContent img {
+    max-height: 150px;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+
+@media (max-width:350px) {
+  .interactiveboard p {
+    font-size: 10px;
   }
 }

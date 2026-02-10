@@ -150,6 +150,10 @@ tbody tr:last-child td {
 }
 
 @media (max-width:600px) {
+  .statistics{
+    padding: 0 12px;
+  }
+
   .cards {
     gap: 12px;
   }
@@ -159,6 +163,7 @@ tbody tr:last-child td {
     min-width: 310px;
     padding: 12px;
     gap: 8px;
+    width: 100%;
   }
 
   .cardTextPrimary {
@@ -198,7 +203,7 @@ tbody tr:last-child td {
 
 @media (max-width:400px) {
   .card {
-    width: 300px;
+    width: 100%;
   }
 
   .colName {

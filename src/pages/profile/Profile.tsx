@@ -8,19 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Profile({ isProfile = true }: { isProfile?: boolean }) {
   const navigate = useNavigate();
-  const [isStatistics, setStatistics] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    setStatistics(!isProfile);
-  }, [isProfile]);
-
   function handleStatisticPress() {
-    setStatistics(true);
     navigate("/statistics");
   }
 
   function handleProfilePress() {
-    setStatistics(false);
     navigate("/profile");
   }
 
@@ -29,20 +21,20 @@ export default function Profile({ isProfile = true }: { isProfile?: boolean }) {
       <div className={style.segmentedControl}>
         <p
           onClick={handleProfilePress}
-          className={`${style.segmentedText} ${isStatistics ? "" : style.segmentedTextActive}`}
+          className={`${style.segmentedText} ${!isProfile ? "" : style.segmentedTextActive}`}
         >
           Profile Info
         </p>
         <p
           onClick={handleStatisticPress}
-          className={`${style.segmentedText} ${isStatistics ? style.segmentedTextActive : ""}`}
+          className={`${style.segmentedText} ${!isProfile ? style.segmentedTextActive : ""}`}
         >
           Statistics
         </p>
       </div>
-      {!isStatistics && <ProfileInfo />}
+      {isProfile && <ProfileInfo />}
 
-      {isStatistics && <Statistics />}
+      {!isProfile && <Statistics />}
     </section>
   );
 }

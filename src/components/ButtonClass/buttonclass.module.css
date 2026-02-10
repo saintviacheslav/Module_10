@@ -21,7 +21,13 @@
 @media (max-width:500px) {
   .templateButton {
     padding: 8px 24px;
-    width: 100%;
+    width: 327px;
+  }
+
+}
+@media (max-width:400px) {
+  .templateButton {
+    width: 310px;
   }
 
 }

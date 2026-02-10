@@ -160,6 +160,9 @@
   .textarea {
     width: 100%;
   }
+  .textareaError {
+    width: 100%;
+  }
 
   .profileInfo {
     padding: 0 12px;

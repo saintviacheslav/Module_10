@@ -8,10 +8,12 @@ import { validateEmail, validatePassword } from "../../utils/validators";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import { Icon } from "../../components/Icon/Icon";
+import { useToast } from "../../context/ToastProvider";
 
 export default function SignUp() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const { values, errors, setFieldValue, setFieldError } = useForm({
     email: "",
@@ -27,6 +29,7 @@ export default function SignUp() {
     if (emailError || passwordError) {
       setFieldError("email", emailError);
       setFieldError("password", passwordError);
+      addToast("Please fix the errors above", { type: "error" });
       return;
     }
 
@@ -34,6 +37,7 @@ export default function SignUp() {
 
     if (emailExists) {
       setFieldError("email", "Email already exists");
+      addToast("Please fix the errors above", { type: "error" });
       return;
     }
 
@@ -47,6 +51,7 @@ export default function SignUp() {
       avatar: "women.png",
     });
     login(values.email, values.password);
+    addToast("Successfull registration", { type: "success" });
     navigate("/");
   }
 
