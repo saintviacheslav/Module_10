@@ -23,9 +23,9 @@
   border-color: var(--border-soft);
 }
 
-.error {
-  border-color: #f44336;
-  color: #f44336;
+.error:focus {
+  border-color: var(--inp-incorrect);
+  color: var(--inp-incorrect);
 }
 
 

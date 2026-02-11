@@ -37,11 +37,9 @@ export default function Post({ post }: { post: PostProps }) {
     if (isLiked) {
       setLocalLikes((prev) => prev - 1);
       setIsLiked(false);
-      addToast("Unliked", { type: "info" });
     } else {
       setLocalLikes((prev) => prev + 1);
       setIsLiked(true);
-      addToast("Liked!", { type: "success" });
     }
   }
 
@@ -71,7 +69,7 @@ export default function Post({ post }: { post: PostProps }) {
           <Icon
             onClick={handleLikeClick}
             name="heart"
-            style={{ fill: isLiked ? "red" : "" }}
+            style={{ fill: isLiked ? "var(--inp-incorrect)" : "" }}
           />
           <p>{localLikes} likes</p>
         </div>

@@ -1,5 +1,6 @@
 import Button from "../Button/Button";
 import Input from "../Input/Input";
+import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
 import style from "./profileinfo.module.css";
 import { useTheme } from "../../context/ThemeProvider";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -30,12 +31,15 @@ export default function ProfileInfo() {
       description: "",
     });
 
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [descriptionFocused, setDescriptionFocused] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { addToast } = useToast();
 
-  const isDescriptionMax = values.description.length === 200;
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const MAX_TEXT_LENGTH = 50;
+
+  const isUsernameMax = values.username.length === MAX_TEXT_LENGTH;
+  const isEmailMax = values.email.length === MAX_TEXT_LENGTH;
 
   function handleAvatarClick() {
     fileInputRef.current?.click();
@@ -59,7 +63,9 @@ export default function ProfileInfo() {
 
   useEffect(() => {
     return () => {
-      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
     };
   }, [avatarPreview]);
 
@@ -85,8 +91,21 @@ export default function ProfileInfo() {
       hasError = true;
     }
 
-    if (hasError || isDescriptionMax) {
-      addToast("Please fix the errors above", { type: "error" });
+    if (isUsernameMax) {
+      hasError = true;
+      setFieldError("username", `Cannot exceed ${MAX_TEXT_LENGTH} characters`);
+    }
+
+    if (isEmailMax) {
+      hasError = true;
+      setFieldError("email", `Cannot exceed ${MAX_TEXT_LENGTH} characters`);
+    }
+
+    if (values.description.length === 200) {
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
 
@@ -142,14 +161,22 @@ export default function ProfileInfo() {
             </div>
             <Input
               onChange={(e) => {
-                setFieldValue("username", e.target.value);
+                const newValue = e.target.value;
+                if (newValue.length <= MAX_TEXT_LENGTH) {
+                  setFieldValue("username", newValue);
+                }
                 if (errors.username) setFieldError("username", "");
               }}
               value={values.username}
               type="text"
               placeholder={user?.username ?? "@username"}
-              status={errors.username ? "error" : "default"}
-              errorText={errors.username}
+              status={errors.username || isUsernameMax ? "error" : "default"}
+              errorText={
+                errors.username ||
+                (isUsernameMax
+                  ? `Reached the ${MAX_TEXT_LENGTH} character limit`
+                  : "")
+              }
             />
           </div>
 
@@ -163,14 +190,22 @@ export default function ProfileInfo() {
             </div>
             <Input
               onChange={(e) => {
-                setFieldValue("email", e.target.value);
+                const newValue = e.target.value;
+                if (newValue.length <= MAX_TEXT_LENGTH) {
+                  setFieldValue("email", newValue);
+                }
                 if (errors.email) setFieldError("email", "");
               }}
               value={values.email}
               type="text"
               placeholder={user?.email ?? "example@mail.com"}
-              status={errors.email ? "error" : "default"}
-              errorText={errors.email}
+              status={errors.email || isEmailMax ? "error" : "default"}
+              errorText={
+                errors.email ||
+                (isEmailMax
+                  ? `Reached the ${MAX_TEXT_LENGTH} character limit`
+                  : "")
+              }
             />
           </div>
 
@@ -182,48 +217,18 @@ export default function ProfileInfo() {
               </div>
             </div>
 
-            <textarea
-              className={
-                isDescriptionMax ? style.textareaError : style.textarea
-              }
-              placeholder="Write description here..."
+            <DescriptionTextarea
               value={values.description}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                if (newValue.length <= 200) {
-                  setFieldValue("description", newValue);
-                }
-              }}
-              rows={4}
-              onFocus={() => setDescriptionFocused(true)}
-              onBlur={() => setDescriptionFocused(false)}
+              onChange={(newValue) => setFieldValue("description", newValue)}
+              maxLength={200}
+              placeholder="Write description here..."
+              textareaClassName={
+                values.description.length === 200
+                  ? style.textareaError
+                  : style.textarea
+              }
             />
-
-            {descriptionFocused && (
-              <div className={style.validateInfo}>
-                {isDescriptionMax ? (
-                  <Icon
-                    name="info"
-                    className="error"
-                    style={{ color: "var(--inp-incorrect)" }}
-                  />
-                ) : (
-                  <Icon
-                    name="info"
-                    style={{ color: "var(--text-secondary)" }}
-                  />
-                )}
-                {isDescriptionMax ? (
-                  <p className={style.textareaErrorText}>
-                    Reached the 200 text limit
-                  </p>
-                ) : (
-                  <p className={style.secondaryText}>Max 200 chars</p>
-                )}
-              </div>
-            )}
           </div>
-
           <Button name="Save Profile Changes" />
         </div>
       </form>
@@ -238,7 +243,6 @@ export default function ProfileInfo() {
             </p>
           </div>
         </div>
-
         <div className={style.editPreferencesItem}>
           <h1 className={style.title}>Actions</h1>
           <Button name="Logout" onClick={handleLogout} />

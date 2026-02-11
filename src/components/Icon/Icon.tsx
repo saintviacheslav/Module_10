@@ -43,7 +43,7 @@ interface IconProps {
   name: IconName;
   className?: string;
   size?: number | string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const Icon = ({

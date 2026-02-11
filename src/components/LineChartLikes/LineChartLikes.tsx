@@ -82,7 +82,7 @@ export function LineChartLikes({ data }: Props) {
           <Line
             type="monotone"
             dataKey="likes"
-            stroke="var(--btn-pressed)"
+            stroke="var(--charts-color)"
             strokeWidth={2}
             dot={customDot}
             activeDot={{

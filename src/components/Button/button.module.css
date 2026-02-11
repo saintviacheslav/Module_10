@@ -11,12 +11,12 @@
 }
 
 .templateButton:hover {
-  background-color: var(--btn-hover);
+  background-color: var(--btn-hover) !important;
   transition: 0.3s;
 }
 
 .templateButton:active {
-  background-color: var(--btn-pressed);
+  background-color: var(--btn-pressed) !important;
 }
 
 @media (max-width:500px) {

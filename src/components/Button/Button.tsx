@@ -1,14 +1,28 @@
 import style from "./button.module.css";
+import React, { ReactNode } from "react";
 
 interface ButtonProps {
-  name: string;
+  name?: string;
+  children?: ReactNode;
   onClick?: () => void;
+  className?: string;
+  [key: string]: unknown;
 }
-//передавать класснейм с разной шириной
-export default function Button({ name, onClick, ...props }: ButtonProps) {
+
+export default function Button({
+  name,
+  children,
+  onClick,
+  className = "",
+  ...props
+}: ButtonProps) {
   return (
-    <button onClick={onClick} className={style.templateButton}>
-      {name}
+    <button
+      onClick={onClick}
+      className={`${style.templateButton} ${className}`}
+      {...props}
+    >
+      {children || name}
     </button>
   );
 }

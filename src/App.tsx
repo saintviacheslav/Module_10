@@ -7,6 +7,7 @@ import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
 import NotFound from "./pages/notfound/NotFound";
 import Profile from "./pages/profile/Profile";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter basename="/Module_10/">
@@ -18,8 +19,14 @@ function App() {
         </Route>
         <Route element={<Layout centered={false} />}>
           <Route path="/" element={<Main />} />
-          <Route path="/profile/" key="profile" element={<Profile />}></Route>
-          <Route path="/statistics/" key="statistics" element={<Profile isProfile={false} />}></Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile/" key="profile" element={<Profile />}></Route>
+            <Route
+              path="/statistics/"
+              key="statistics"
+              element={<Profile isProfile={false} />}
+            ></Route>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

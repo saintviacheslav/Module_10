@@ -17,7 +17,6 @@ class Button extends Component<ButtonProps, ButtonState> {
     this.state = {
       isHovered: false,
     };
-
   }
 
   static getDerivedStateFromProps(
@@ -25,9 +24,6 @@ class Button extends Component<ButtonProps, ButtonState> {
     prevState: ButtonState,
   ) {
     return null;
-  }
-
-  componentDidMount() {
   }
 
   shouldComponentUpdate(nextProps: ButtonProps, nextState: ButtonState) {
@@ -38,27 +34,7 @@ class Button extends Component<ButtonProps, ButtonState> {
     return null;
   }
 
-  componentDidUpdate(
-    prevProps: ButtonProps,
-    prevState: ButtonState,
-    snapshot: any, //загуглить 
-  ) {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillMount() {
-  }
-
-  componentWillReceiveProps(nextProps: ButtonProps) {
-  }
-
-  componentWillUpdate(nextProps: ButtonProps, nextState: ButtonState) {
-  }
-
   render() {
-
     const { name, onClick } = this.props;
 
     return (

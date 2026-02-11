@@ -42,6 +42,7 @@ html, body {
   --btn-pressed: #6236CC;
   --inp-incorrect: #FF554A;
   --inp-warning: #FFC14A;
+  --charts-color: #2F3757;
 }
 
 [data-theme="light"] {

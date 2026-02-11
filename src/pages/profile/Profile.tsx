@@ -3,8 +3,6 @@ import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 import Statistics from "../../components/Statistics/Statistics";
 import { useNavigate } from "react-router-dom";
 
-//появляться
-
 export default function Profile({ isProfile = true }: { isProfile?: boolean }) {
   const navigate = useNavigate();
   function handleStatisticPress() {

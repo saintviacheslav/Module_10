@@ -17,7 +17,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
-//убрать as и по возморжности убрать из юзстейта функцию -- у меня не получилось, так как без функции в useState тема не подтягивается корректно из localstorage, а устанавливается по дефолту, а as не убирается по этой же причине, так как в useState требуется вернуть корректное значение темы.
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme | null>(null);
 

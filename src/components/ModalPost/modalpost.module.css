@@ -77,6 +77,11 @@
   /* max-height: 58px; */
 }
 
+.inpError {
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+}
+
 .textareaError:focus {
   outline: none;
   border-color: var(--inp-incorrect);

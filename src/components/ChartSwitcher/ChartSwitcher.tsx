@@ -1,4 +1,5 @@
 import style from "./chartswitcher.module.css";
+import Button from "../Button/Button";
 
 interface ChartSwitcherProps {
   isChart: boolean;
@@ -7,12 +8,16 @@ interface ChartSwitcherProps {
 
 export default function ChartSwitcher({ isChart, onToggle }: ChartSwitcherProps) {
   return (
-    <button
-      className={`${style.themeBlock} ${isChart ? style.dark : ""}`}
+    <Button
+      name={isChart ? "Table view" : "Chart view"}
       onClick={onToggle}
-      type="button"
+      className={`${style.themeBlock} ${isChart ? style.dark : ""}`}
     >
-      <div className={`${style.themeCircle} ${isChart ? style.themeCircleActive : ""}`} />
-    </button>
+      <div
+        className={`${style.themeCircle} ${
+          isChart ? style.themeCircleActive : ""
+        }`}
+      />
+    </Button>
   );
 }

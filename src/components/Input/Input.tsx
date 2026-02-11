@@ -11,7 +11,7 @@ interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   status?: InputStatus;
   errorText?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export default function Input({

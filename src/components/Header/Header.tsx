@@ -65,7 +65,7 @@ function Header() {
                     alt="avatar"
                     src={user?.avatar}
                   />
-                  <p>
+                  <p onClick={handleAvatarClick}>
                     {user?.name} {user?.surname}
                   </p>
                 </>

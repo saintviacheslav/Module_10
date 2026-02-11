@@ -23,15 +23,40 @@ export default function SignUp() {
   const [emailValidCheck, setEmailValidCheck] = useState<boolean>(false);
   const [passwordValidCheck, setPasswordValidCheck] = useState<boolean>(false);
 
+  const MAX_EMAIL_LENGTH = 50;
+
+  const isEmailMax = values.email.length === MAX_EMAIL_LENGTH;
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const emailError = validateEmail(values.email);
     const passwordError = validatePassword(values.password);
 
-    if (emailError || passwordError) {
+    let hasError = false;
+
+    if (emailError) {
       setFieldError("email", emailError);
+      hasError = true;
+    }
+
+    if (passwordError) {
       setFieldError("password", passwordError);
+      hasError = true;
+    }
+
+    if (isEmailMax) {
+      hasError = true;
+      setFieldError(
+        "email",
+        `Email cannot exceed ${MAX_EMAIL_LENGTH} characters`,
+      );
+      addToast(`Email has reached the ${MAX_EMAIL_LENGTH} character limit`, {
+        type: "warning",
+      });
+    }
+
+    if (hasError) {
       addToast("Please fix the errors above", { type: "error" });
       return;
     }
@@ -78,19 +103,28 @@ export default function SignUp() {
                   <p>Email</p>
                 </div>
                 {errors.email && <Icon name="cross-small" />}
-                {emailValidCheck && !errors.email && <Icon name="check" />}
+                {emailValidCheck && !errors.email && !isEmailMax && (
+                  <Icon name="check" />
+                )}
               </div>
 
               <Input
                 value={values.email}
                 onChange={(e) => {
                   const newEmail = e.target.value;
-                  setFieldValue("email", newEmail);
+                  if (newEmail.length <= MAX_EMAIL_LENGTH) {
+                    setFieldValue("email", newEmail);
+                  }
                   const isValid = validateEmail(newEmail) === "";
                   setEmailValidCheck(isValid);
                 }}
-                status={errors.email ? "error" : "default"}
-                errorText={errors.email}
+                status={errors.email || isEmailMax ? "error" : "default"}
+                errorText={
+                  errors.email ||
+                  (isEmailMax
+                    ? `Reached the ${MAX_EMAIL_LENGTH} character limit`
+                    : "")
+                }
                 placeholder="Enter email..."
               />
             </div>

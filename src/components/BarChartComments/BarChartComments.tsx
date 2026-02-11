@@ -59,7 +59,7 @@ export function BarChartComments({ data }: Props) {
           />
           <Bar
             dataKey="comments"
-            fill="var(--btn-pressed)"
+            fill="var(--charts-color)"
             radius={[4, 4, 0, 0]}
             barSize={24}
           />

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { useToast } from "../../context/ToastProvider";
+import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
 
 type ModalPostProps = {
   isOpen: boolean;
@@ -11,22 +12,16 @@ type ModalPostProps = {
 };
 
 export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
-  const [isFocus, setFocus] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>("");
   const [postTitle, setPostTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { addToast } = useToast();
 
-  function handleAreaFocus() {
-    setFocus(true);
-  }
-
-  function handleAreaBlur() {
-    setFocus(false);
-  }
+  const MAX_TITLE_LENGTH = 50;
+  const MAX_DESCRIPTION_LENGTH = 200;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -75,7 +70,9 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) validateAndSetFile(file);
+    if (file) {
+      validateAndSetFile(file);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -85,7 +82,9 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) validateAndSetFile(file);
+    if (file) {
+      validateAndSetFile(file);
+    }
   };
 
   const handleZoneClick = () => {
@@ -98,15 +97,16 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       return;
     }
 
+    if (postTitle.length === MAX_TITLE_LENGTH) {
+      return;
+    }
+
     if (!description.trim()) {
       addToast("Description cannot be empty", { type: "error" });
       return;
     }
 
-    if (description.length === 200) {
-      addToast("Description has reached the 200 character limit", {
-        type: "warning",
-      });
+    if (description.length === MAX_DESCRIPTION_LENGTH) {
       return;
     }
 
@@ -142,7 +142,16 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               <p>Post Title</p>
             </div>
             <Input
-              onChange={(e) => setPostTitle(e.target.value)}
+              onChange={(e) => {
+                const newTitle = e.target.value;
+                if (newTitle.length <= MAX_TITLE_LENGTH) {
+                  setPostTitle(newTitle);
+                }
+              }}
+              status={
+                postTitle.length === MAX_TITLE_LENGTH ? "error" : "default"
+              }
+              errorText={`Reached the ${MAX_TITLE_LENGTH} character limit`}
               value={postTitle}
               type="text"
               placeholder="Enter post title"
@@ -154,43 +163,18 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               <Icon name="pencil" />
               <p>Description</p>
             </div>
-            <textarea
-              onFocus={handleAreaFocus}
-              onBlur={handleAreaBlur}
-              className={
-                description.length === 200
+
+            <DescriptionTextarea
+              value={description}
+              onChange={setDescription}
+              maxLength={MAX_DESCRIPTION_LENGTH}
+              placeholder="Write description here..."
+              textareaClassName={
+                description.length === MAX_DESCRIPTION_LENGTH
                   ? style.textareaError
                   : style.textarea
               }
-              placeholder="Write description here..."
-              value={description}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                if (newValue.length <= 200) {
-                  setDescription(newValue);
-                }
-              }}
-              rows={4}
             />
-            {isFocus && (
-              <div className={style.validateInfo}>
-                {description.length === 200 ? (
-                  <Icon name="info" style={{ color: "var(--inp-incorrect)" }} />
-                ) : (
-                  <Icon
-                    name="info"
-                    style={{ color: "var(--text-secondary)" }}
-                  />
-                )}
-                {description.length === 200 ? (
-                  <p className={style.textareaErrorText}>
-                    Reached the 200 text limit
-                  </p>
-                ) : (
-                  <p className={style.secondaryText}>Max 200 chars</p>
-                )}
-              </div>
-            )}
           </div>
 
           <div
