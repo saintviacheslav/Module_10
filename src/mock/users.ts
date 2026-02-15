@@ -6,7 +6,7 @@ export const users = [
     name: "John",
     surname: "Smith",
     username: "@john",
-    avatar: "avatar.png",
+    avatar: "D:/1education/1sidekick/premodule10/socialnetwork/public/avatar.png",
   },
   {
     id: 2,
@@ -15,6 +15,6 @@ export const users = [
     name: "Helena",
     surname: "Hills",
     username: "@helena",
-    avatar: "women.png",
+    avatar: "D:/1education/1sidekick/premodule10/socialnetwork/public/women.png",
   },
 ];

@@ -14,7 +14,6 @@ import { validateEmail, validateUsername } from "../../utils/validators";
 import { useToast } from "../../context/ToastProvider";
 import { Icon } from "../Icon/Icon";
 import { useTranslation } from "react-i18next";
-import { profile } from "console";
 
 type ProfileFormValues = {
   username: string;
