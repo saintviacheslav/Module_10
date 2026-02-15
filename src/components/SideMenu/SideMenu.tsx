@@ -46,7 +46,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <img
               onClick={handleAvatarClick}
               alt="avatar"
-              src={`${process.env.PUBLIC_URL}/${user?.avatar}`}
+              src={user?.avatar}
             ></img>
           )}
         </div>
