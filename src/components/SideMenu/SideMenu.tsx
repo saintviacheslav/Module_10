@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import style from "./sidemenu.module.css";
-import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../Icon/Icon";
@@ -47,7 +46,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <img
               onClick={handleAvatarClick}
               alt="avatar"
-              src={user?.avatar}
+              src={`${process.env.PUBLIC_URL}/${user?.avatar}`}
             ></img>
           )}
         </div>
