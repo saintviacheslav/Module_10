@@ -19,6 +19,18 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `npm run test:coverage`
+
+Runs all tests once with coverage report (Jest). Coverage output is in the terminal and in the `coverage/` folder.
+
+### `npm run cypress:open`
+
+Opens the Cypress E2E Test Runner (interactive). Start the app with `npm start` first, then run this in another terminal.
+
+### `npm run cypress:run`
+
+Runs Cypress E2E tests headlessly. Start the app with `npm start` before running, or use a CI script that starts the server and then runs Cypress.
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\

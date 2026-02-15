@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { useToast } from "../../context/ToastProvider";
 import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
+import { useTranslation } from "react-i18next";
 
 type ModalPostProps = {
   isOpen: boolean;
@@ -12,6 +13,7 @@ type ModalPostProps = {
 };
 
 export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
+  const { t } = useTranslation();
   const [postTitle, setPostTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -44,16 +46,16 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
     const maxSize = 10 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
-      setFileError("Invalid file type. Only JPG, PNG, or PDF allowed.");
-      addToast("Invalid file type. Only JPG, PNG, or PDF allowed.", {
-        type: "error",
-      });
+      const msg = t("modalPost.invalidFileType");
+      setFileError(msg);
+      addToast(msg, { type: "error" });
       return;
     }
 
     if (file.size > maxSize) {
-      setFileError("File too large. Max size: 10MB.");
-      addToast("File too large. Max size: 10MB.", { type: "error" });
+      const msg = t("modalPost.fileTooLarge");
+      setFileError(msg);
+      addToast(msg, { type: "error" });
       return;
     }
 
@@ -93,7 +95,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
 
   const handleCreatePost = () => {
     if (!postTitle.trim()) {
-      addToast("Post title cannot be empty", { type: "error" });
+      addToast(t("modalPost.postTitleEmpty"), { type: "error" });
       return;
     }
 
@@ -102,7 +104,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
     }
 
     if (!description.trim()) {
-      addToast("Description cannot be empty", { type: "error" });
+      addToast(t("modalPost.descriptionEmpty"), { type: "error" });
       return;
     }
 
@@ -110,7 +112,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       return;
     }
 
-    addToast("Post created successfully", { type: "success" });
+    addToast(t("modalPost.postCreated"), { type: "success" });
 
     setPostTitle("");
     setDescription("");
@@ -125,7 +127,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       <div className={style.backdrop} onClick={onClose} />
       <div className={style.modalPost}>
         <div className={style.modalHeader}>
-          <h1 className={style.modalTitle}>Create a new post</h1>
+          <h1 className={style.modalTitle}>{t("modalPost.createPost")}</h1>
           <button onClick={onClose} className={style.closeBtn}>
             <Icon
               name="cross"
@@ -139,7 +141,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
           <div className={style.inputBlock}>
             <div className={style.hint}>
               <Icon name="envelope" />
-              <p>Post Title</p>
+              <p>{t("modalPost.postTitle")}</p>
             </div>
             <Input
               onChange={(e) => {
@@ -151,24 +153,24 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               status={
                 postTitle.length === MAX_TITLE_LENGTH ? "error" : "default"
               }
-              errorText={`Reached the ${MAX_TITLE_LENGTH} character limit`}
+              errorText={t("modalPost.characterLimit", { max: MAX_TITLE_LENGTH })}
               value={postTitle}
               type="text"
-              placeholder="Enter post title"
+              placeholder={t("modalPost.postTitlePlaceholder")}
             />
           </div>
 
           <div className={style.inputBlock}>
             <div className={style.hint}>
               <Icon name="pencil" />
-              <p>Description</p>
+              <p>{t("profile.description")}</p>
             </div>
 
             <DescriptionTextarea
               value={description}
               onChange={setDescription}
               maxLength={MAX_DESCRIPTION_LENGTH}
-              placeholder="Write description here..."
+              placeholder={t("profile.writeDescriptionPlaceholder")}
               textareaClassName={
                 description.length === MAX_DESCRIPTION_LENGTH
                   ? style.textareaError
@@ -217,10 +219,10 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
                 />
                 <div className={style.dropInfo}>
                   <p className={style.dropText}>
-                    Select a file or drag and drop here
+                    {t("modalPost.selectFileOrDrag")}
                   </p>
                   <p className={style.dropCheck}>
-                    JPG, PNG or PDF, file size no more than 10MB
+                    {t("modalPost.fileRestrictions")}
                   </p>
                 </div>
               </>
@@ -230,7 +232,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
         </div>
 
         <div className={style.dropFooter}>
-          <Button onClick={handleCreatePost} name="Create" />
+          <Button onClick={handleCreatePost} name={t("modalPost.create")} />
         </div>
       </div>
     </>

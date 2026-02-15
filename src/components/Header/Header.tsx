@@ -4,8 +4,10 @@ import SideMenu from "../SideMenu/SideMenu";
 import { useAuth } from "../../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
+import { useTranslation } from "react-i18next";
 
 function Header() {
+  const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -42,8 +44,8 @@ function Header() {
 
         {!isAuthPage && (
           <div
-            className={`${style.header_menu} ${
-              isAuthenticated ? style.has_LoggedIn : ""
+            className={`${style.headerMenu} ${
+              isAuthenticated ? style.hasLoggedIn : ""
             }`}
           >
             <Icon
@@ -55,7 +57,7 @@ function Header() {
             <div
               className={`${style.menuContent} 
                         ${menuOpen ? style.open : ""} 
-                        ${isAuthenticated ? style.has_LoggedIn : ""}`}
+                        ${isAuthenticated ? style.hasLoggedIn : ""}`}
             >
               {isAuthenticated ? (
                 <>
@@ -75,13 +77,13 @@ function Header() {
                     className={style.headerMenuText}
                     onClick={handleSignUpClick}
                   >
-                    Sign Up
+                    {t("common.signUp")}
                   </p>
                   <p
                     className={style.headerMenuText}
                     onClick={handleSignInClick}
                   >
-                    Sign In
+                    {t("common.signIn")}
                   </p>
                 </>
               )}

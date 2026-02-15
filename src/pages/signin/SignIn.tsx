@@ -8,8 +8,10 @@ import { useForm } from "../../../src/utils/useForm";
 import { validateEmail, validatePassword } from "../../utils/validators";
 import { Icon } from "../../components/Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
+import { useTranslation } from "react-i18next";
 
 export default function SignIn() {
+  const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -29,8 +31,8 @@ export default function SignIn() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const emailError = validateEmail(values.email);
-    const passwordError = validatePassword(values.password);
+    const emailError = validateEmail(values.email, t);
+    const passwordError = validatePassword(values.password, t);
 
     let hasError = false;
 
@@ -56,19 +58,19 @@ export default function SignIn() {
     }
 
     if (hasError) {
-      addToast("Please fix the errors above", { type: "error" });
+      addToast(t("errors.fixErrorsAbove"), { type: "error" });
       return;
     }
 
     const success = login(values.email, values.password);
 
     if (!success) {
-      setFieldError("password", "Invalid email or password");
-      addToast("Please fix the errors above", { type: "error" });
+      setFieldError("password", t("errors.invalidCredentials"));
+      addToast(t("errors.fixErrorsAbove"), { type: "error" });
       return;
     }
 
-    addToast("Successful authorization", { type: "success" });
+    addToast(t("errors.successfulAuth"), { type: "success" });
     navigate("/");
   }
 
@@ -77,9 +79,9 @@ export default function SignIn() {
       <main className={style.contentContainer}>
         <form className={style.content} onSubmit={handleSubmit}>
           <div className={style.preview}>
-            <h1 className={style.title}>Sign in into an account</h1>
+            <h1 className={style.title}>{t("auth.signInTitle")}</h1>
             <p className={style.signinDescription}>
-              Enter your email and password to sign in into this app
+              {t("auth.signInDescription")}
             </p>
           </div>
 
@@ -88,7 +90,7 @@ export default function SignIn() {
               <div className={style.hint}>
                 <div className={style.hintContent}>
                   <Icon name="envelope" />
-                  <p>Email</p>
+                  <p>{t("auth.email")}</p>
                 </div>
                 {errors.email && <Icon name="cross-small" />}
                 {emailValidCheck && !errors.email && !isEmailMax && (
@@ -103,7 +105,7 @@ export default function SignIn() {
                   if (newEmail.length <= MAX_EMAIL_LENGTH) {
                     setFieldValue("email", newEmail);
                   }
-                  const isValid = validateEmail(newEmail) === "";
+                  const isValid = validateEmail(newEmail, t) === "";
                   setEmailValidCheck(isValid);
                 }}
                 status={errors.email || isEmailMax ? "error" : "default"}
@@ -113,7 +115,7 @@ export default function SignIn() {
                     ? `Reached the ${MAX_EMAIL_LENGTH} character limit`
                     : "")
                 }
-                placeholder="Enter email..."
+                placeholder={t("auth.enterEmail")}
               />
             </div>
 
@@ -121,7 +123,7 @@ export default function SignIn() {
               <div className={style.hint}>
                 <div className={style.hintContent}>
                   <Icon name="eye" />
-                  <p>Password</p>
+                  <p>{t("auth.password")}</p>
                 </div>
                 {errors.password && <Icon name="cross-small" />}
                 {passwordValidCheck && !errors.password && (
@@ -135,7 +137,7 @@ export default function SignIn() {
                 onChange={(e) => {
                   const newPassword = e.target.value;
                   setFieldValue("password", newPassword);
-                  const isValid = validatePassword(newPassword) === "";
+                  const isValid = validatePassword(newPassword, t) === "";
                   setPasswordValidCheck(isValid);
                 }}
                 status={
@@ -146,20 +148,20 @@ export default function SignIn() {
                       : "default"
                 }
                 errorText={errors.password}
-                placeholder="Enter password..."
+                placeholder={t("auth.enterPassword")}
               />
             </div>
 
-            <ButtonClass name="Sign In" />
+            <ButtonClass name={t("common.signIn")} />
 
             <p className={style.navigation}>
-              Forgot to create an account?{" "}
+              {t("auth.forgotAccount")}{" "}
               <span
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate("/signup")}
-                className={style.switch_auth_pages}
+                className={style.switchAuthPages}
               >
-                Sign Up
+                {t("common.signUp")}
               </span>
             </p>
           </div>

@@ -4,14 +4,16 @@ import { useToast } from "../../context/ToastProvider";
 import style from "./comment.module.css";
 import { useState } from "react";
 import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
+import { useTranslation } from "react-i18next";
 
 export default function Comment() {
+  const { t } = useTranslation();
   const [description, setDescription] = useState<string>("");
   const { addToast } = useToast();
 
   function handleSubmit() {
     if (!description.trim()) {
-      addToast("Comment cannot be empty", { type: "error" });
+      addToast(t("comment.commentEmpty"), { type: "error" });
       return;
     }
 
@@ -19,26 +21,26 @@ export default function Comment() {
       return;
     }
 
-    addToast("Comment added successfully", { type: "success" });
+    addToast(t("comment.commentAdded"), { type: "success" });
 
     setDescription("");
   }
 
   return (
-    <div className={style.adding_comment}>
+    <div className={style.addingComment}>
       <div className={style.hint}>
         <Icon name="pencil" />
-        <p>Description</p>
+        <p>{t("profile.description")}</p>
       </div>
 
       <DescriptionTextarea
         value={description}
         onChange={setDescription}
         maxLength={200}
-        placeholder="Write description here..."
+        placeholder={t("profile.writeDescriptionPlaceholder")}
       />
 
-      <Button onClick={handleSubmit} name="Add a comment" />
+      <Button onClick={handleSubmit} name={t("comment.addComment")} />
     </div>
   );
 }

@@ -5,8 +5,10 @@ import { useAuth } from "../../context/AuthProvider";
 import Post from "../../components/Post/Post";
 import ModalPost from "../../components/ModalPost/ModalPost";
 import { posts } from "../../mock/posts";
-function Main() {
+import { useTranslation } from "react-i18next";
 
+function Main() {
+  const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -22,12 +24,12 @@ function Main() {
     <div className={style.container}>
       <section className={style.content}>
         {isAuthenticated ? (
-          <section className={style.post_creation}>
-            <div className={style.input_and_avatar}>
+          <section className={style.postCreation}>
+            <div className={style.inputAndAvatar}>
               <img src="postcreateavatar.png" alt="avatar"></img>
-              <p>What's new?</p>
+              <p>{t("main.whatsNew")}</p>
             </div>
-            <Button onClick={handleOpenModal} name="Tell everyone"></Button>
+            <Button onClick={handleOpenModal} name={t("main.tellEveryone")}></Button>
           </section>
         ) : null}
         <section className={style.feed}>
@@ -37,64 +39,64 @@ function Main() {
         </section>
       </section>
       {isAuthenticated ? (
-        <aside className={style.suggested_area}>
-          <div className={style.suggested_people}>
-            <p className={style.aside_title}>Suggested people</p>
-            <ul className={style.suggested_list}>
-              <li className={style.suggested_block}>
-                <div className={style.mini_person}>
+        <aside className={style.suggestedArea}>
+          <div className={style.suggestedPeople}>
+            <p className={style.asideTitle}>{t("main.suggestedPeople")}</p>
+            <ul className={style.suggestedList}>
+              <li className={style.suggestedBlock}>
+                <div className={style.miniPerson}>
                   <img
-                    className={style.mini_person_avatar}
+                    className={style.miniPersonAvatar}
                     src="avatar.png"
                     alt="mini avatar"
                   ></img>
-                  <div className={style.mini_person_info}>
-                    <p className={style.primary_text}>Helena Hills</p>
-                    <p className={style.secondary_text}>@helena</p>
+                  <div className={style.miniPersonInfo}>
+                    <p className={style.primaryText}>Helena Hills</p>
+                    <p className={style.secondaryText}>@helena</p>
                   </div>
                 </div>
               </li>
-              <li className={style.suggested_block}>
-                <div className={style.mini_person}>
+              <li className={style.suggestedBlock}>
+                <div className={style.miniPerson}>
                   <img
-                    className={style.mini_person_avatar}
+                    className={style.miniPersonAvatar}
                     src="avatar.png"
                     alt="mini avatar"
                   ></img>
-                  <div className={style.mini_person_info}>
-                    <p className={style.primary_text}>Helena Hills</p>
-                    <p className={style.secondary_text}>@helena</p>
+                  <div className={style.miniPersonInfo}>
+                    <p className={style.primaryText}>Helena Hills</p>
+                    <p className={style.secondaryText}>@helena</p>
                   </div>
                 </div>
               </li>
-              <li className={style.suggested_block}>
-                <div className={style.mini_person}>
+              <li className={style.suggestedBlock}>
+                <div className={style.miniPerson}>
                   <img
-                    className={style.mini_person_avatar}
+                    className={style.miniPersonAvatar}
                     src="avatar.png"
                     alt="mini avatar"
                   ></img>
-                  <div className={style.mini_person_info}>
-                    <p className={style.primary_text}>Helena Hills</p>
-                    <p className={style.secondary_text}>@helena</p>
+                  <div className={style.miniPersonInfo}>
+                    <p className={style.primaryText}>Helena Hills</p>
+                    <p className={style.secondaryText}>@helena</p>
                   </div>
                 </div>
               </li>
             </ul>
           </div>
-          <div className={style.suggested_community}>
-            <p className={style.aside_title}>Communities you might like</p>
-            <ul className={style.suggested_list}>
-              <li className={style.suggested_block}>
-                <div className={style.mini_person}>
+          <div className={style.suggestedCommunity}>
+            <p className={style.asideTitle}>{t("main.suggestedCommnity")}</p>
+            <ul className={style.suggestedList}>
+              <li className={style.suggestedBlock}>
+                <div className={style.miniPerson}>
                   <img
-                    className={style.mini_person_avatar}
+                    className={style.miniPersonAvatar}
                     src="avatar.png"
                     alt="mini avatar"
                   ></img>
-                  <div className={style.mini_person_info}>
-                    <p className={style.primary_text}>Helena Hills</p>
-                    <p className={style.secondary_text}>@helena</p>
+                  <div className={style.miniPersonInfo}>
+                    <p className={style.primaryText}>Helena Hills</p>
+                    <p className={style.secondaryText}>@helena</p>
                   </div>
                 </div>
               </li>

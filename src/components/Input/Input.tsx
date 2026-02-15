@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import style from "./input.module.css";
 import { Icon } from "../Icon/Icon";
+import { useTranslation } from "react-i18next";
 
 type InputStatus = "default" | "success" | "error";
 
@@ -23,6 +24,7 @@ export default function Input({
   errorText,
   ...rest
 }: InputProps) {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const inputType = type === "password" && showPassword ? "text" : type;
@@ -53,7 +55,7 @@ export default function Input({
       {status === "success" && (
         <div className={style.validateInfo}>
           <Icon name="like" style={{ color: "var(--fill-positive)" }} />
-          <p className={style.successText}>Your password is strong</p>
+          <p className={style.successText}>{t("auth.passwordStrong")}</p>
         </div>
       )}
 

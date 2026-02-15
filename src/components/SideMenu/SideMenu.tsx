@@ -4,6 +4,7 @@ import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../Icon/Icon";
+import { useTranslation } from "react-i18next";
 
 type SideMenuProps = {
   isOpen: boolean;
@@ -11,6 +12,7 @@ type SideMenuProps = {
 };
 
 function SideMenu({ isOpen, onClose }: SideMenuProps) {
+  const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -60,7 +62,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   onClose();
                 }}
               >
-                Sign Up
+                {t("common.signUp")}
               </p>
               <p
                 className={style.menuItem}
@@ -69,7 +71,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   onClose();
                 }}
               >
-                Sign In
+                {t("common.signIn")}
               </p>
             </>
           ) : (
@@ -77,20 +79,20 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
               <p
                 className={style.menuItem}
                 onClick={() => {
-                  navigate("/profile");
+                  navigate("/profile/info");
                   onClose();
                 }}
               >
-                Profile Info
+                {t("common.profileInfo")}
               </p>
               <p
                 className={style.menuItem}
                 onClick={() => {
-                  navigate("/statistics");
+                  navigate("/profile/statistics");
                   onClose();
                 }}
               >
-                Statistics
+                {t("common.statistics")}
               </p>
             </>
           )}

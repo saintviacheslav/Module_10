@@ -7,8 +7,10 @@ import { useState } from "react";
 import { LineChartLikes } from "../LineChartLikes/LineChartLikes";
 import { BarChartComments } from "../BarChartComments/BarChartComments";
 import { commentsData, likesData } from "../../mock/chartData";
+import { useTranslation } from "react-i18next";
 
 export default function Statistics() {
+  const { t } = useTranslation();
   const [showChart, setShowChart] = useState(false);
   const { user } = useAuth();
   const postsComments = comments.filter((comment) =>
@@ -21,40 +23,40 @@ export default function Statistics() {
     <div className={style.statistics}>
       <div className={style.cards}>
         <div className={style.card}>
-          <p className={style.cardTextPrimary}>Posts</p>
+          <p className={style.cardTextPrimary}>{t("statistics.posts")}</p>
           <h1 className={style.cardTitle}>
             {posts.filter((post) => post.authorId === user?.id).length}
           </h1>
-          <p className={style.cardTextSecondary}>+40% per month</p>
+          <p className={style.cardTextSecondary}>{t("statistics.perMonth")}</p>
         </div>
         <div className={style.card}>
-          <p className={style.cardTextPrimary}>Likes</p>
+          <p className={style.cardTextPrimary}>{t("statistics.likes")}</p>
           <h1 className={style.cardTitle}>
             {posts
               .filter((post) => post.authorId === user?.id)
               .reduce((sum, el) => sum + el.likes, 0)}
           </h1>
-          <p className={style.cardTextSecondary}>+40% per month</p>
+          <p className={style.cardTextSecondary}>{t("statistics.perMonth")}</p>
         </div>
         <div className={style.card}>
-          <p className={style.cardTextPrimary}>Comments</p>
+          <p className={style.cardTextPrimary}>{t("statistics.comments")}</p>
           <h1 className={style.cardTitle}>{postsComments}</h1>
-          <p className={style.cardTextSecondary}>+40% per month</p>
+          <p className={style.cardTextSecondary}>{t("statistics.perMonth")}</p>
         </div>
       </div>
 
       <div className={style.chartSwitcher}>
-        {showChart ? <p className={style.nonVisible}>Table view</p> : null}
+        {showChart ? <p className={style.nonVisible}>{t("statistics.tableView")}</p> : null}
         <ChartSwitcher
           isChart={showChart}
           onToggle={() => setShowChart((prev) => !prev)}
         />
-        <p>{showChart ? "Chart view" : "Enable Chart view"}</p>
+        <p>{showChart ? t("statistics.chartView") : t("statistics.enableChartView")}</p>
       </div>
 
       <div className={style.statsTables}>
         <div className={style.likesTable}>
-          <p className={style.titleTable}>Likes</p>
+          <p className={style.titleTable}>{t("statistics.likes")}</p>
           {showChart ? (
             <div className={style.statsTable}>
               <LineChartLikes data={likesData} />
@@ -69,21 +71,21 @@ export default function Statistics() {
 
               <thead>
                 <tr>
-                  <th className={style.tableTitle}>Title</th>
+                  <th className={style.tableTitle}>{t("statistics.title")}</th>
                   <th />
                   <th />
                 </tr>
                 <tr>
-                  <th className={style.head}>Col 1</th>
-                  <th className={style.headRight}>Col 2</th>
-                  <th className={style.headRight}>Col 3</th>
+                  <th className={style.head}>{t("statistics.col1")}</th>
+                  <th className={style.headRight}>{t("statistics.col2")}</th>
+                  <th className={style.headRight}>{t("statistics.col3")}</th>
                 </tr>
               </thead>
 
               <tbody>
                 {Array.from({ length: 7 }).map((_, i) => (
                   <tr key={i}>
-                    <td className={style.cell}>Row {i + 1}</td>
+                    <td className={style.cell}>{t("statistics.row", { num: i + 1 })}</td>
                     <td className={style.cellRight}>123</td>
                     <td className={style.cellRight}>456</td>
                   </tr>
@@ -93,7 +95,7 @@ export default function Statistics() {
           )}
         </div>
         <div className={style.likesTable}>
-          <p className={style.titleTable}>Comments</p>
+          <p className={style.titleTable}>{t("statistics.comments")}</p>
 
           {showChart ? (
             <div className={style.statsTable}>
@@ -110,21 +112,21 @@ export default function Statistics() {
 
               <thead>
                 <tr>
-                  <th className={style.tableTitle}>Title</th>
+                  <th className={style.tableTitle}>{t("statistics.title")}</th>
                   <th />
                   <th />
                 </tr>
                 <tr>
-                  <th className={style.head}>Col 1</th>
-                  <th className={style.headRight}>Col 2</th>
-                  <th className={style.headRight}>Col 3</th>
+                  <th className={style.head}>{t("statistics.col1")}</th>
+                  <th className={style.headRight}>{t("statistics.col2")}</th>
+                  <th className={style.headRight}>{t("statistics.col3")}</th>
                 </tr>
               </thead>
 
               <tbody>
                 {Array.from({ length: 7 }).map((_, i) => (
                   <tr key={i}>
-                    <td className={style.cell}>Row {i + 1}</td>
+                    <td className={style.cell}>{t("statistics.row", { num: i + 1 })}</td>
                     <td className={style.cellRight}>123</td>
                     <td className={style.cellRight}>456</td>
                   </tr>

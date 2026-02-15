@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import { Icon } from "../../components/Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
+import { useTranslation } from "react-i18next";
 
 export default function SignUp() {
+  const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -30,8 +32,8 @@ export default function SignUp() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const emailError = validateEmail(values.email);
-    const passwordError = validatePassword(values.password);
+    const emailError = validateEmail(values.email, t);
+    const passwordError = validatePassword(values.password, t);
 
     let hasError = false;
 
@@ -49,23 +51,23 @@ export default function SignUp() {
       hasError = true;
       setFieldError(
         "email",
-        `Email cannot exceed ${MAX_EMAIL_LENGTH} characters`,
+        t("errors.emailMaxLength", { max: MAX_EMAIL_LENGTH }),
       );
-      addToast(`Email has reached the ${MAX_EMAIL_LENGTH} character limit`, {
+      addToast(t("errors.emailReachedLimit", { max: MAX_EMAIL_LENGTH }), {
         type: "warning",
       });
     }
 
     if (hasError) {
-      addToast("Please fix the errors above", { type: "error" });
+      addToast(t("errors.fixErrorsAbove"), { type: "error" });
       return;
     }
 
     const emailExists = users.some((user) => user.email === values.email);
 
     if (emailExists) {
-      setFieldError("email", "Email already exists");
-      addToast("Please fix the errors above", { type: "error" });
+      setFieldError("email", t("errors.emailAlreadyExists"));
+      addToast(t("errors.fixErrorsAbove"), { type: "error" });
       return;
     }
 
@@ -80,7 +82,7 @@ export default function SignUp() {
     });
 
     login(values.email, values.password);
-    addToast("Successful registration", { type: "success" });
+    addToast(t("errors.successfulRegistration"), { type: "success" });
     navigate("/");
   }
 
@@ -89,9 +91,9 @@ export default function SignUp() {
       <main className={style.contentContainer}>
         <form onSubmit={handleSubmit} className={style.content}>
           <div className={style.preview}>
-            <h1 className={style.title}>Create an account</h1>
+            <h1 className={style.title}>{t("auth.signUpTitle")}</h1>
             <p className={style.signinDescription}>
-              Enter your email and password to sign up for this app
+              {t("auth.signUpFormDescription")}
             </p>
           </div>
 
@@ -100,7 +102,7 @@ export default function SignUp() {
               <div className={style.hint}>
                 <div className={style.hintContent}>
                   <Icon name="envelope" />
-                  <p>Email</p>
+                  <p>{t("auth.email")}</p>
                 </div>
                 {errors.email && <Icon name="cross-small" />}
                 {emailValidCheck && !errors.email && !isEmailMax && (
@@ -115,17 +117,19 @@ export default function SignUp() {
                   if (newEmail.length <= MAX_EMAIL_LENGTH) {
                     setFieldValue("email", newEmail);
                   }
-                  const isValid = validateEmail(newEmail) === "";
+                  const isValid = validateEmail(newEmail, t) === "";
                   setEmailValidCheck(isValid);
                 }}
                 status={errors.email || isEmailMax ? "error" : "default"}
                 errorText={
                   errors.email ||
                   (isEmailMax
-                    ? `Reached the ${MAX_EMAIL_LENGTH} character limit`
+                    ? t("errors.reachedCharacterLimit", {
+                        max: MAX_EMAIL_LENGTH,
+                      })
                     : "")
                 }
-                placeholder="Enter email..."
+                placeholder={t("auth.enterEmail")}
               />
             </div>
 
@@ -133,7 +137,7 @@ export default function SignUp() {
               <div className={style.hint}>
                 <div className={style.hintContent}>
                   <Icon name="eye" />
-                  <p>Password</p>
+                  <p>{t("auth.password")}</p>
                 </div>
                 {errors.password && <Icon name="cross-small" />}
                 {passwordValidCheck && !errors.password && (
@@ -147,7 +151,7 @@ export default function SignUp() {
                 onChange={(e) => {
                   const newPassword = e.target.value;
                   setFieldValue("password", newPassword);
-                  const isValid = validatePassword(newPassword) === "";
+                  const isValid = validatePassword(newPassword, t) === "";
                   setPasswordValidCheck(isValid);
                 }}
                 status={
@@ -158,26 +162,25 @@ export default function SignUp() {
                       : "default"
                 }
                 errorText={errors.password}
-                placeholder="Enter password..."
+                placeholder={t("auth.enterPassword")}
               />
             </div>
 
-            <Button name="Sign Up" />
+            <Button name={t("common.signUp")} />
 
-            <p className={style.privacyText}>
-              By clicking continue, you agree to our{" "}
-              <span className={style.privacyGray}>Terms of Service</span> and{" "}
-              <span className={style.privacyGray}>Privacy Policy</span>
-            </p>
+            <p
+              className={style.privacyText}
+              dangerouslySetInnerHTML={{ __html: t("auth.agreeToTerms") }}
+            />
 
             <p className={style.navigation}>
-              Already have an account?{" "}
+              {t("auth.haveAccount")}{" "}
               <span
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate("/signin")}
-                className={style.switch_auth_pages}
+                className={style.switchAuthPages}
               >
-                Sign In
+                {t("common.signIn")}
               </span>
             </p>
           </div>

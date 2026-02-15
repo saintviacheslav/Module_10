@@ -2,6 +2,7 @@ import { useState } from "react";
 import style from "./descriptiontextarea.module.css";
 import { Icon } from "../Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
+import { useTranslation } from "react-i18next";
 
 interface DescriptionTextareaProps {
   value: string;
@@ -26,22 +27,25 @@ export default function DescriptionTextarea({
   errorTextClassName = "",
   secondaryTextClassName = "",
 }: DescriptionTextareaProps) {
-  const [isFocused, setIsFocused] = useState(false);
+  const { t } = useTranslation();
   const { addToast } = useToast();
+
+  const [isFocused, setIsFocused] = useState(false);
 
   const isMax = value.length === maxLength;
   const shouldShowInfo = value.trim().length > 0;
 
   const handleSubmitValidation = () => {
     if (!value.trim()) {
-      addToast("Description cannot be empty", { type: "error" });
+      addToast(t("comment.descriptionEmpty"), { type: "error" });
       return false;
     }
 
     if (isMax) {
-      addToast(`Description has reached the ${maxLength} character limit`, {
-        type: "warning",
-      });
+      addToast(
+        t("modalPost.characterLimit", { max: maxLength }),
+        { type: "warning" }
+      );
       return false;
     }
 
@@ -52,7 +56,7 @@ export default function DescriptionTextarea({
     <div className={`${style.container} ${className}`}>
       <textarea
         className={`${style.textarea} ${isMax ? style.textareaError : ""} ${textareaClassName}`}
-        placeholder={placeholder}
+        placeholder={t("profile.writeDescriptionPlaceholder")}
         value={value}
         onChange={(e) => {
           const newValue = e.target.value;
@@ -68,18 +72,18 @@ export default function DescriptionTextarea({
       {shouldShowInfo && (
         <div className={`${style.validateInfo} ${validateInfoClassName}`}>
           {isMax ? (
-            <Icon name="info" style={{color:"var(--inp-incorrect)"}} />
+            <Icon name="info" style={{ color: "var(--inp-incorrect)" }} />
           ) : (
-            <Icon name="info" style={{color:"var(--text-secondary)"}}/>
+            <Icon name="info" style={{ color: "var(--text-secondary)" }} />
           )}
 
           {isMax ? (
             <p className={`${style.textareaErrorText} ${errorTextClassName}`}>
-              Reached the {maxLength} text limit
+              {t("modalPost.characterLimit", { max: maxLength })}
             </p>
           ) : (
             <p className={`${style.secondaryText} ${secondaryTextClassName}`}>
-              Max {maxLength} chars
+              {t("common.maxChars", { max: maxLength })}
             </p>
           )}
         </div>

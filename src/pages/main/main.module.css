@@ -14,7 +14,7 @@
   flex-direction: column;
 }
 
-.post_creation {
+.postCreation {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,7 +25,7 @@
   margin-bottom: 26px;
 }
 
-.input_and_avatar {
+.inputAndAvatar {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -63,13 +63,13 @@
   height: 48px;
 }
 
-.secondary_text {
+.secondaryText {
   font: 400 16px Inter;
   color: var(--text-secondary);
   height: 24px;
 }
 
-.primary_text {
+.primaryText {
   font: 500 16px Inter;
   color: var(--text-primary);
   height: 24px;
@@ -92,65 +92,65 @@
   align-items: center;
 }
 
-.suggested_people,
-.suggested_community {
+.suggestedPeople,
+.suggestedCommunity {
   background: var(--bg-surface);
   border: 2px solid var(--border-soft);
   padding: 24px;
   max-width: 341px;
 }
 
-.suggested_list {
+.suggestedList {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.suggested_block {
+.suggestedBlock {
   padding: 12px 0;
 }
 
-.mini_person {
+.miniPerson {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-.mini_person_avatar {
+.miniPersonAvatar {
   border-radius: 50%;
 }
 
-.mini_person_info {
+.miniPersonInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.aside_title {
+.asideTitle {
   font: 600 16px Inter;
   padding-bottom: 8px;
 }
 
-.suggested_area {
+.suggestedArea {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.comment_dropdown {
+.commentDropdown {
   display: flex;
   gap: 8px;
 }
 
-.comments_list {
+.commentsList {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.comments_list_block {
+.commentsListBlock {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -161,7 +161,7 @@ img:hover {
 }
 
 @media (max-width:1330px) {
-  .suggested_area {
+  .suggestedArea {
     display: none;
   }
 }
@@ -178,11 +178,11 @@ img:hover {
     max-width: 700px;
   }
 
-  .suggested_area {
+  .suggestedArea {
     display: none;
   }
 
-  .post_creation {
+  .postCreation {
     margin: 0;
     border-bottom: 0;
   }

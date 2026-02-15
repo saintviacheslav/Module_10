@@ -7,6 +7,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   Dot,
+  DotProps,
+  DotItemDotProps
 } from "recharts";
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
 }
 
 export function LineChartLikes({ data }: Props) {
-  const customDot = (props: any) => {
+  const customDot = (props: DotItemDotProps) => {
     const { cx, cy, index } = props;
 
     if (index === data.length - 1) {
@@ -22,7 +24,7 @@ export function LineChartLikes({ data }: Props) {
         <Dot
           cx={cx}
           cy={cy}
-          r={4}
+          r={6}
           fill="var(--text-secondary)"
           stroke="var(--bg-surface)"
           strokeWidth={2}

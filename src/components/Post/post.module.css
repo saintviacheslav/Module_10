@@ -20,13 +20,13 @@
   height: 48px;
 }
 
-.secondary_text {
+.secondaryText {
   font: 400 16px Inter;
   color: var(--text-secondary);
   height: 24px;
 }
 
-.primary_text {
+.primaryText {
   font: 500 16px Inter;
   color: var(--text-primary);
   height: 24px;

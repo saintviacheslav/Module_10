@@ -7,11 +7,14 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 import { useForm } from "../../utils/useForm";
 import { validateEmail, validateUsername } from "../../utils/validators";
 import { useToast } from "../../context/ToastProvider";
 import { Icon } from "../Icon/Icon";
+import { useTranslation } from "react-i18next";
+import { profile } from "console";
 
 type ProfileFormValues = {
   username: string;
@@ -20,6 +23,7 @@ type ProfileFormValues = {
 };
 
 export default function ProfileInfo() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { user, logout } = useAuth();
@@ -78,14 +82,14 @@ export default function ProfileInfo() {
     let hasError = false;
 
     if (values.email.trim() !== "") {
-      const emailError = validateEmail(values.email);
+      const emailError = validateEmail(values.email, t);
       if (emailError) {
         setFieldError("email", emailError);
         hasError = true;
       }
     }
 
-    const usernameError = validateUsername(values.username);
+    const usernameError = validateUsername(values.username, t);
     if (usernameError) {
       setFieldError("username", usernameError);
       hasError = true;
@@ -93,12 +97,18 @@ export default function ProfileInfo() {
 
     if (isUsernameMax) {
       hasError = true;
-      setFieldError("username", `Cannot exceed ${MAX_TEXT_LENGTH} characters`);
+      setFieldError(
+        "username",
+        t("errors.usernameMaxLength", { max: MAX_TEXT_LENGTH }),
+      );
     }
 
     if (isEmailMax) {
       hasError = true;
-      setFieldError("email", `Cannot exceed ${MAX_TEXT_LENGTH} characters`);
+      setFieldError(
+        "email",
+        t("errors.emailMaxLength", { max: MAX_TEXT_LENGTH }),
+      );
     }
 
     if (values.description.length === 200) {
@@ -109,7 +119,7 @@ export default function ProfileInfo() {
       return;
     }
 
-    addToast("Profile info has been updated successfully", { type: "success" });
+    addToast(t("profile.profileUpdated"), { type: "success" });
   }
 
   function handleLogout() {
@@ -120,7 +130,7 @@ export default function ProfileInfo() {
   return (
     <div className={style.editContent}>
       <form className={style.editProfileForm} onSubmit={handleSubmit}>
-        <h1 className={style.title}>Edit profile</h1>
+        <h1 className={style.title}>{t("profile.editProfile")}</h1>
 
         <div className={style.userMainInfo}>
           <img
@@ -145,7 +155,7 @@ export default function ProfileInfo() {
               onClick={handleAvatarClick}
               className={style.secondaryText}
             >
-              Change profile photo
+              {t("profile.changeProfilePhoto")}
             </p>
           </div>
         </div>
@@ -155,7 +165,7 @@ export default function ProfileInfo() {
             <div className={style.hint}>
               <div className={style.hintContent}>
                 <Icon name="user" />
-                <p>Username</p>
+                <p>{t("profile.username")}</p>
               </div>
               {errors.username && <Icon name="cross-small" />}
             </div>
@@ -174,7 +184,7 @@ export default function ProfileInfo() {
               errorText={
                 errors.username ||
                 (isUsernameMax
-                  ? `Reached the ${MAX_TEXT_LENGTH} character limit`
+                  ? t("modalPost.characterLimit", { max: MAX_TEXT_LENGTH })
                   : "")
               }
             />
@@ -184,7 +194,7 @@ export default function ProfileInfo() {
             <div className={style.hint}>
               <div className={style.hintContent}>
                 <Icon name="envelope" />
-                <p>Email</p>
+                <p>{t("auth.email")}</p>
               </div>
               {errors.email && <Icon name="cross-small" />}
             </div>
@@ -194,7 +204,9 @@ export default function ProfileInfo() {
                 if (newValue.length <= MAX_TEXT_LENGTH) {
                   setFieldValue("email", newValue);
                 }
-                if (errors.email) setFieldError("email", "");
+                if (errors.email) {
+                  setFieldError("email", "");
+                }
               }}
               value={values.email}
               type="text"
@@ -203,7 +215,7 @@ export default function ProfileInfo() {
               errorText={
                 errors.email ||
                 (isEmailMax
-                  ? `Reached the ${MAX_TEXT_LENGTH} character limit`
+                  ? t("modalPost.characterLimit", { max: MAX_TEXT_LENGTH })
                   : "")
               }
             />
@@ -213,7 +225,7 @@ export default function ProfileInfo() {
             <div className={style.hint}>
               <div className={style.hintContent}>
                 <Icon name="pencil" />
-                <p>Description</p>
+                <p>{t("profile.description")}</p>
               </div>
             </div>
 
@@ -221,7 +233,7 @@ export default function ProfileInfo() {
               value={values.description}
               onChange={(newValue) => setFieldValue("description", newValue)}
               maxLength={200}
-              placeholder="Write description here..."
+              placeholder={t("profile.writeDescriptionPlaceholder")}
               textareaClassName={
                 values.description.length === 200
                   ? style.textareaError
@@ -229,23 +241,27 @@ export default function ProfileInfo() {
               }
             />
           </div>
-          <Button name="Save Profile Changes" />
+          <Button name={t("profile.saveProfileChanges")} />
         </div>
       </form>
 
       <div className={style.editPreferencesBlock}>
         <div className={style.editPreferencesItem}>
-          <h1 className={style.title}>Preferences</h1>
+          <h1 className={style.title}>{t("common.preferences")}</h1>
           <div className={style.themeSwitcher}>
             <ThemeSwitcher />
             <p className={style.primaryText}>
-              {theme === "light" ? "Light theme" : "Dark theme"}
+              {theme === "light" ? t("theme.light") : t("theme.dark")}
             </p>
+          </div>
+          <div className={style.languageSwitcher}>
+            <LanguageSwitcher />
+            <p className={style.primaryText}>{t("common.language")}</p>
           </div>
         </div>
         <div className={style.editPreferencesItem}>
-          <h1 className={style.title}>Actions</h1>
-          <Button name="Logout" onClick={handleLogout} />
+          <h1 className={style.title}>{t("common.actions")}</h1>
+          <Button name={t("common.logout")} onClick={handleLogout} />
         </div>
       </div>
     </div>

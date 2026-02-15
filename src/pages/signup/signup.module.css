@@ -62,7 +62,7 @@
   font: 400 14px Poppins;
 }
 
-.hint_img {
+.hintImg {
   width: 16px;
   height: 16px;
 }
@@ -81,7 +81,7 @@
   font: 400 14px Poppins;
 }
 
-.switch_auth_pages {
+.switchAuthPages {
   border-bottom: 1px solid var(--text-primary);
 }
 

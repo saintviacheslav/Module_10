@@ -6,6 +6,7 @@ import { users } from "../../mock/users";
 import { comments } from "../../mock/comments";
 import { Icon } from "../../components/Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
+import { useTranslation } from "react-i18next";
 
 interface PostProps {
   id: number;
@@ -17,6 +18,7 @@ interface PostProps {
 }
 
 export default function Post({ post }: { post: PostProps }) {
+  const { t } = useTranslation();
   const postComments = comments.filter((c) => c.postId === post.id);
   const [isShown, setShown] = useState<boolean>(false);
   const { isAuthenticated, user } = useAuth();
@@ -30,7 +32,7 @@ export default function Post({ post }: { post: PostProps }) {
 
   function handleLikeClick() {
     if (!isAuthenticated) {
-      addToast("You need to log in to like posts", { type: "warning" });
+      addToast(t("post.loginToLike"), { type: "warning" });
       return;
     }
 
@@ -54,8 +56,8 @@ export default function Post({ post }: { post: PostProps }) {
           src={author?.avatar || "default-avatar.png"}
         />
         <div className={style.profiletext}>
-          <p className={style.primary_text}>{author?.name || "Unknown"}</p>
-          <p className={style.secondary_text}>{post.createdAt}</p>
+          <p className={style.primaryText}>{author?.name || t("post.unknown")}</p>
+          <p className={style.secondaryText}>{post.createdAt}</p>
         </div>
       </div>
 
@@ -71,21 +73,20 @@ export default function Post({ post }: { post: PostProps }) {
             name="heart"
             style={{ fill: isLiked ? "var(--inp-incorrect)" : "" }}
           />
-          <p>{localLikes} likes</p>
+          <p>{t("post.likesCount", { count: localLikes })}</p>
         </div>
-        {/* {post.likes} */}
         <div className={style.comments}>
           <Icon name="comment" />
           {isAuthenticated ? (
             <div className={style.commentDropdown}>
-              <p>{postComments.length} comments</p>
+              <p>{t("post.commentsCount", { count: postComments.length })}</p>
               <Icon
                 name={isShown ? "arrow-up" : "arrow-down"}
                 onClick={changeShownStatus}
               />
             </div>
           ) : (
-            <p>You have to login to write comments</p>
+            <p>{t("post.loginToComment")}</p>
           )}
         </div>
       </div>

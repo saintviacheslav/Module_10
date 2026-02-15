@@ -1,16 +1,20 @@
 import style from "./profile.module.css";
-import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
-import Statistics from "../../components/Statistics/Statistics";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default function Profile({ isProfile = true }: { isProfile?: boolean }) {
+export default function Profile() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isProfile = location.pathname.includes("info");
+
   function handleStatisticPress() {
-    navigate("/statistics");
+    navigate("/profile/statistics");
   }
 
   function handleProfilePress() {
-    navigate("/profile");
+    navigate("/profile/info");
   }
 
   return (
@@ -18,20 +22,19 @@ export default function Profile({ isProfile = true }: { isProfile?: boolean }) {
       <div className={style.segmentedControl}>
         <p
           onClick={handleProfilePress}
-          className={`${style.segmentedText} ${!isProfile ? "" : style.segmentedTextActive}`}
+          className={`${style.segmentedText} ${isProfile ? style.segmentedTextActive : ""}`}
         >
-          Profile Info
+          {t("common.profileInfo")}
         </p>
         <p
           onClick={handleStatisticPress}
           className={`${style.segmentedText} ${!isProfile ? style.segmentedTextActive : ""}`}
         >
-          Statistics
+          {t("common.statistics")}
         </p>
       </div>
-      {isProfile && <ProfileInfo />}
 
-      {!isProfile && <Statistics />}
+      <Outlet />
     </section>
   );
 }
