@@ -34,7 +34,8 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
 
       <aside className={style.menu}>
         <div className={style.menuHeader}>
-          <Icon name="logo"
+          <Icon
+            name="logo"
             size={48}
             className={style.menuLogo}
             onClick={() => {
@@ -46,7 +47,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <img
               onClick={handleAvatarClick}
               alt="avatar"
-              src={user?.avatar}
+              src={`${process.env.PUBLIC_URL}/${user?.avatar}`}
             ></img>
           )}
         </div>

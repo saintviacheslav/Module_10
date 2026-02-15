@@ -135,7 +135,7 @@ export default function ProfileInfo() {
           <img
             onClick={handleAvatarClick}
             className={style.avatarPicture}
-            src={avatarPreview || user?.avatar}
+            src={avatarPreview || `${process.env.PUBLIC_URL}/${user?.avatar}`}
             alt="avatar"
           />
           <input
