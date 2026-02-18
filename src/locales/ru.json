@@ -70,7 +70,8 @@
     "commentsCount": "{{count}} комментариев",
     "loginToLike": "Войдите, чтобы ставить лайки",
     "loginToComment": "Войдите, чтобы писать комментарии",
-    "unknown": "Неизвестный"
+    "unknown": "Неизвестный",
+    "commentDeleted": "Комментарий удален успешно"
   },
   "comment": {
     "commentEmpty": "Комментарий не может быть пустым",
@@ -100,8 +101,8 @@
     "postCreated": "Публикация создана",
     "create": "Создать",
     "selectFileOrDrag": "Выберите файл или перетащите сюда",
-    "fileRestrictions": "JPG, PNG или PDF, не более 10MB",
-    "invalidFileType": "Недопустимый тип файла. Разрешены только JPG, PNG или PDF.",
+    "fileRestrictions": "JPG, PNG не более 10MB",
+    "invalidFileType": "Недопустимый тип файла. Разрешены только JPG, PNG.",
     "fileTooLarge": "Файл слишком большой. Максимум: 10MB.",
     "characterLimit": "Достигнут лимит {{max}} символов"
   }

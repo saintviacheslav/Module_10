@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
 import { useTranslation } from "react-i18next";
+import { getImageUrl } from "../../utils/imageUrl";
 
 function Header() {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ function Header() {
           <Icon
             name="logo"
             onClick={handleLogoClick}
-            style={{width:"94px", cursor: "pointer" }}
+            style={{ width: "94px", cursor: "pointer" }}
           />
         </div>
 
@@ -65,10 +66,10 @@ function Header() {
                     className={style.avatarImg}
                     onClick={handleAvatarClick}
                     alt="avatar"
-                    src={user?.avatar}
+                    src={getImageUrl(user?.profileImage)}
                   />
                   <p onClick={handleAvatarClick}>
-                    {user?.name} {user?.surname}
+                    {user?.firstName} {user?.secondName}
                   </p>
                 </>
               ) : (

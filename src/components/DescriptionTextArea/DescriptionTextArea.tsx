@@ -1,7 +1,6 @@
 import { useState } from "react";
 import style from "./descriptiontextarea.module.css";
 import { Icon } from "../Icon/Icon";
-import { useToast } from "../../context/ToastProvider";
 import { useTranslation } from "react-i18next";
 
 interface DescriptionTextareaProps {
@@ -28,29 +27,10 @@ export default function DescriptionTextarea({
   secondaryTextClassName = "",
 }: DescriptionTextareaProps) {
   const { t } = useTranslation();
-  const { addToast } = useToast();
-
   const [isFocused, setIsFocused] = useState(false);
 
   const isMax = value.length === maxLength;
   const shouldShowInfo = value.trim().length > 0;
-
-  const handleSubmitValidation = () => {
-    if (!value.trim()) {
-      addToast(t("comment.descriptionEmpty"), { type: "error" });
-      return false;
-    }
-
-    if (isMax) {
-      addToast(
-        t("modalPost.characterLimit", { max: maxLength }),
-        { type: "warning" }
-      );
-      return false;
-    }
-
-    return true;
-  };
 
   return (
     <div className={`${style.container} ${className}`}>

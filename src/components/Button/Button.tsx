@@ -6,6 +6,7 @@ interface ButtonProps {
   children?: ReactNode;
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
   [key: string]: unknown;
 }
 
@@ -14,11 +15,13 @@ export default function Button({
   children,
   onClick,
   className = "",
+  disabled = false,
   ...props
 }: ButtonProps) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className={`${style.templateButton} ${className}`}
       {...props}
     >

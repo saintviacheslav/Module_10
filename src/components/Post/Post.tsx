@@ -2,50 +2,158 @@ import style from "./post.module.css";
 import { useAuth } from "../../context/AuthProvider";
 import Comment from "../../components/Comment/Comment";
 import { useState } from "react";
-import { users } from "../../mock/users";
-import { comments } from "../../mock/comments";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "../../lib/api/axios";
 import { Icon } from "../../components/Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
 import { useTranslation } from "react-i18next";
+import { getImageUrl } from "../../utils/imageUrl";
+import { AxiosError } from "axios";
 
 interface PostProps {
   id: number;
+  title: string;
+  content: string;
+  image?: string;
   authorId: number;
+  likesCount: number;
+  commentsCount: number;
+  creationDate: string;
+  modifiedDate?: string;
+  likedByUsers?: Array<{ id: number }>;
+}
+
+interface UserType {
+  id: number;
+  username: string;
+  firstName?: string;
+  secondName?: string;
+  profileImage?: string;
+}
+
+interface CommentType {
+  id: number;
   text: string;
-  image: string;
-  createdAt: string;
-  likes: number;
+  authorId: number;
+  postId: number;
+  creationDate: string;
+  modifiedDate?: string;
 }
 
 export default function Post({ post }: { post: PostProps }) {
   const { t } = useTranslation();
-  const postComments = comments.filter((c) => c.postId === post.id);
-  const [isShown, setShown] = useState<boolean>(false);
   const { isAuthenticated, user } = useAuth();
   const { addToast } = useToast();
-  const [localLikes, setLocalLikes] = useState<number>(post.likes);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
-  function changeShownStatus() {
-    setShown(!isShown);
-  }
+  const { data: author, isLoading: authorLoading } = useQuery<UserType>({
+    queryKey: ["user", post.authorId],
+    queryFn: async () => {
+      const { data } = await api.get(`/api/users/${post.authorId}`);
+      return data;
+    },
+    enabled: !!post.authorId,
+  });
 
-  function handleLikeClick() {
+  const { data: comments = [], isLoading: commentsLoading } = useQuery<
+    CommentType[]
+  >({
+    queryKey: ["comments", post.id],
+    queryFn: async () => {
+      const { data } = await api.get(`/api/posts/${post.id}/comments`);
+      return data;
+    },
+    enabled: isAuthenticated,
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: (commentId: number) => api.delete(`/api/comments/${commentId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", post.id] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      addToast(t("post.commentDeleted"), { type: "success" });
+    },
+    onError: (err: unknown) => {
+      let message = t("post.deleteError");
+
+      if (err instanceof AxiosError && err.response?.data) {
+        const serverData = err.response.data as { message?: string };
+        if (serverData.message) {
+          message = serverData.message;
+        }
+      }
+
+      addToast(message, { type: "error" });
+    },
+  });
+
+  const realLikesCount = post.likedByUsers?.length ?? post.likesCount ?? 0;
+
+  const isLikedInitially =
+    post.likedByUsers?.some((u) => u.id === user?.id) ?? false;
+
+  const [localLikes, setLocalLikes] = useState<number>(realLikesCount);
+  const [isLiked, setIsLiked] = useState<boolean>(isLikedInitially);
+
+  const [isCommentsShown, setCommentsShown] = useState<boolean>(false);
+
+  const likeMutation = useMutation({
+    mutationFn: () => api.post("/api/like", { postId: post.id }),
+    onMutate: () => {
+      setLocalLikes((prev) => prev + 1);
+      setIsLiked(true);
+    },
+    onError: () => {
+      setLocalLikes(realLikesCount);
+      setIsLiked(isLikedInitially);
+      addToast(t("post.likeError"), { type: "error" });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  const dislikeMutation = useMutation({
+    mutationFn: () => api.post("/api/dislike", { postId: post.id }),
+    onMutate: () => {
+      setLocalLikes((prev) => prev - 1);
+      setIsLiked(false);
+    },
+    onError: () => {
+      setLocalLikes(realLikesCount);
+      setIsLiked(isLikedInitially);
+      addToast(t("post.dislikeError"), { type: "error" });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  const toggleComments = () => setCommentsShown((prev) => !prev);
+
+  const handleLikeClick = () => {
     if (!isAuthenticated) {
       addToast(t("post.loginToLike"), { type: "warning" });
       return;
     }
 
     if (isLiked) {
-      setLocalLikes((prev) => prev - 1);
-      setIsLiked(false);
+      dislikeMutation.mutate();
     } else {
-      setLocalLikes((prev) => prev + 1);
-      setIsLiked(true);
+      likeMutation.mutate();
     }
-  }
+  };
 
-  const author = users.find((u) => u.id === post.authorId);
+  const handleDeleteComment = (commentId: number) => {
+    if (!isAuthenticated) return;
+    deleteCommentMutation.mutate(commentId);
+  };
+
+  const postImageSrc = post.image
+    ? typeof post.image === "string" && post.image.startsWith("blob:")
+      ? post.image
+      : getImageUrl(post.image)
+    : null;
 
   return (
     <div className={style.post}>
@@ -53,17 +161,37 @@ export default function Post({ post }: { post: PostProps }) {
         <img
           alt="user avatar"
           className={style.profilephoto}
-          src={author?.avatar || "default-avatar.png"}
+          src={getImageUrl(author?.profileImage)}
+          onError={(e) => (e.currentTarget.src = "avatar.png")}
         />
         <div className={style.profiletext}>
-          <p className={style.primaryText}>{author?.name || t("post.unknown")}</p>
-          <p className={style.secondaryText}>{post.createdAt}</p>
+          <p className={style.primaryText}>
+            {authorLoading
+              ? t("post.loading")
+              : author
+                ? `${author.firstName || ""} ${author.secondName || ""}`.trim() ||
+                  author.username
+                : t("post.unknown")}
+          </p>
+          <p className={style.secondaryText}>
+            {new Date(post.creationDate).toLocaleString()}
+          </p>
         </div>
       </div>
 
       <div className={style.postContent}>
-        {post.image ? <img alt="post content" src={post.image} /> : null}
-        <p className={style.posttext}>{post.text}</p>
+        {postImageSrc && (
+          <img
+            alt="post content"
+            src={postImageSrc}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "avatar.png";
+            }}
+            style={{ maxWidth: "100%", height: "auto", objectFit: "contain" }}
+          />
+        )}
+        <p className={style.posttext}>{post.content}</p>
       </div>
 
       <div className={style.interactiveboard}>
@@ -75,14 +203,15 @@ export default function Post({ post }: { post: PostProps }) {
           />
           <p>{t("post.likesCount", { count: localLikes })}</p>
         </div>
+
         <div className={style.comments}>
           <Icon name="comment" />
           {isAuthenticated ? (
             <div className={style.commentDropdown}>
-              <p>{t("post.commentsCount", { count: postComments.length })}</p>
+              <p>{t("post.commentsCount", { count: comments.length })}</p>
               <Icon
-                name={isShown ? "arrow-up" : "arrow-down"}
-                onClick={changeShownStatus}
+                name={isCommentsShown ? "arrow-up" : "arrow-down"}
+                onClick={toggleComments}
               />
             </div>
           ) : (
@@ -91,25 +220,30 @@ export default function Post({ post }: { post: PostProps }) {
         </div>
       </div>
 
-      {isShown && (
+      {isCommentsShown && (
         <ul className={style.commentsList}>
-          {postComments.map((comment, index) => (
-            <li key={comment.id} className={style.commentsListBlock}>
-              #{index + 1} {comment.text}
-              {user?.id === comment.authorId && (
-                <Icon
-                  name="trash"
-                  onClick={() => {
-                    return null;
-                  }}
-                />
-              )}
-            </li>
-          ))}
+          {commentsLoading ? (
+            <li>{t("post.loadingComments")}...</li>
+          ) : comments.length === 0 ? null : (
+            comments.map((comment, index) => (
+              <li key={comment.id || index} className={style.commentsListBlock}>
+                <div className={style.commentText}>
+                  #{index + 1} {comment.text}
+                </div>
+
+                {user?.id === comment.authorId && (
+                  <Icon
+                    name="trash"
+                    onClick={() => handleDeleteComment(comment.id)}
+                  />
+                )}
+              </li>
+            ))
+          )}
         </ul>
       )}
 
-      {isAuthenticated && <Comment />}
+      {isAuthenticated && <Comment postId={post.id} />}
     </div>
   );
 }

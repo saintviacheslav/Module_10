@@ -59,22 +59,18 @@
   background: var(--bg-component-light);
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);
-  /* width: 575px; */
   font: 400 14px Poppins;
   resize: none;
   padding: 14px;
-  /* max-height: 58px; */
 }
 
 .textareaError {
   background: var(--bg-component-light);
   border: 1px solid var(--inp-incorrect);
   color: var(--inp-incorrect);
-  /* width: 575px; */
   font: 400 14px Poppins;
   resize: none;
   padding: 14px;
-  /* max-height: 58px; */
 }
 
 .inpError {
@@ -112,7 +108,6 @@
 .primaryText {
   font: 500 16px Inter;
   color: var(--text-primary);
-  /* height: 32px; */
 }
 
 .dropZone {

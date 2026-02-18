@@ -7,7 +7,6 @@
   background: var(--fill-positive);
   cursor: pointer;
   width: max-content;
-  /* max-width: 215px; */
 }
 
 .templateButton:hover {
@@ -18,6 +17,15 @@
 .templateButton:active {
   background-color: var(--btn-pressed) !important;
 }
+
+.templateButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+  background-color: #BCC3E3;
+  border: 1px solid #9DA6CB;
+}
+
 
 @media (max-width:500px) {
   .templateButton {

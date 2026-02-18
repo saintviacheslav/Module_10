@@ -6,6 +6,9 @@ import Button from "../Button/Button";
 import { useToast } from "../../context/ToastProvider";
 import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "../../lib/api/axios";
+import { AxiosError } from "axios";
 
 type ModalPostProps = {
   isOpen: boolean;
@@ -14,19 +17,96 @@ type ModalPostProps = {
 
 export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { addToast } = useToast();
+
   const [postTitle, setPostTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { addToast } = useToast();
 
   const MAX_TITLE_LENGTH = 50;
   const MAX_DESCRIPTION_LENGTH = 200;
 
+  async function uploadImageToServer(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const { data } = await api.post("/api/upload-image", formData);
+    return data.url;
+  }
+
+  const createPostMutation = useMutation({
+    mutationFn: async () => {
+      const postData: { title: string; content: string; image?: string } = {
+        title: postTitle.trim(),
+        content: description.trim(),
+      };
+
+      if (selectedFile && selectedFile.type.startsWith("image/")) {
+        try {
+          const uploadedUrl = await uploadImageToServer(selectedFile);
+          postData.image = uploadedUrl;
+        } catch (err) {
+          console.error("Image upload failed:", err);
+          throw new Error(t("modalPost.imageUploadFailed"));
+        }
+      }
+
+      const { data } = await api.post("/api/posts", postData);
+      return data;
+    },
+
+    onSuccess: (createdPost) => {
+      addToast(t("modalPost.postCreated"), { type: "success" });
+
+      const enhancedPost = {
+        ...createdPost,
+        image: createdPost.image || null,
+      };
+
+      queryClient.setQueryData(
+        ["posts"],
+        (old: { title: string; content: string; image?: string }[] | null) => {
+          if (!old) {
+            return [enhancedPost];
+          }
+          return [enhancedPost, ...old];
+        },
+      );
+
+      setPostTitle("");
+      setDescription("");
+      setSelectedFile(null);
+      setPreviewUrl("");
+      setFileError("");
+
+      onClose();
+    },
+
+    onError: (err: unknown) => {
+      let message = t("modalPost.postCreateError");
+
+      if (err instanceof AxiosError && err.response?.data) {
+        const serverMessage = (err.response.data as { message?: string })
+          ?.message;
+        if (serverMessage) {
+          message = serverMessage;
+        }
+      } else if (err instanceof Error) {
+        message = err.message;
+      }
+
+      addToast(message, { type: "error" });
+    },
+  });
+
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
@@ -42,10 +122,14 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   }, [previewUrl]);
 
   const validateAndSetFile = (file: File) => {
-    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const allowedTypes = ["image/jpeg", "image/png"] as const;
+    type AllowedFileType = (typeof allowedTypes)[number];
+    function isAllowedType(type: string): type is AllowedFileType {
+      return allowedTypes.includes(type as AllowedFileType);
+    }
     const maxSize = 10 * 1024 * 1024;
 
-    if (!allowedTypes.includes(file.type)) {
+    if (!isAllowedType(file.type)) {
       const msg = t("modalPost.invalidFileType");
       setFileError(msg);
       addToast(msg, { type: "error" });
@@ -84,9 +168,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) {
-      validateAndSetFile(file);
-    }
+    if (file) validateAndSetFile(file);
   };
 
   const handleZoneClick = () => {
@@ -99,7 +181,8 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       return;
     }
 
-    if (postTitle.length === MAX_TITLE_LENGTH) {
+    if (postTitle.length >= MAX_TITLE_LENGTH) {
+      addToast(t("modalPost.titleTooLong"), { type: "error" });
       return;
     }
 
@@ -108,19 +191,15 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       return;
     }
 
-    if (description.length === MAX_DESCRIPTION_LENGTH) {
+    if (description.length >= MAX_DESCRIPTION_LENGTH) {
+      addToast(t("modalPost.descriptionTooLong"), { type: "error" });
       return;
     }
 
-    addToast(t("modalPost.postCreated"), { type: "success" });
-
-    setPostTitle("");
-    setDescription("");
-    setSelectedFile(null);
-    setPreviewUrl("");
-    setFileError("");
-    onClose();
+    createPostMutation.mutate();
   };
+
+  const isSubmitting = createPostMutation.isPending;
 
   return (
     <>
@@ -128,7 +207,11 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
       <div className={style.modalPost}>
         <div className={style.modalHeader}>
           <h1 className={style.modalTitle}>{t("modalPost.createPost")}</h1>
-          <button onClick={onClose} className={style.closeBtn}>
+          <button
+            onClick={onClose}
+            className={style.closeBtn}
+            disabled={isSubmitting}
+          >
             <Icon
               name="cross"
               size={24}
@@ -153,10 +236,13 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               status={
                 postTitle.length === MAX_TITLE_LENGTH ? "error" : "default"
               }
-              errorText={t("modalPost.characterLimit", { max: MAX_TITLE_LENGTH })}
+              errorText={t("modalPost.characterLimit", {
+                max: MAX_TITLE_LENGTH,
+              })}
               value={postTitle}
               type="text"
               placeholder={t("modalPost.postTitlePlaceholder")}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -187,10 +273,11 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
           >
             <input
               type="file"
-              accept="image/jpeg,image/png,application/pdf"
+              accept="image/jpeg,image/png"
               style={{ display: "none" }}
               ref={fileInputRef}
               onChange={handleFileChange}
+              disabled={isSubmitting}
             />
             {selectedFile ? (
               <div className={style.selectedFile}>
@@ -207,7 +294,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
                     }}
                   />
                 ) : (
-                  <p>{selectedFile.name} (PDF)</p>
+                  <p>{selectedFile.name}</p>
                 )}
               </div>
             ) : (
@@ -232,7 +319,13 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
         </div>
 
         <div className={style.dropFooter}>
-          <Button onClick={handleCreatePost} name={t("modalPost.create")} />
+          <Button
+            onClick={handleCreatePost}
+            name={
+              isSubmitting ? t("modalPost.creating") : t("modalPost.create")
+            }
+            disabled={isSubmitting}
+          />
         </div>
       </div>
     </>

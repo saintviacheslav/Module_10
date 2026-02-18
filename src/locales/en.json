@@ -69,7 +69,8 @@
     "commentsCount": "{{count}} comments",
     "loginToLike": "You need to log in to like posts",
     "loginToComment": "You have to login to write comments",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "commentDeleted": "Comment deleted successfully"
   },
   "comment": {
     "commentEmpty": "Comment cannot be empty",
@@ -99,8 +100,8 @@
     "postCreated": "Post created successfully",
     "create": "Create",
     "selectFileOrDrag": "Select a file or drag and drop here",
-    "fileRestrictions": "JPG, PNG or PDF, file size no more than 10MB",
-    "invalidFileType": "Invalid file type. Only JPG, PNG, or PDF allowed.",
+    "fileRestrictions": "JPG, PNG file size no more than 10MB",
+    "invalidFileType": "Invalid file type. Only JPG, PNG allowed.",
     "fileTooLarge": "File too large. Max size: 10MB.",
     "characterLimit": "Reached the {{max}} character limit"
   }

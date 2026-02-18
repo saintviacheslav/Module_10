@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "../Icon/Icon";
 import { useTranslation } from "react-i18next";
+import { getImageUrl } from "../../utils/imageUrl";
 
 type SideMenuProps = {
   isOpen: boolean;
@@ -47,7 +48,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <img
               onClick={handleAvatarClick}
               alt="avatar"
-              src={`${process.env.PUBLIC_URL}/${user?.avatar}`}
+              src={getImageUrl(user?.profileImage)}
             ></img>
           )}
         </div>

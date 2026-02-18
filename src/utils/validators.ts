@@ -37,10 +37,6 @@ export function validateUsername(value: string, t: TFunc): string {
     return '';
   }
 
-  if (!trimmed.startsWith('@')) {
-    return t('errors.usernameMustStartWithAt');
-  }
-
   if (trimmed.length < 3) {
     return t('errors.usernameMinLength', { min: 3 });
   }

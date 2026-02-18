@@ -23,9 +23,9 @@ export default function SignIn() {
 
   const [emailValidCheck, setEmailValidCheck] = useState<boolean>(false);
   const [passwordValidCheck, setPasswordValidCheck] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const MAX_EMAIL_LENGTH = 50;
-
   const isEmailMax = values.email.length === MAX_EMAIL_LENGTH;
 
   async function handleSubmit(e: FormEvent) {
@@ -62,16 +62,29 @@ export default function SignIn() {
       return;
     }
 
-    const success = login(values.email, values.password);
+    setIsSubmitting(true);
 
-    if (!success) {
-      setFieldError("password", t("errors.invalidCredentials"));
-      addToast(t("errors.fixErrorsAbove"), { type: "error" });
-      return;
+    try {
+      await login(values.email, values.password);
+      addToast(t("errors.successfulAuth"), { type: "success" });
+      navigate("/");
+    } catch (err: unknown) {
+      let errMsg = t("errors.invalidCredentials");
+
+      if (err instanceof Error) {
+        errMsg = err.message || errMsg;
+      } else if (err && typeof err === "object" && "message" in err) {
+        const customErr = err as { message?: string };
+        if (customErr.message) {
+          errMsg = customErr.message;
+        }
+      }
+
+      setFieldError("password", errMsg);
+      addToast(errMsg, { type: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    addToast(t("errors.successfulAuth"), { type: "success" });
-    navigate("/");
   }
 
   return (
@@ -116,6 +129,7 @@ export default function SignIn() {
                     : "")
                 }
                 placeholder={t("auth.enterEmail")}
+                disabled={isSubmitting}
               />
             </div>
 
@@ -149,6 +163,7 @@ export default function SignIn() {
                 }
                 errorText={errors.password}
                 placeholder={t("auth.enterPassword")}
+                disabled={isSubmitting}
               />
             </div>
 

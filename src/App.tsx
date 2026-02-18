@@ -8,6 +8,8 @@ import SignUp from "./pages/signup/SignUp";
 import NotFound from "./pages/notfound/NotFound";
 import Profile from "./pages/profile/Profile";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { Box, CircularProgress } from "@mui/material";
+
 const ProfileInfo = lazy(() => import("./components/ProfileInfo/ProfileInfo"));
 const Statistics = lazy(() => import("./components/Statistics/Statistics"));
 function App() {
@@ -24,7 +26,20 @@ function App() {
               <Route
                 path="info"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minHeight: "50vh",
+                        }}
+                      >
+                        <CircularProgress size={60} thickness={4} />
+                      </Box>
+                    }
+                  >
                     <ProfileInfo />
                   </Suspense>
                 }
@@ -32,7 +47,20 @@ function App() {
               <Route
                 path="statistics"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minHeight: "50vh",
+                        }}
+                      >
+                        <CircularProgress size={60} thickness={4} />
+                      </Box>
+                    }
+                  >
                     <Statistics />
                   </Suspense>
                 }

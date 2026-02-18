@@ -2,7 +2,6 @@ import { FormEvent, useState } from "react";
 import style from "./signup.module.css";
 import Button from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
-import { users } from "../../mock/users";
 import { useForm } from "../../utils/useForm";
 import { validateEmail, validatePassword } from "../../utils/validators";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +9,11 @@ import { useAuth } from "../../context/AuthProvider";
 import { Icon } from "../../components/Icon/Icon";
 import { useToast } from "../../context/ToastProvider";
 import { useTranslation } from "react-i18next";
+import { AxiosError } from "axios";
 
 export default function SignUp() {
   const { t } = useTranslation();
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
   const { addToast } = useToast();
 
@@ -24,12 +24,12 @@ export default function SignUp() {
 
   const [emailValidCheck, setEmailValidCheck] = useState<boolean>(false);
   const [passwordValidCheck, setPasswordValidCheck] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const MAX_EMAIL_LENGTH = 50;
-
   const isEmailMax = values.email.length === MAX_EMAIL_LENGTH;
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const emailError = validateEmail(values.email, t);
@@ -63,27 +63,44 @@ export default function SignUp() {
       return;
     }
 
-    const emailExists = users.some((user) => user.email === values.email);
+    setIsSubmitting(true);
 
-    if (emailExists) {
-      setFieldError("email", t("errors.emailAlreadyExists"));
-      addToast(t("errors.fixErrorsAbove"), { type: "error" });
-      return;
+    try {
+      await signup(values.email, values.password);
+
+      addToast(t("errors.successfulRegistration"), { type: "success" });
+
+      setTimeout(() => {
+        navigate("/signin");
+      }, 1000);
+    } catch (err: unknown) {
+      let errMsg = t("errors.registrationFailed");
+
+      if (err instanceof AxiosError && err.response?.data) {
+        const serverData = err.response.data as { message?: string };
+        if (serverData.message) {
+          errMsg = serverData.message;
+        }
+      } else if (err instanceof Error) {
+        errMsg = err.message || errMsg;
+      }
+
+      const lowerMsg = errMsg.toLowerCase();
+
+      if (
+        lowerMsg.includes("email") ||
+        lowerMsg.includes("exists") ||
+        lowerMsg.includes("already")
+      ) {
+        setFieldError("email", errMsg);
+      } else {
+        setFieldError("password", errMsg);
+      }
+
+      addToast(errMsg, { type: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    users.push({
-      id: Date.now(),
-      email: values.email,
-      password: values.password,
-      name: "",
-      surname: "",
-      username: "@default",
-      avatar: "women.png",
-    });
-
-    login(values.email, values.password);
-    addToast(t("errors.successfulRegistration"), { type: "success" });
-    navigate("/");
   }
 
   return (
@@ -130,6 +147,7 @@ export default function SignUp() {
                     : "")
                 }
                 placeholder={t("auth.enterEmail")}
+                disabled={isSubmitting}
               />
             </div>
 
@@ -163,6 +181,7 @@ export default function SignUp() {
                 }
                 errorText={errors.password}
                 placeholder={t("auth.enterPassword")}
+                disabled={isSubmitting}
               />
             </div>
 

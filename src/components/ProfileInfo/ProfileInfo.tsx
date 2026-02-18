@@ -14,6 +14,10 @@ import { validateEmail, validateUsername } from "../../utils/validators";
 import { useToast } from "../../context/ToastProvider";
 import { Icon } from "../Icon/Icon";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "../../lib/api/axios";
+import { AxiosError } from "axios";
+import { getImageUrl } from "../../utils/imageUrl";
 
 type ProfileFormValues = {
   username: string;
@@ -25,7 +29,9 @@ export default function ProfileInfo() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
+  const queryClient = useQueryClient();
+  const { addToast } = useToast();
 
   const { values, errors, setFieldValue, setFieldError } =
     useForm<ProfileFormValues>({
@@ -34,15 +40,124 @@ export default function ProfileInfo() {
       description: "",
     });
 
-  const { addToast } = useToast();
-
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const MAX_TEXT_LENGTH = 50;
 
   const isUsernameMax = values.username.length === MAX_TEXT_LENGTH;
   const isEmailMax = values.email.length === MAX_TEXT_LENGTH;
+
+  const { data: profileData } = useQuery({
+    queryKey: ["me"],
+    queryFn: async () => {
+      const { data } = await api.get("/api/me");
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  useEffect(() => {
+    if (isInitialized) {
+      return;
+    }
+
+    const source = profileData || user;
+    if (source?.profileImage) {
+      setAvatarPreview(getImageUrl(source.profileImage));
+    }
+
+    setIsInitialized(true);
+  }, [profileData, user, isInitialized]);
+
+  const hasChanges =
+    values.username.trim() !== "" ||
+    values.email.trim() !== "" ||
+    values.description.trim() !== "" ||
+    avatarFile !== null;
+
+  async function uploadImageToServer(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const { data } = await api.post("/api/upload-image", formData);
+
+    return data.url;
+  }
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async () => {
+      const updateData: Partial<{
+        username: string;
+        email: string;
+        description: string;
+        profileImage: string;
+      }> = {};
+
+      if (values.username.trim()) {
+        updateData.username = values.username.trim();
+      }
+      if (values.email.trim()) {
+        updateData.email = values.email.trim();
+      }
+      if (values.description.trim()) {
+        updateData.description = values.description.trim();
+      }
+
+      if (avatarFile) {
+        try {
+          const uploadedUrl = await uploadImageToServer(avatarFile);
+          updateData.profileImage = uploadedUrl;
+        } catch (err) {
+          console.error("Image upload failed:", err);
+          throw new Error(t("profile.imageUploadFailed"));
+        }
+      }
+
+      const { data } = await api.put("/api/profile", updateData);
+
+      return data;
+    },
+
+    onSuccess: (updatedUser) => {
+      addToast(t("profile.profileUpdated"), { type: "success" });
+
+      updateUser(updatedUser);
+
+      queryClient.setQueryData(["me"], updatedUser);
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+
+      if (avatarPreview && avatarPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+
+      setAvatarFile(null);
+
+      if (updatedUser.profileImage) {
+        setAvatarPreview(getImageUrl(updatedUser.profileImage));
+      }
+
+      setFieldValue("username", "");
+      setFieldValue("email", "");
+      setFieldValue("description", "");
+    },
+
+    onError: (err: unknown) => {
+      let message = t("profile.updateError");
+
+      if (err instanceof AxiosError && err.response?.data?.message) {
+        message = err.response.data.message;
+      } else if (err instanceof Error) {
+        message = err.message;
+      }
+
+      console.error("Profile update error:", err);
+      addToast(message, { type: "error" });
+    },
+  });
 
   function handleAvatarClick() {
     fileInputRef.current?.click();
@@ -56,17 +171,25 @@ export default function ProfileInfo() {
 
     const validTypes = ["image/jpeg", "image/png", "image/svg+xml"];
     if (!validTypes.includes(file.type)) {
+      addToast(t("profile.invalidAvatarType"), { type: "error" });
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      addToast(t("profile.fileTooLarge"), { type: "error" });
       return;
     }
 
     const objectUrl = URL.createObjectURL(file);
     setAvatarPreview(objectUrl);
+    setAvatarFile(file);
     e.target.value = "";
   }
 
   useEffect(() => {
     return () => {
-      if (avatarPreview) {
+      if (avatarPreview && avatarPreview.startsWith("blob:")) {
         URL.revokeObjectURL(avatarPreview);
       }
     };
@@ -88,10 +211,12 @@ export default function ProfileInfo() {
       }
     }
 
-    const usernameError = validateUsername(values.username, t);
-    if (usernameError) {
-      setFieldError("username", usernameError);
-      hasError = true;
+    if (values.username.trim() !== "") {
+      const usernameError = validateUsername(values.username, t);
+      if (usernameError) {
+        setFieldError("username", usernameError);
+        hasError = true;
+      }
     }
 
     if (isUsernameMax) {
@@ -118,7 +243,7 @@ export default function ProfileInfo() {
       return;
     }
 
-    addToast(t("profile.profileUpdated"), { type: "success" });
+    updateProfileMutation.mutate();
   }
 
   function handleLogout() {
@@ -135,7 +260,9 @@ export default function ProfileInfo() {
           <img
             onClick={handleAvatarClick}
             className={style.avatarPicture}
-            src={avatarPreview || `${process.env.PUBLIC_URL}/${user?.avatar}`}
+            src={
+              avatarPreview || getImageUrl(user?.profileImage) || "avatar.png"
+            }
             alt="avatar"
           />
           <input
@@ -144,10 +271,11 @@ export default function ProfileInfo() {
             accept="image/jpeg,image/png,image/svg+xml"
             style={{ display: "none" }}
             onChange={handleFileChange}
+            disabled={updateProfileMutation.isPending}
           />
           <div className={style.userMainText}>
             <p className={style.primaryText}>
-              {user?.name} {user?.surname}
+              {user?.firstName} {user?.secondName}
             </p>
             <p
               style={{ cursor: "pointer" }}
@@ -186,6 +314,7 @@ export default function ProfileInfo() {
                   ? t("modalPost.characterLimit", { max: MAX_TEXT_LENGTH })
                   : "")
               }
+              disabled={updateProfileMutation.isPending}
             />
           </div>
 
@@ -203,9 +332,7 @@ export default function ProfileInfo() {
                 if (newValue.length <= MAX_TEXT_LENGTH) {
                   setFieldValue("email", newValue);
                 }
-                if (errors.email) {
-                  setFieldError("email", "");
-                }
+                if (errors.email) setFieldError("email", "");
               }}
               value={values.email}
               type="text"
@@ -217,6 +344,7 @@ export default function ProfileInfo() {
                   ? t("modalPost.characterLimit", { max: MAX_TEXT_LENGTH })
                   : "")
               }
+              disabled={updateProfileMutation.isPending}
             />
           </div>
 
@@ -240,7 +368,14 @@ export default function ProfileInfo() {
               }
             />
           </div>
-          <Button name={t("profile.saveProfileChanges")} />
+          <Button
+            name={
+              updateProfileMutation.isPending
+                ? t("profile.saving")
+                : t("profile.saveProfileChanges")
+            }
+            disabled={updateProfileMutation.isPending || !hasChanges}
+          />
         </div>
       </form>
 
