@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import style from "./signup.module.css";
 import Button from "../../components/ButtonClass/ButtonClass";
 import Input from "../../components/Input/Input";
@@ -103,6 +103,22 @@ export default function SignUp() {
     }
   }
 
+  function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
+    const newEmail = e.target.value;
+    if (newEmail.length <= MAX_EMAIL_LENGTH) {
+      setFieldValue("email", newEmail);
+    }
+    const isValid = validateEmail(newEmail, t) === "";
+    setEmailValidCheck(isValid);
+  }
+
+  function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
+    const newPassword = e.target.value;
+    setFieldValue("password", newPassword);
+    const isValid = validatePassword(newPassword, t) === "";
+    setPasswordValidCheck(isValid);
+  }
+
   return (
     <div className={style.container}>
       <main className={style.contentContainer}>
@@ -129,14 +145,7 @@ export default function SignUp() {
 
               <Input
                 value={values.email}
-                onChange={(e) => {
-                  const newEmail = e.target.value;
-                  if (newEmail.length <= MAX_EMAIL_LENGTH) {
-                    setFieldValue("email", newEmail);
-                  }
-                  const isValid = validateEmail(newEmail, t) === "";
-                  setEmailValidCheck(isValid);
-                }}
+                onChange={handleEmailChange}
                 status={errors.email || isEmailMax ? "error" : "default"}
                 errorText={
                   errors.email ||
@@ -166,12 +175,7 @@ export default function SignUp() {
               <Input
                 type="password"
                 value={values.password}
-                onChange={(e) => {
-                  const newPassword = e.target.value;
-                  setFieldValue("password", newPassword);
-                  const isValid = validatePassword(newPassword, t) === "";
-                  setPasswordValidCheck(isValid);
-                }}
+                onChange={handlePasswordChange}
                 status={
                   errors.password
                     ? "error"
@@ -196,7 +200,9 @@ export default function SignUp() {
               {t("auth.haveAccount")}{" "}
               <span
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate("/signin")}
+                onClick={() => {
+                  navigate("/signin");
+                }}
                 className={style.switchAuthPages}
               >
                 {t("common.signIn")}

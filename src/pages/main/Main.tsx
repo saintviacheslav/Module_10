@@ -40,8 +40,12 @@ function Main() {
   const { user, isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const {
     data: posts = [],
@@ -90,7 +94,9 @@ function Main() {
               <img
                 src={getImageUrl(user?.profileImage)}
                 alt="avatar"
-                onError={(e) => (e.currentTarget.src = "avatar.png")}
+                onError={(e) => {
+                  e.currentTarget.src = "avatar.png";
+                }}
               />
               <p>{t("main.whatsNew")}</p>
             </div>
@@ -108,7 +114,9 @@ function Main() {
               </p>
               <Button
                 name={t("common.tryAgain")}
-                onClick={() => refetchPosts()}
+                onClick={() => {
+                  refetchPosts();
+                }}
               />
             </div>
           ) : posts.length === 0 ? (
@@ -120,7 +128,9 @@ function Main() {
                   new Date(b.creationDate).getTime() -
                   new Date(a.creationDate).getTime(),
               )
-              .map((post) => <Post key={post.id} post={post} />)
+              .map((post) => {
+                return <Post key={post.id} post={post} />;
+              })
           )}
         </section>
       </section>
@@ -142,7 +152,9 @@ function Main() {
                         className={style.miniPersonAvatar}
                         src={getImageUrl(sUser.profileImage)}
                         alt={sUser.username}
-                        onError={(e) => (e.currentTarget.src = "avatar.png")}
+                        onError={(e) => {
+                          e.currentTarget.src = "avatar.png";
+                        }}
                       />
                       <div className={style.miniPersonInfo}>
                         <p className={style.primaryText}>
@@ -172,7 +184,9 @@ function Main() {
                         className={style.miniPersonAvatar}
                         src={getImageUrl(sGroup.photo)}
                         alt={sGroup.title}
-                        onError={(e) => (e.currentTarget.src = "avatar.png")}
+                        onError={(e) => {
+                          e.currentTarget.src = "avatar.png";
+                        }}
                       />
                       <div className={style.miniPersonInfo}>
                         <p className={style.primaryText}>{sGroup.title}</p>

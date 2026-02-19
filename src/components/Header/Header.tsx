@@ -32,6 +32,16 @@ function Header() {
     navigate("/signin");
   }
 
+  function handleIconClick() {
+    setMenuOpen((prev) => {
+      return !prev;
+    });
+  }
+
+  function handleClose() {
+    setMenuOpen(false);
+  }
+
   return (
     <>
       <header>
@@ -51,7 +61,7 @@ function Header() {
           >
             <Icon
               name="burger-menu"
-              onClick={() => setMenuOpen((prev) => !prev)}
+              onClick={handleIconClick}
               className={style.headerMenuBurger}
             />
 
@@ -93,7 +103,7 @@ function Header() {
         )}
       </header>
 
-      <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <SideMenu isOpen={menuOpen} onClose={handleClose} />
     </>
   );
 }

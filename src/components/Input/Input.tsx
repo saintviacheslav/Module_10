@@ -29,6 +29,12 @@ export default function Input({
 
   const inputType = type === "password" && showPassword ? "text" : type;
 
+  function handlePasswordClick() {
+    setShowPassword((prev) => {
+      return !prev;
+    });
+  }
+
   return (
     <div className={style.wrapper}>
       <div className={style.inputWrapper}>
@@ -45,7 +51,7 @@ export default function Input({
           <button
             type="button"
             className={style.eyeButton}
-            onClick={() => setShowPassword((prev) => !prev)}
+            onClick={handlePasswordClick}
           >
             <Icon name={showPassword ? "eye-crossed" : "eye"} size={20} />
           </button>

@@ -1,7 +1,7 @@
 import style from "./post.module.css";
 import { useAuth } from "../../context/AuthProvider";
 import Comment from "../../components/Comment/Comment";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../lib/api/axios";
 import { Icon } from "../../components/Icon/Icon";
@@ -67,7 +67,9 @@ export default function Post({ post }: { post: PostProps }) {
   });
 
   const deleteCommentMutation = useMutation({
-    mutationFn: (commentId: number) => api.delete(`/api/comments/${commentId}`),
+    mutationFn: (commentId: number) => {
+      return api.delete(`/api/comments/${commentId}`);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", post.id] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
@@ -90,7 +92,9 @@ export default function Post({ post }: { post: PostProps }) {
   const realLikesCount = post.likedByUsers?.length ?? post.likesCount ?? 0;
 
   const isLikedInitially =
-    post.likedByUsers?.some((u) => u.id === user?.id) ?? false;
+    post.likedByUsers?.some((u) => {
+      return u.id === user?.id;
+    }) ?? false;
 
   const [localLikes, setLocalLikes] = useState<number>(realLikesCount);
   const [isLiked, setIsLiked] = useState<boolean>(isLikedInitially);
@@ -98,9 +102,13 @@ export default function Post({ post }: { post: PostProps }) {
   const [isCommentsShown, setCommentsShown] = useState<boolean>(false);
 
   const likeMutation = useMutation({
-    mutationFn: () => api.post("/api/like", { postId: post.id }),
+    mutationFn: () => {
+      return api.post("/api/like", { postId: post.id });
+    },
     onMutate: () => {
-      setLocalLikes((prev) => prev + 1);
+      setLocalLikes((prev) => {
+        return prev + 1;
+      });
       setIsLiked(true);
     },
     onError: () => {
@@ -114,9 +122,13 @@ export default function Post({ post }: { post: PostProps }) {
   });
 
   const dislikeMutation = useMutation({
-    mutationFn: () => api.post("/api/dislike", { postId: post.id }),
+    mutationFn: () => {
+      return api.post("/api/dislike", { postId: post.id });
+    },
     onMutate: () => {
-      setLocalLikes((prev) => prev - 1);
+      setLocalLikes((prev) => {
+        return prev - 1;
+      });
       setIsLiked(false);
     },
     onError: () => {
@@ -129,7 +141,11 @@ export default function Post({ post }: { post: PostProps }) {
     },
   });
 
-  const toggleComments = () => setCommentsShown((prev) => !prev);
+  const toggleComments = () => {
+    setCommentsShown((prev) => {
+      return !prev;
+    });
+  };
 
   const handleLikeClick = () => {
     if (!isAuthenticated) {
@@ -145,7 +161,9 @@ export default function Post({ post }: { post: PostProps }) {
   };
 
   const handleDeleteComment = (commentId: number) => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      return;
+    }
     deleteCommentMutation.mutate(commentId);
   };
 
@@ -155,6 +173,15 @@ export default function Post({ post }: { post: PostProps }) {
       : getImageUrl(post.image)
     : null;
 
+  function handleError(e: SyntheticEvent<HTMLImageElement>) {
+    e.currentTarget.src = "avatar.png";
+  }
+
+  function handleErrorMore(e: SyntheticEvent<HTMLImageElement>) {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "avatar.png";
+  }
+
   return (
     <div className={style.post}>
       <div className={style.profileinfo}>
@@ -162,7 +189,7 @@ export default function Post({ post }: { post: PostProps }) {
           alt="user avatar"
           className={style.profilephoto}
           src={getImageUrl(author?.profileImage)}
-          onError={(e) => (e.currentTarget.src = "avatar.png")}
+          onError={handleError}
         />
         <div className={style.profiletext}>
           <p className={style.primaryText}>
@@ -184,10 +211,7 @@ export default function Post({ post }: { post: PostProps }) {
           <img
             alt="post content"
             src={postImageSrc}
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = "avatar.png";
-            }}
+            onError={handleErrorMore}
             style={{ maxWidth: "100%", height: "auto", objectFit: "contain" }}
           />
         )}
@@ -234,7 +258,9 @@ export default function Post({ post }: { post: PostProps }) {
                 {user?.id === comment.authorId && (
                   <Icon
                     name="trash"
-                    onClick={() => handleDeleteComment(comment.id)}
+                    onClick={() => {
+                      handleDeleteComment(comment.id);
+                    }}
                   />
                 )}
               </li>

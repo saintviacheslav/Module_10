@@ -19,7 +19,10 @@ type Toast = {
 };
 
 type ToastContextType = {
-  addToast: (message: string, options?: { type?: ToastType; duration?: number }) => void;
+  addToast: (
+    message: string,
+    options?: { type?: ToastType; duration?: number },
+  ) => void;
 };
 
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -38,20 +41,33 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback(
-    (message: string, options: { type?: ToastType; duration?: number } = {}) => {
+    (
+      message: string,
+      options: { type?: ToastType; duration?: number } = {},
+    ) => {
       const { type = "success", duration = 6000 } = options;
       const id = toastIdCounter++;
-      setToasts((prev) => [...prev, { id, message, type, duration }]);
+      setToasts((prev) => {
+        return [...prev, { id, message, type, duration }];
+      });
 
       setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
+        setToasts((prev) => {
+          return prev.filter((t) => {
+            return t.id !== id;
+          });
+        });
       }, duration);
     },
-    []
+    [],
   );
 
   const removeToast = useCallback((id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts((prev) => {
+      return prev.filter((t) => {
+        return t.id !== id;
+      });
+    });
   }, []);
 
   const toastContainer = (
@@ -64,7 +80,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <p className={style.toastText}>{toast.message}</p>
           <button
             className={style.closeButton}
-            onClick={() => removeToast(toast.id)}
+            onClick={() => {
+              removeToast(toast.id);
+            }}
           >
             <Icon name="cross" />
           </button>

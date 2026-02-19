@@ -3,7 +3,7 @@ import Input from "../Input/Input";
 import DescriptionTextarea from "../DescriptionTextArea/DescriptionTextArea";
 import style from "./profileinfo.module.css";
 import { useTheme } from "../../context/ThemeProvider";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
@@ -251,6 +251,25 @@ export default function ProfileInfo() {
     navigate("/");
   }
 
+  function handleChangeUsername(e: ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value;
+    if (newValue.length <= MAX_TEXT_LENGTH) {
+      setFieldValue("username", newValue);
+    }
+    if (errors.username) {
+      setFieldError("username", "");
+    }
+  }
+  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value;
+    if (newValue.length <= MAX_TEXT_LENGTH) {
+      setFieldValue("email", newValue);
+    }
+    if (errors.email) {
+      setFieldError("email", "");
+    }
+  }
+
   return (
     <div className={style.editContent}>
       <form className={style.editProfileForm} onSubmit={handleSubmit}>
@@ -297,13 +316,7 @@ export default function ProfileInfo() {
               {errors.username && <Icon name="cross-small" />}
             </div>
             <Input
-              onChange={(e) => {
-                const newValue = e.target.value;
-                if (newValue.length <= MAX_TEXT_LENGTH) {
-                  setFieldValue("username", newValue);
-                }
-                if (errors.username) setFieldError("username", "");
-              }}
+              onChange={handleChangeUsername}
               value={values.username}
               type="text"
               placeholder={user?.username ?? "@username"}
@@ -327,13 +340,7 @@ export default function ProfileInfo() {
               {errors.email && <Icon name="cross-small" />}
             </div>
             <Input
-              onChange={(e) => {
-                const newValue = e.target.value;
-                if (newValue.length <= MAX_TEXT_LENGTH) {
-                  setFieldValue("email", newValue);
-                }
-                if (errors.email) setFieldError("email", "");
-              }}
+              onChange={handleChangeEmail}
               value={values.email}
               type="text"
               placeholder={user?.email ?? "example@mail.com"}
@@ -358,7 +365,9 @@ export default function ProfileInfo() {
 
             <DescriptionTextarea
               value={values.description}
-              onChange={(newValue) => setFieldValue("description", newValue)}
+              onChange={(newValue) => {
+                setFieldValue("description", newValue);
+              }}
               maxLength={200}
               placeholder={t("profile.writeDescriptionPlaceholder")}
               textareaClassName={

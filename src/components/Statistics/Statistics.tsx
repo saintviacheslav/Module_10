@@ -117,7 +117,11 @@ export default function Statistics() {
         ) : null}
         <ChartSwitcher
           isChart={showChart}
-          onToggle={() => setShowChart((prev) => !prev)}
+          onToggle={() => {
+            setShowChart((prev) => {
+              return !prev;
+            });
+          }}
         />
         <p>
           {showChart

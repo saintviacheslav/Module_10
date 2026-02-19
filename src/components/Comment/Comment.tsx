@@ -67,7 +67,9 @@ export default function Comment({ postId }: CommentProps) {
 
       queryClient.setQueryData<NewCommentResponse[]>(
         ["comments", postId],
-        (old = []) => [...old, optimisticComment],
+        (old = []) => {
+          return [...old, optimisticComment];
+        },
       );
 
       queryClient.setQueryData<PostType[]>(["posts"], (oldPosts = []) =>

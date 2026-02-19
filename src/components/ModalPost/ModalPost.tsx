@@ -1,6 +1,6 @@
 import style from "./modalpost.module.css";
 import { Icon } from "../Icon/Icon";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { useToast } from "../../context/ToastProvider";
@@ -175,6 +175,13 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
     fileInputRef.current?.click();
   };
 
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const newTitle = e.target.value;
+    if (newTitle.length <= MAX_TITLE_LENGTH) {
+      setPostTitle(newTitle);
+    }
+  }
+
   const handleCreatePost = () => {
     if (!postTitle.trim()) {
       addToast(t("modalPost.postTitleEmpty"), { type: "error" });
@@ -227,12 +234,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               <p>{t("modalPost.postTitle")}</p>
             </div>
             <Input
-              onChange={(e) => {
-                const newTitle = e.target.value;
-                if (newTitle.length <= MAX_TITLE_LENGTH) {
-                  setPostTitle(newTitle);
-                }
-              }}
+              onChange={handleChange}
               status={
                 postTitle.length === MAX_TITLE_LENGTH ? "error" : "default"
               }
