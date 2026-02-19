@@ -12,7 +12,7 @@ export default function ThemeSwitcher() {
       onClick={toggleTheme}
       className={`${style.themeBlock} ${isDark ? style.dark : ""}`}
     >
-      <div
+      <span
         className={`${style.themeCircle} ${
           isDark ? style.themeCircleActive : ""
         }`}

@@ -15,7 +15,7 @@ export default function ChartSwitcher({ isChart, onToggle }: ChartSwitcherProps)
       onClick={onToggle}
       className={`${style.themeBlock} ${isChart ? style.dark : ""}`}
     >
-      <div
+      <span
         className={`${style.themeCircle} ${
           isChart ? style.themeCircleActive : ""
         }`}
