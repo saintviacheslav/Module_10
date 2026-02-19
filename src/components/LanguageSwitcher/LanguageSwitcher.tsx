@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import style from "./LanguageSwitcher.module.css";
+import Button from "../Button/Button";
 
 const LANGUAGES = [
   { code: "en", label: "EN" },
@@ -12,14 +13,16 @@ export default function LanguageSwitcher() {
   return (
     <div className={style.wrapper}>
       {LANGUAGES.map(({ code, label }) => (
-        <button
+        <Button
           key={code}
           type="button"
           className={`${style.langButton} ${i18n.language === code ? style.active : ""}`}
-          onClick={() => i18n.changeLanguage(code)}
+          onClick={() => {
+            i18n.changeLanguage(code);
+          }}
         >
           {label}
-        </button>
+        </Button>
       ))}
     </div>
   );
