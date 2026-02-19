@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import style from "./descriptiontextarea.module.css";
 import { Icon } from "../Icon/Icon";
 import { useTranslation } from "react-i18next";
@@ -32,20 +32,29 @@ export default function DescriptionTextarea({
   const isMax = value.length === maxLength;
   const shouldShowInfo = value.trim().length > 0;
 
+  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    const newValue = e.target.value;
+    if (newValue.length <= maxLength) {
+      onChange(newValue);
+    }
+  }
+
+  function handleFocus (){
+    setIsFocused(true)
+  }
+  function handleBlur (){
+    setIsFocused(false)
+  }
+
   return (
     <div className={`${style.container} ${className}`}>
       <textarea
         className={`${style.textarea} ${isMax ? style.textareaError : ""} ${textareaClassName}`}
         placeholder={t("profile.writeDescriptionPlaceholder")}
         value={value}
-        onChange={(e) => {
-          const newValue = e.target.value;
-          if (newValue.length <= maxLength) {
-            onChange(newValue);
-          }
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         rows={4}
       />
 
