@@ -1,4 +1,4 @@
-.adding_comment {
+.addingComment {
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -11,18 +11,13 @@
   font: 500 14px Poppins;
 }
 
-.textarea {
-  background: var(--bg-component-light);
-  border: 1px solid var(--border-soft);
+.secondaryText {
+  font: 400 16px Inter;
   color: var(--text-secondary);
-  max-width: 652px;
-  font: 400 14px Poppins;
-  resize: none;
-  padding: 14px;
-  max-height: 58px;
+  height: 24px;
 }
 
-.textarea:focus {
-  outline: none;
-  border-color: var(--comp-focus);
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
 }

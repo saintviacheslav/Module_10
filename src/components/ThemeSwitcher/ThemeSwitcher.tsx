@@ -1,16 +1,22 @@
 import { useTheme } from "../../context/ThemeProvider";
 import style from "../ThemeSwitcher/themeswitcher.module.css";
+import { Theme } from "../../context/ThemeProvider";
+import Button from "../Button/Button";
 
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === "dark";
+  const isDark = theme === Theme.DARK;
 
   return (
-    <button
-      className={`${style.themeBlock} ${isDark ? style.dark : ""}`}
+    <Button
       onClick={toggleTheme}
+      className={`${style.themeBlock} ${isDark ? style.dark : ""}`}
     >
-      <div className={`${style.themeCircle} ${isDark ? style.themeCircleActive : ""}`} />
-    </button>
+      <span
+        className={`${style.themeCircle} ${
+          isDark ? style.themeCircleActive : ""
+        }`}
+      />
+    </Button>
   );
 }

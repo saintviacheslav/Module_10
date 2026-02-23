@@ -1,15 +1,31 @@
-import React from "react";
 import style from "./button.module.css";
+import React, { ReactNode } from "react";
 
 interface ButtonProps {
-  name: string;
+  name?: string;
+  children?: ReactNode;
   onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+  [key: string]: unknown;
 }
-//передавать класснейм с разной шириной
-export default function Button({ name, onClick, ...props }: ButtonProps) {
+
+export default function Button({
+  name,
+  children,
+  onClick,
+  className = "",
+  disabled = false,
+  ...props
+}: ButtonProps) {
   return (
-    <button onClick={onClick} className={style.templateButton}>
-      {name}
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${style.templateButton} ${className}`}
+      {...props}
+    >
+      {children || name}
     </button>
   );
 }

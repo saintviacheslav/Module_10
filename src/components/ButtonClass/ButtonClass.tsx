@@ -10,14 +10,13 @@ interface ButtonState {
   isHovered: boolean;
 }
 
-class ButtonClass extends Component<ButtonProps, ButtonState> {
+class Button extends Component<ButtonProps, ButtonState> {
   constructor(props: ButtonProps) {
     super(props);
 
     this.state = {
       isHovered: false,
     };
-
   }
 
   static getDerivedStateFromProps(
@@ -25,9 +24,6 @@ class ButtonClass extends Component<ButtonProps, ButtonState> {
     prevState: ButtonState,
   ) {
     return null;
-  }
-
-  componentDidMount() {
   }
 
   shouldComponentUpdate(nextProps: ButtonProps, nextState: ButtonState) {
@@ -38,27 +34,7 @@ class ButtonClass extends Component<ButtonProps, ButtonState> {
     return null;
   }
 
-  componentDidUpdate(
-    prevProps: ButtonProps,
-    prevState: ButtonState,
-    snapshot: any,
-  ) {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillMount() {
-  }
-
-  componentWillReceiveProps(nextProps: ButtonProps) {
-  }
-
-  componentWillUpdate(nextProps: ButtonProps, nextState: ButtonState) {
-  }
-
   render() {
-
     const { name, onClick } = this.props;
 
     return (
@@ -69,4 +45,4 @@ class ButtonClass extends Component<ButtonProps, ButtonState> {
   }
 }
 
-export default ButtonClass;
+export default Button;

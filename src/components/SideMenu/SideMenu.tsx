@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./sidemenu.module.css";
-import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "../Icon/Icon";
+import { useTranslation } from "react-i18next";
+import { getImageUrl } from "../../utils/imageUrl";
 
 type SideMenuProps = {
   isOpen: boolean;
@@ -10,14 +12,19 @@ type SideMenuProps = {
 };
 
 function SideMenu({ isOpen, onClose }: SideMenuProps) {
+  const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+  }, [isOpen]);
 
   function handleAvatarClick() {
     navigate("/profile");
     onClose();
   }
-  
+
   if (!isOpen) {
     return null;
   }
@@ -28,7 +35,9 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
 
       <aside className={style.menu}>
         <div className={style.menuHeader}>
-          <LogoImg
+          <Icon
+            name="logo"
+            size={48}
             className={style.menuLogo}
             onClick={() => {
               navigate("/");
@@ -39,7 +48,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <img
               onClick={handleAvatarClick}
               alt="avatar"
-              src={user?.avatar}
+              src={getImageUrl(user?.profileImage)}
             ></img>
           )}
         </div>
@@ -54,7 +63,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   onClose();
                 }}
               >
-                Sign Up
+                {t("common.signUp")}
               </p>
               <p
                 className={style.menuItem}
@@ -63,7 +72,7 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   onClose();
                 }}
               >
-                Sign In
+                {t("common.signIn")}
               </p>
             </>
           ) : (
@@ -71,20 +80,20 @@ function SideMenu({ isOpen, onClose }: SideMenuProps) {
               <p
                 className={style.menuItem}
                 onClick={() => {
-                  navigate("/profile");
+                  navigate("/profile/info");
                   onClose();
                 }}
               >
-                Profile Info
+                {t("common.profileInfo")}
               </p>
               <p
                 className={style.menuItem}
                 onClick={() => {
-                  navigate("/profile");
+                  navigate("/profile/statistics");
                   onClose();
                 }}
               >
-                Statistics
+                {t("common.statistics")}
               </p>
             </>
           )}

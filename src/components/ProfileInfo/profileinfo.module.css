@@ -1,0 +1,184 @@
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.segmentedControl {
+  display: flex;
+  padding: 4px;
+  background-color: var(--bg-surface);
+}
+
+.segmentedTextActive {
+  background-color: var(--fill-positive);
+}
+
+.segmentedText {
+  padding: 4px 12px;
+  font: 500 16px Inter;
+  cursor: pointer;
+
+}
+
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  height: 24px;
+}
+
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+}
+
+.hint {
+  max-width: 327px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hintContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 14px Poppins;
+}
+
+.textarea {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  width: 575px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+}
+
+.textareaError {
+  background: var(--bg-component-light);
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+  width: 575px;
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+}
+
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  height: 24px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--comp-focus);
+}
+
+.validateInfo {
+  display: flex;
+  gap: 8px;
+}
+
+.title {
+  font: 600 28px Inter;
+}
+
+.editContent {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 50px;
+}
+
+.editProfileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.profileInfoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.userMainInfo {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.avatarPicture {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editPreferencesBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.editPreferencesItem {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.themeSwitcher,
+.languageSwitcher {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width:900px) {
+  .editContent {
+    display: flex;
+    flex-direction: column-reverse;
+
+  }
+
+  .textarea {
+    width: 100%;
+  }
+  .textareaError {
+    width: 100%;
+  }
+
+  .profileInfo {
+    padding: 0 12px;
+  }
+
+  .editPreferencesBlock {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width:600px) {
+  .editContent {
+  padding: 0 12px;
+  }
+}
+
+@media (max-width:400px){
+  .hint {
+    max-width: 310px;
+  }
+}

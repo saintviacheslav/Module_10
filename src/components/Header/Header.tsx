@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "./header.module.css";
-import ThemeToggler from "../ThemeToggler/ThemeToggler";
 import SideMenu from "../SideMenu/SideMenu";
 import { useAuth } from "../../context/AuthProvider";
-import { ReactComponent as LogoImg } from "../../assets/images/sidekick_logo.svg";
-import { ReactComponent as BurgerMenu } from "../../assets/images/burgermenu.svg";
 import { useLocation, useNavigate } from "react-router-dom";
-//по контексту отображать разное хэдер меню или его полностью скрывать
-//а также на какой странице находимся разная высота у хэдера
+import { Icon } from "../../components/Icon/Icon";
+import { useTranslation } from "react-i18next";
+import { getImageUrl } from "../../utils/imageUrl";
+
 function Header() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const location = useLocation();
@@ -19,71 +19,82 @@ function Header() {
   function handleLogoClick() {
     navigate("/");
   }
+
   function handleAvatarClick() {
     navigate("/profile");
   }
+
   function handleSignUpClick() {
     navigate("/signup");
   }
+
   function handleSignInClick() {
     navigate("/signin");
+  }
+
+  function handleIconClick() {
+    setMenuOpen((prev) => {
+      return !prev;
+    });
+  }
+
+  function handleClose() {
+    setMenuOpen(false);
   }
 
   return (
     <>
       <header>
-        {/* {menuOpen && (
-          <div className={style.backdrop} onClick={() => setMenuOpen(false)} />
-        )} */}
-
         <div className={style.logo}>
-          <LogoImg
+          <Icon
+            name="logo"
             onClick={handleLogoClick}
-            style={{ color: "var(--text-primary)", cursor: "pointer" }}
+            style={{ width: "94px", cursor: "pointer" }}
           />
         </div>
+
         {!isAuthPage && (
           <div
-            className={`${style.header_menu} ${isAuthenticated ? style.has_LoggedIn : ""} `}
+            className={`${style.headerMenu} ${
+              isAuthenticated ? style.hasLoggedIn : ""
+            }`}
           >
-            <BurgerMenu
-              onClick={() => {
-                setMenuOpen((prev) => !prev);
-              }}
+            <Icon
+              name="burger-menu"
+              onClick={handleIconClick}
               className={style.headerMenuBurger}
-            ></BurgerMenu>
+            />
+
             <div
               className={`${style.menuContent} 
-                      ${menuOpen ? style.open : ""} 
-                      ${isAuthenticated ? style.has_LoggedIn : ""}`}
+                        ${menuOpen ? style.open : ""} 
+                        ${isAuthenticated ? style.hasLoggedIn : ""}`}
             >
               {isAuthenticated ? (
                 <>
-                  {/* <ThemeToggler /> */}
                   <img
                     className={style.avatarImg}
                     onClick={handleAvatarClick}
                     alt="avatar"
-                    src={user?.avatar}
-                  ></img>
-                  <p>
-                    {user?.name} {user?.surname}
+                    src={getImageUrl(user?.profileImage)}
+                  />
+                  <p onClick={handleAvatarClick}>
+                    {user?.firstName} {user?.secondName}
                   </p>
                 </>
               ) : (
                 <>
-                  {/* <ThemeToggler /> */}
                   <p
                     className={style.headerMenuText}
                     onClick={handleSignUpClick}
                   >
-                    Sign Up
+                    {t("common.signUp")}
                   </p>
                   <p
                     className={style.headerMenuText}
                     onClick={handleSignInClick}
                   >
-                    Sign In
+                    {t("common.signIn")}
                   </p>
                 </>
               )}
@@ -91,7 +102,8 @@ function Header() {
           </div>
         )}
       </header>
-      <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      <SideMenu isOpen={menuOpen} onClose={handleClose} />
     </>
   );
 }

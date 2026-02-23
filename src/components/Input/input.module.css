@@ -9,7 +9,93 @@
   max-height: 48px;
 }
 
-.templateInput:focus{
+.templateInput:focus {
   outline: none;
   border-color: var(--comp-focus);
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.default {
+  border-color: var(--border-soft);
+}
+
+.error:focus {
+  border-color: var(--inp-incorrect);
+  color: var(--inp-incorrect);
+}
+
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eyeButton svg {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.eyeButton:hover svg {
+  color: var(--text-primary);
+}
+
+.templateInput {
+  padding-right: 40px;
+}
+
+.templateInput[type="password"],
+.templateInput[type="text"] {
+  padding-right: 40px;
+}
+
+.errorText {
+  font: 400 14px Poppins;
+  color: var(--inp-incorrect);
+}
+
+.successText {
+  font: 400 14px Poppins;
+  color: var(--fill-positive);
+}
+
+.validateInfo {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.inputBlock {
+  width: 100%;
+}
+
+@media (max-width:400px) {
+  .templateInput {
+    width: 310px;
+  }
+
+}
+
+@media (max-width:340px) {
+  .templateInput {
+    width: 100%;
+  }
+
 }

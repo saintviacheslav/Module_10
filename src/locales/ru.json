@@ -1,0 +1,109 @@
+{
+  "common": {
+    "signIn": "Войти",
+    "signUp": "Регистрация",
+    "logout": "Выйти",
+    "profile": "Профиль",
+    "profileInfo": "Информация профиля",
+    "statistics": "Статистика",
+    "preferences": "Настройки",
+    "actions": "Действия",
+    "save": "Сохранить",
+    "language": "Язык",
+    "maxChars": "Максимум {{max}} символов"
+  },
+  "theme": {
+    "light": "Светлая тема",
+    "dark": "Тёмная тема"
+  },
+  "auth": {
+    "signInTitle": "Вход в аккаунт",
+    "signInDescription": "Введите email и пароль для входа в приложение",
+    "signUpTitle": "Создать аккаунт",
+    "signUpDescription": "Введите email и пароль для регистрации",
+    "signUpFormDescription": "Введите email и пароль для регистрации в приложении",
+    "email": "Email",
+    "password": "Пароль",
+    "enterEmail": "Введите email...",
+    "enterPassword": "Введите пароль...",
+    "forgotAccount": "Не создали аккаунт?",
+    "haveAccount": "Уже есть аккаунт?",
+    "passwordStrong": "Пароль надёжный",
+    "agreeToTerms": "Нажимая продолжить, вы соглашаетесь с нашими <span class=\"privacyGray\">Условиями использования</span> и <span class=\"privacyGray\">Политикой конфиденциальности</span>"
+  },
+  "profile": {
+    "editProfile": "Редактировать профиль",
+    "changeProfilePhoto": "Изменить фото профиля",
+    "saveProfileChanges": "Сохранить изменения профиля",
+    "profileUpdated": "Информация профиля успешно обновлена",
+    "username": "Имя пользователя",
+    "description": "Описание",
+    "writeDescriptionPlaceholder": "Напишите описание..."
+  },
+  "main": {
+    "whatsNew": "Что нового?",
+    "tellEveryone": "Рассказать всем",
+    "suggestedPeople": "Рекомендуемые люди",
+    "suggestedCommnity": "Сообщества, которые могут понравиться"
+  },
+  "errors": {
+    "pageNotFound": "Страница не найдена",
+    "invalidCredentials": "Неверный email или пароль",
+    "fixErrorsAbove": "Исправьте ошибки выше",
+    "successfulAuth": "Успешная авторизация",
+    "successfulRegistration": "Регистрация прошла успешно",
+    "emailAlreadyExists": "Такой email уже зарегистрирован",
+    "emailMaxLength": "Email не может превышать {{max}} символов",
+    "usernameMaxLength":"Имя пользователя не может превышать {{max}} символов",
+    "emailReachedLimit": "Email достиг лимита в {{max}} символов",
+    "reachedCharacterLimit": "Достигнут лимит в {{max}} символов",
+    "emailRequired": "Email обязателен",
+    "emailInvalid": "Некорректный адрес email",
+    "passwordRequired": "Пароль обязателен",
+    "passwordMinLength": "Пароль должен содержать минимум {{min}} символов",
+    "usernameMustStartWithAt": "Имя пользователя должно начинаться с @",
+    "usernameMinLength": "Имя пользователя должно содержать минимум {{min}} символов",
+    "usernameNoSpaces": "Имя пользователя не может содержать пробелы"
+  },
+  "post": {
+    "likesCount": "{{count}} лайков",
+    "commentsCount": "{{count}} комментариев",
+    "loginToLike": "Войдите, чтобы ставить лайки",
+    "loginToComment": "Войдите, чтобы писать комментарии",
+    "unknown": "Неизвестный",
+    "commentDeleted": "Комментарий удален успешно"
+  },
+  "comment": {
+    "commentEmpty": "Комментарий не может быть пустым",
+    "commentAdded": "Комментарий успешно добавлен",
+    "addComment": "Добавить комментарий"
+  },
+  "statistics": {
+    "posts": "Публикации",
+    "likes": "Лайки",
+    "comments": "Комментарии",
+    "perMonth": "+40% в месяц",
+    "tableView": "Таблица",
+    "chartView": "График",
+    "enableChartView": "Включить график",
+    "title": "Название",
+    "col1": "Кол 1",
+    "col2": "Кол 2",
+    "col3": "Кол 3",
+    "row": "Строка {{num}}"
+  },
+  "modalPost": {
+    "createPost": "Создать публикацию",
+    "postTitle": "Заголовок",
+    "postTitlePlaceholder": "Введите заголовок",
+    "postTitleEmpty": "Заголовок не может быть пустым",
+    "descriptionEmpty": "Описание не может быть пустым",
+    "postCreated": "Публикация создана",
+    "create": "Создать",
+    "selectFileOrDrag": "Выберите файл или перетащите сюда",
+    "fileRestrictions": "JPG, PNG не более 10MB",
+    "invalidFileType": "Недопустимый тип файла. Разрешены только JPG, PNG.",
+    "fileTooLarge": "Файл слишком большой. Максимум: 10MB.",
+    "characterLimit": "Достигнут лимит {{max}} символов"
+  }
+}

@@ -1,0 +1,47 @@
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textarea {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+}
+
+.textareaError {
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--comp-focus);
+}
+
+.validateInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  margin: 0;
+}
+
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  margin: 0;
+}

@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.langButton {
+  padding: 6px 12px;
+  font: 500 14px Inter;
+  border-radius: 8px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-component-light);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.langButton:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.langButton.active {
+  background: var(--fill-positive);
+  color: white;
+  border-color: var(--fill-positive);
+}

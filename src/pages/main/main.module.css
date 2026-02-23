@@ -1,5 +1,3 @@
-/*шрифты скачать и назначить поппинс везде!!!!!*/
-
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -16,7 +14,7 @@
   flex-direction: column;
 }
 
-.post_creation {
+.postCreation {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,10 +25,15 @@
   margin-bottom: 26px;
 }
 
-.input_and_avatar {
+.inputAndAvatar {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.inputAndAvatar img {
+  border-radius: 50%;
+  width: 64px;
 }
 
 .feed {
@@ -65,13 +68,13 @@
   height: 48px;
 }
 
-.secondary_text {
+.secondaryText {
   font: 400 16px Inter;
   color: var(--text-secondary);
   height: 24px;
 }
 
-.primary_text {
+.primaryText {
   font: 500 16px Inter;
   color: var(--text-primary);
   height: 24px;
@@ -94,65 +97,65 @@
   align-items: center;
 }
 
-.suggested_people,
-.suggested_community {
+.suggestedPeople,
+.suggestedCommunity {
   background: var(--bg-surface);
   border: 2px solid var(--border-soft);
   padding: 24px;
   max-width: 341px;
 }
 
-.suggested_list {
+.suggestedList {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.suggested_block {
+.suggestedBlock {
   padding: 12px 0;
 }
 
-.mini_person {
+.miniPerson {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-.mini_person_avatar {
+.miniPersonAvatar {
   border-radius: 50%;
 }
 
-.mini_person_info {
+.miniPersonInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.aside_title {
+.asideTitle {
   font: 600 16px Inter;
   padding-bottom: 8px;
 }
 
-.suggested_area {
+.suggestedArea {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.comment_dropdown {
+.commentDropdown {
   display: flex;
   gap: 8px;
 }
 
-.comments_list {
+.commentsList {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.comments_list_block {
+.commentsListBlock {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -162,9 +165,9 @@ img:hover {
   cursor: pointer;
 }
 
-@media (max-width:1330px){
-  .secondary_text, .primary_text{
-    font-size: 10px;
+@media (max-width:1330px) {
+  .suggestedArea {
+    display: none;
   }
 }
 
@@ -180,11 +183,29 @@ img:hover {
     max-width: 700px;
   }
 
-  .suggested_area{
+  .suggestedArea {
     display: none;
   }
 
-  .post_creation{
-    margin:0;
+  .postCreation {
+    margin: 0;
+    border-bottom: 0;
+  }
+}
+
+@media (max-width:500px) {
+  .container {
+    padding: 0;
+  }
+
+  .inputAndAvatar img {
+    width: 32px;
+  }
+
+}
+
+@media (min-width:3000px) {
+  .container {
+    gap: 0;
   }
 }

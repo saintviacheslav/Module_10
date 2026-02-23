@@ -1,0 +1,108 @@
+{
+  "common": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "profileInfo": "Profile Info",
+    "statistics": "Statistics",
+    "preferences": "Preferences",
+    "actions": "Actions",
+    "save": "Save",
+    "language": "Language",
+    "maxChars": "Max {{max}} chars"
+  },
+  "theme": {
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signInDescription": "Enter your email and password to sign in to this app",
+    "signUpTitle": "Create an account",
+    "signUpDescription": "Enter your email and password to sign up",
+    "signUpFormDescription": "Enter your email and password to register in the app",
+    "email": "Email",
+    "password": "Password",
+    "enterEmail": "Enter email...",
+    "enterPassword": "Enter password...",
+    "forgotAccount": "Forgot to create an account?",
+    "haveAccount": "Already have an account?",
+    "passwordStrong": "Your password is strong",
+    "agreeToTerms": "By clicking continue, you agree to our <span class=\"privacyGray\">Terms of Service</span> and <span class=\"privacyGray\">Privacy Policy</span>"
+  },
+  "profile": {
+    "editProfile": "Edit profile",
+    "changeProfilePhoto": "Change profile photo",
+    "saveProfileChanges": "Save Profile Changes",
+    "profileUpdated": "Profile info has been updated successfully",
+    "username": "Username",
+    "description": "Description",
+    "writeDescriptionPlaceholder": "Write description here..."
+  },
+  "main": {
+    "whatsNew": "What's new?",
+    "tellEveryone": "Tell everyone",
+    "suggestedPeople": "Suggested people",
+    "suggestedCommnity": "Communities you might like"
+  },
+  "errors": {
+    "pageNotFound": "Page not found",
+    "invalidCredentials": "Invalid email or password",
+    "fixErrorsAbove": "Please fix the errors above",
+    "successfulAuth": "Successful authorization",
+    "successfulRegistration": "Successful registration",
+    "emailAlreadyExists": "Email already exists",
+    "emailMaxLength": "Email cannot exceed {{max}} characters",
+    "emailReachedLimit": "Email has reached the {{max}} character limit",
+    "reachedCharacterLimit": "Reached the {{max}} character limit",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Email is not valid",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least {{min}} characters",
+    "usernameMustStartWithAt": "Username must start with @",
+    "usernameMinLength": "Username must be at least {{min}} characters",
+    "usernameNoSpaces": "Username cannot contain spaces"
+  },
+  "post": {
+    "likesCount": "{{count}} likes",
+    "commentsCount": "{{count}} comments",
+    "loginToLike": "You need to log in to like posts",
+    "loginToComment": "You have to login to write comments",
+    "unknown": "Unknown",
+    "commentDeleted": "Comment deleted successfully"
+  },
+  "comment": {
+    "commentEmpty": "Comment cannot be empty",
+    "commentAdded": "Comment added successfully",
+    "addComment": "Add a comment"
+  },
+  "statistics": {
+    "posts": "Posts",
+    "likes": "Likes",
+    "comments": "Comments",
+    "perMonth": "+40% per month",
+    "tableView": "Table view",
+    "chartView": "Chart view",
+    "enableChartView": "Enable Chart view",
+    "title": "Title",
+    "col1": "Col 1",
+    "col2": "Col 2",
+    "col3": "Col 3",
+    "row": "Row {{num}}"
+  },
+  "modalPost": {
+    "createPost": "Create a new post",
+    "postTitle": "Post Title",
+    "postTitlePlaceholder": "Enter post title",
+    "postTitleEmpty": "Post title cannot be empty",
+    "descriptionEmpty": "Description cannot be empty",
+    "postCreated": "Post created successfully",
+    "create": "Create",
+    "selectFileOrDrag": "Select a file or drag and drop here",
+    "fileRestrictions": "JPG, PNG file size no more than 10MB",
+    "invalidFileType": "Invalid file type. Only JPG, PNG allowed.",
+    "fileTooLarge": "File too large. Max size: 10MB.",
+    "characterLimit": "Reached the {{max}} character limit"
+  }
+}

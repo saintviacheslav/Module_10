@@ -1,0 +1,301 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 30, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 8;
+}
+
+.modalPost {
+  padding: 24px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+}
+
+.modalMain {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalTitle {
+  font: 400 36px Poppins;
+  color: var(--text-primary);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 14px Poppins;
+}
+
+.textarea {
+  background: var(--bg-component-light);
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+}
+
+.textareaError {
+  background: var(--bg-component-light);
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+  font: 400 14px Poppins;
+  resize: none;
+  padding: 14px;
+}
+
+.inpError {
+  border: 1px solid var(--inp-incorrect);
+  color: var(--inp-incorrect);
+}
+
+.textareaError:focus {
+  outline: none;
+  border-color: var(--inp-incorrect);
+}
+
+.textareaErrorText {
+  color: var(--inp-incorrect);
+  font: 400 16px Inter;
+  height: 24px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--comp-focus);
+}
+
+.validateInfo {
+  display: flex;
+  gap: 8px;
+}
+
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  height: 24px;
+}
+
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+}
+
+.dropZone {
+  padding: 16px 32px;
+  border: 1px dashed var(--border-soft);
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  align-items: center;
+}
+
+.dropInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropText {
+  font: 400 14px Poppins;
+  color: var(--text-primary);
+}
+
+.dropCheck {
+  font: 400 14px Poppins;
+  color: var(--text-secondary);
+}
+
+.dropFooter {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 1024px) {
+  .modalPost {
+    width: 90%;
+    max-width: 700px;
+    padding: 20px;
+  }
+
+  .modalTitle {
+    font-size: 32px;
+  }
+
+  .textarea,
+  .textareaError {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .modalPost {
+    width: 92%;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .modalTitle {
+    font-size: 28px;
+  }
+
+  .modalMain {
+    gap: 10px;
+  }
+
+  .dropZone {
+    padding: 12px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .dropInfo {
+    gap: 8px;
+  }
+
+  .dropText,
+  .dropCheck {
+    font-size: 13px;
+  }
+
+  .hint {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .validateInfo {
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .secondaryText,
+  .textareaErrorText {
+    font-size: 14px;
+  }
+
+  .primaryText {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modalPost {
+    width: 96%;
+    padding: 16px 12px;
+  }
+
+  .modalHeader {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .modalTitle {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .closeBtn {
+    margin-left: auto;
+  }
+
+  .textarea,
+  .textareaError {
+    font-size: 14px;
+    padding: 12px;
+    min-height: 80px;
+  }
+
+  .dropZone {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .dropFooter {
+    margin-top: 8px;
+  }
+
+  .inputBlock {
+    gap: 10px;
+  }
+
+  .hint p,
+  .dropText,
+  .dropCheck {
+    font-size: 13px;
+  }
+
+  .secondaryText,
+  .textareaErrorText {
+    font-size: 13px;
+    height: auto;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalPost {
+    padding: 12px 10px;
+    gap: 16px;
+  }
+
+  .modalTitle {
+    font-size: 22px;
+  }
+
+  .textarea,
+  .textareaError {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .validateInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .dropZone {
+    padding: 10px;
+  }
+
+}

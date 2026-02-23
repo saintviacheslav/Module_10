@@ -17,15 +17,6 @@ header {
   align-items: center;
 }
 
-/* .header_menu {
-  font: 400 18px Poppins;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 12px 48px;
-  cursor: pointer;
-} */
-
 .menuContent {
   font: 400 18px Poppins;
   display: flex;
@@ -35,7 +26,7 @@ header {
   cursor: pointer;
 }
 
-.has_LoggedIn {
+.hasLoggedIn {
   gap: 8px;
 }
 
@@ -50,7 +41,7 @@ header {
 
 
 @media (max-width: 700px) {
-  .header_menu {
+  .headerMenu {
     padding: 12px 24px;
     display: flex;
     align-items: center;

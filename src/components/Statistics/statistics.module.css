@@ -1,0 +1,220 @@
+.secondaryText {
+  font: 400 16px Inter;
+  color: var(--text-secondary);
+  height: 24px;
+}
+
+.primaryText {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+}
+
+.statistics {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cards {
+  display: flex;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-surface);
+  width: 380px;
+}
+
+.cardTextPrimary {
+  font: 600 16px Inter;
+  color: var(--text-primary);
+}
+
+.cardTextSecondary {
+  font: 500 16px Inter;
+  color: var(--text-secondary);
+}
+
+.cardTitle {
+  font: 600 40px Inter;
+  color: var(--text-primary);
+}
+
+.statsTables {
+  display: flex;
+  gap: 24px;
+
+}
+
+.likesTable {
+  width: 575px;
+}
+
+.titleTable {
+  margin-bottom: 24px;
+  font: 600 28px Inter;
+  color: var(--text-primary);
+}
+
+.statsTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  height: 448px;
+}
+
+.colName {
+  width: 70%;
+}
+
+.colValue {
+  width: 15%;
+}
+
+thead tr:last-child {
+  border-bottom: 1px solid var(--border-soft);
+}
+
+th,
+td {
+  padding: 12px 24px;
+}
+
+.tableTitle {
+  font: 600 16px Inter;
+  color: var(--text-primary);
+  text-align: left;
+  padding: 24px 0px 16px 24px;
+}
+
+.head {
+  font: 600 16px Inter;
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 0px 0px 4px 24px;
+}
+
+.headRight {
+  font: 600 16px Inter;
+  color: var(--text-secondary);
+  text-align: right;
+  padding: 0px 18px 4px 24px;
+}
+
+.cell {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.cellRight {
+  font: 500 16px Inter;
+  color: var(--text-primary);
+  text-align: right;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.chartSwitcher {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.chartSwitcher p {
+  font: 500 16px Inter;
+}
+
+@media (max-width:1220px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .statsTables {
+    flex-direction: column;
+  }
+}
+
+@media (max-width:600px) {
+  .nonVisible {
+    display: none;
+  }
+
+  .statistics {
+    padding: 0 12px;
+    width: 100%;
+  }
+
+  .cards {
+    gap: 12px;
+  }
+
+  .card {
+    height: 114px;
+    min-width: 310px;
+    padding: 12px;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .cardTextPrimary {
+    font-size: 16px;
+  }
+
+  .cardTextSecondary {
+    font-size: 16px;
+  }
+
+  .cardTitle {
+    font-size: 24px;
+  }
+
+  .statsTables {
+    align-items: center;
+  }
+
+  .statsTable {
+    min-width: 310px;
+    height: 448px;
+    font-size: 16px;
+  }
+
+  .likesTable {
+    width: 100%;
+  }
+
+  .colName {
+    width: 50%;
+  }
+
+  .colValue {
+    width: 25%;
+  }
+}
+
+@media (max-width:400px) {
+  .card {
+    width: 100%;
+  }
+
+  .colName {
+    width: 40%;
+  }
+
+  .colValue {
+    width: 30%;
+  }
+}

@@ -1,0 +1,93 @@
+.toastContainer {
+  position: fixed;
+  bottom: 169px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.toast {
+  position: relative;
+  padding: 24px;
+  width: 350px;
+  border-radius: 8px;
+  background-color: var(--fill-positive);
+  height: fit-content;
+  animation: slideIn 0.4s ease-out forwards, fadeOut 0.5s ease-in 5.5s forwards;
+  ;
+}
+
+.toastSuccess {
+  background-color: var(--fill-positive);
+}
+
+.toastError {
+  background-color: var(--inp-incorrect);
+}
+
+.toastWarning {
+  background-color: var(--inp-warning);
+}
+
+.toastInfo {
+  background-color: var(--comp-focus);
+}
+
+.toastText {
+  max-width: 260px;
+  font: 400 18px Poppins;
+  color: var(--text-primary);
+}
+
+.closeButton {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.closeButton svg {
+  width: 9px;
+  height: 9px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@media (max-width:400px) {
+  .toastContainer {
+    top: 10%;
+    right: 24px;
+  }
+
+  .toast {
+    width: 250px;
+  }
+}
