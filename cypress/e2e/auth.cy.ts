@@ -8,7 +8,7 @@ describe("Sign In", () => {
   });
 
   it("shows sign in form", () => {
-    cy.contains("Sign in into an account").should("be.visible");
+    cy.contains("Sign in to your account").should("be.visible");
     cy.get('input[placeholder*="email"]').should("be.visible");
     cy.get('input[placeholder*="password"]').should("be.visible");
     cy.contains("button", "Sign In").should("be.visible");
@@ -31,7 +31,7 @@ describe("Sign In", () => {
     cy.get('input[placeholder*="email"]').type("wrong@mail.com");
     cy.get('input[placeholder*="password"]').type("wrongpass");
     cy.contains("button", "Sign In").click();
-    cy.contains("Invalid email or password").should("be.visible");
+    cy.contains("Incorrect email or password").should("be.visible");
   });
 });
 

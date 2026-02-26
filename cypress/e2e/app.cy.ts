@@ -13,7 +13,7 @@ describe("App shell", () => {
   it("navigates to Sign In page", () => {
     cy.contains("Sign In").click();
     cy.url().should("include", "/signin");
-    cy.contains("Sign in into an account").should("be.visible");
+    cy.contains("Sign in to your account").should("be.visible");
   });
 
   it("navigates to Sign Up page", () => {

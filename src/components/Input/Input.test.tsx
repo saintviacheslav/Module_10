@@ -7,11 +7,16 @@ jest.mock("../Icon/Icon", () => ({
   Icon: () => <span data-testid="icon" />,
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) =>
+      key === "auth.passwordStrong" ? "Your password is strong" : key,
+  }),
+}));
+
 describe("Input", () => {
   it("renders with value and placeholder", () => {
-    render(
-      <Input value="" onChange={() => {}} placeholder="Enter email..." />,
-    );
+    render(<Input value="" onChange={() => {}} placeholder="Enter email..." />);
     const input = screen.getByPlaceholderText("Enter email...");
     expect(input).toBeInTheDocument();
     expect(input).toHaveValue("");
@@ -19,9 +24,7 @@ describe("Input", () => {
 
   it("calls onChange when value changes", async () => {
     const onChange = jest.fn();
-    render(
-      <Input value="" onChange={onChange} placeholder="Email" />,
-    );
+    render(<Input value="" onChange={onChange} placeholder="Email" />);
     const input = screen.getByPlaceholderText("Email");
     await userEvent.type(input, "a");
     expect(onChange).toHaveBeenCalled();
@@ -40,9 +43,7 @@ describe("Input", () => {
   });
 
   it("shows success message when status is success", () => {
-    render(
-      <Input value="pass" onChange={() => {}} status="success" />,
-    );
+    render(<Input value="pass" onChange={() => {}} status="success" />);
     expect(screen.getByText("Your password is strong")).toBeInTheDocument();
   });
 

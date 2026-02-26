@@ -58,7 +58,7 @@ export default function Comment({ postId }: CommentProps) {
       ]);
 
       const optimisticComment: NewCommentResponse = {
-        id: Date.now(),
+        id: -Date.now(),
         text,
         authorId: user?.id ?? 0,
         postId,
@@ -156,6 +156,7 @@ export default function Comment({ postId }: CommentProps) {
         onChange={setDescription}
         maxLength={200}
         placeholder={t("comment.writeCommentPlaceholder")}
+        rows={2}
       />
 
       <Button

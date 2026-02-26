@@ -259,6 +259,7 @@ export default function ModalPost({ isOpen, onClose }: ModalPostProps) {
               onChange={setDescription}
               maxLength={MAX_DESCRIPTION_LENGTH}
               placeholder={t("profile.writeDescriptionPlaceholder")}
+              rows={2}
               textareaClassName={
                 description.length === MAX_DESCRIPTION_LENGTH
                   ? style.textareaError

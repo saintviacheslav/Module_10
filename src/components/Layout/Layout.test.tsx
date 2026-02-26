@@ -3,32 +3,36 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 
-jest.mock("../Header/Header", () => () => <header data-testid="mock-header">Header</header>);
-jest.mock("../Footer/Footer", () => () => <footer data-testid="mock-footer">Footer</footer>);
+jest.mock("../Header/Header", () => () => (
+  <header data-testid="mock-header">Header</header>
+));
+jest.mock("../Footer/Footer", () => () => (
+  <footer data-testid="mock-footer">Footer</footer>
+));
 
 function renderLayoutAt(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<span>Main page</span>} />
-      </Route>
-      <Route path="/signin/" element={<Layout />}>
-        <Route index element={<span>SignIn page</span>} />
-      </Route>
-      <Route path="/signup/" element={<Layout />}>
-        <Route index element={<span>SignUp page</span>} />
-      </Route>
-      <Route path="/profile" element={<Layout />}>
-        <Route index element={<span>Profile</span>} />
-      </Route>
-      <Route path="/profile/info" element={<Layout />}>
-        <Route index element={<span>Profile info</span>} />
-      </Route>
-      <Route path="/unknown" element={<Layout />}>
-        <Route index element={<span>NotFound</span>} />
-      </Route>
-    </Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<span>Main page</span>} />
+        </Route>
+        <Route path="/signin/" element={<Layout />}>
+          <Route index element={<span>SignIn page</span>} />
+        </Route>
+        <Route path="/signup/" element={<Layout />}>
+          <Route index element={<span>SignUp page</span>} />
+        </Route>
+        <Route path="/profile" element={<Layout />}>
+          <Route index element={<span>Profile</span>} />
+        </Route>
+        <Route path="/profile/info" element={<Layout />}>
+          <Route index element={<span>Profile info</span>} />
+        </Route>
+        <Route path="/unknown" element={<Layout />}>
+          <Route index element={<span>NotFound</span>} />
+        </Route>
+      </Routes>
     </MemoryRouter>,
   );
 }

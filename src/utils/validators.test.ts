@@ -38,7 +38,9 @@ describe("validatePassword", () => {
   });
 
   it("returns error when password is shorter than 6 characters", () => {
-    expect(validatePassword("12345", mockT)).toBe("errors.passwordMinLength min:6");
+    expect(validatePassword("12345", mockT)).toBe(
+      "errors.passwordMinLength min:6",
+    );
     expect(validatePassword("a", mockT)).toBe("errors.passwordMinLength min:6");
   });
 
@@ -56,17 +58,25 @@ describe("validateUsername", () => {
   });
 
   it("returns error when username does not start with @", () => {
-    expect(validateUsername("john", mockT)).toBe("errors.usernameMustStartWithAt");
-    expect(validateUsername("user123", mockT)).toBe("errors.usernameMustStartWithAt");
+    expect(validateUsername("john", mockT)).toBe(
+      "errors.usernameMustStartWithAt",
+    );
+    expect(validateUsername("user123", mockT)).toBe(
+      "errors.usernameMustStartWithAt",
+    );
   });
 
   it("returns error when username is shorter than 3 characters", () => {
-    expect(validateUsername("@a", mockT)).toBe("errors.usernameMinLength min:3");
+    expect(validateUsername("@a", mockT)).toBe(
+      "errors.usernameMinLength min:3",
+    );
     expect(validateUsername("@", mockT)).toBe("errors.usernameMinLength min:3");
   });
 
   it("returns error when username contains spaces", () => {
-    expect(validateUsername("@user name", mockT)).toBe("errors.usernameNoSpaces");
+    expect(validateUsername("@user name", mockT)).toBe(
+      "errors.usernameNoSpaces",
+    );
     expect(validateUsername("@ user", mockT)).toBe("errors.usernameNoSpaces");
   });
 
