@@ -165,6 +165,16 @@ img:hover {
   cursor: pointer;
 }
 
+@media (max-width:1480px) {
+  .miniPersonInfo{
+    gap: 8px;
+  }
+  .primaryText {
+    font-size: 14px;
+  }
+  
+}
+
 @media (max-width:1330px) {
   .suggestedArea {
     display: none;

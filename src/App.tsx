@@ -36,7 +36,11 @@ function App() {
                           minHeight: "50vh",
                         }}
                       >
-                        <CircularProgress size={60} thickness={4} />
+                        <CircularProgress
+                          size={60}
+                          thickness={4}
+                          sx={{ color: "var(--fill-positive)" }}
+                        />
                       </Box>
                     }
                   >
@@ -57,7 +61,11 @@ function App() {
                           minHeight: "50vh",
                         }}
                       >
-                        <CircularProgress size={60} thickness={4} />
+                        <CircularProgress
+                          size={60}
+                          thickness={4}
+                          sx={{ color: "var(--fill-positive)" }}
+                        />
                       </Box>
                     }
                   >

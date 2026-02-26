@@ -10,7 +10,9 @@ describe("Button", () => {
 
   it("renders with children when provided", () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Click me" }),
+    ).toBeInTheDocument();
   });
 
   it("prefers children over name when both provided", () => {

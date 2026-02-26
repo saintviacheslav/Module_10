@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 interface DescriptionTextareaProps {
   value: string;
   onChange: (value: string) => void;
+  rows?: number;
   maxLength?: number;
   placeholder?: string;
   className?: string;
@@ -19,6 +20,7 @@ export default function DescriptionTextarea({
   value,
   onChange,
   maxLength = 200,
+  rows = 4,
   placeholder = "Write description here...",
   className = "",
   textareaClassName = "",
@@ -55,7 +57,7 @@ export default function DescriptionTextarea({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        rows={4}
+        rows={rows}
       />
 
       {shouldShowInfo && (

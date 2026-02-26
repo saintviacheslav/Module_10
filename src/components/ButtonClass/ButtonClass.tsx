@@ -34,6 +34,9 @@ class Button extends Component<ButtonProps, ButtonState> {
     return null;
   }
 
+  componentDidUpdate(prevProps: ButtonProps, prevState: ButtonState, snapshot: any) {}
+
+
   render() {
     const { name, onClick } = this.props;
 
